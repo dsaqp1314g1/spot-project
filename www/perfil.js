@@ -67,7 +67,7 @@ function getSpotByUser(username) {
 	var url = API_BASE_URL + '/user/juan/spots';
 	
 	$("#spots-perfil-container").text("");
-	$("#spot-perfil-detail").text("");
+	$("#spot_result").text("");
 	$('#comment-form').hide();
 	
 	$.ajax({
@@ -103,7 +103,7 @@ function getUserParam(user) {
 	$('progress').toggle();
 
 	$("#perfil_result").text("");
-	$("#spot-perfil-detail").text("");
+	$("#spot_result").text("");
 	$("#spots-perfil-container").text("");
 	
 	$.ajax({
@@ -138,37 +138,6 @@ function getUserParam(user) {
 function loadSpott(url){
 	getSpot(url, function(spot){
 		getSpotId(spot.idspot);
-	});
-}
-function getSpotId(id) {
-	var url = API_BASE_URL + '/spots/'+id;
-	
-	$("#spot-perfil-detail").text("");	
-	
-	$.ajax({
-		url : url,
-		type : 'GET',
-		crossDomain : true,
-		dataType : 'json',
-	}).done(function(data, status, jqxhr) {
-		
-				var spot =data;
-				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot-perfil-detail'));
-				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot-perfil-detail'));
-				$('<strong> Deporte: </strong> ' + spot.deporte + '<br><hr>').appendTo($('#spot-perfil-detail'));
-				$('<strong> Comentarios: </strong><br>').appendTo($('#spot-perfil-detail'));
-				$('#uploadedImage').attr('src', spot.imageURL);
-					$.each(spot.comentario, function(i, v) {
-						var comentario = v;
-						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot-perfil-detail'));				
-						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot-perfil-detail'));
-						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot-perfil-detail'));
-
-					});
-				$('<hr>').appendTo($('#spot-perfil-detail'));
-				 showEditForm(id) 
-	}).fail(function() {
-		$("#spot_result").text("NO RESULT");
 	});
 }
 function showEditForm(id) {

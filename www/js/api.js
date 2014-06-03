@@ -133,6 +133,60 @@ function updateSting(url, type, sting, success){
 		console.log(textStatus);
 	});
 }
+function deleteComment(idspot,idcoment) {
+	var url = API_BASE_URL +"/spots/"+idspot+"/comentario/"+idcoment;
+	
+	$.ajax({
+		url : url,
+		type : 'DELETE',
+		crossDomain : true,
+		dataType : 'json',
+	}).done(function(data, status, jqxhr) {
+		alert("Comentari borrado");						
+		getSpotId(idspot);
+	}).fail(function() {
+		alert("ERROR");
+	});
+}
+
+function getSpotId(id) {
+	var url = API_BASE_URL + '/spots/'+id;
+	
+	$("#spot_result").text("");	
+	
+	$.ajax({
+		url : url,
+		type : 'GET',
+		crossDomain : true,
+		dataType : 'json',
+	}).done(function(data, status, jqxhr) {
+		
+				var spot =data;
+				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
+				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
+				$('<strong> Deporte: </strong> ' + spot.deporte + '<br><hr>').appendTo($('#spot_result'));
+				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));
+				$('#uploadedImage').attr('src', spot.imageURL);
+					$.each(spot.comentario, function(i, v) {
+						var comentario = v;
+						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
+						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
+						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
+						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot_result'));						
+						
+						$('#delete-coms'+comentario.idcomentario).click(function(e){
+							e.preventDefault();
+							deleteComment(spot.idspot,comentario.idcomentario);
+							return false;
+						});
+
+					});
+				$('<hr>').appendTo($('#spot_result'));
+				 showEditForm(id) 
+	}).fail(function() {
+		$("#spot_result").text("NO RESULT");
+	});
+}
 
 function deleteSting(url, success){
 	$.ajax({

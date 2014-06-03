@@ -20,6 +20,11 @@ else
 	getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
 }
 });
+$('#buscar-amigo').click(function(e) {
+	e.preventDefault();	
+	$('#comment-form').hide();
+	//getUserParam($("#buscar_campo").val());
+});
 
 $("#button-list-one").click(function(e) {
 	e.preventDefault();
@@ -139,45 +144,6 @@ function getSpotsParam(ciudad, modal) {
 		$("#repos_result").text("NO RESULT");
 	});
 }
-function getSpotId(id) {
-	var url = API_BASE_URL + '/spots/'+id;
-	
-	$("#spot_result").text("");	
-	
-	$.ajax({
-		url : url,
-		type : 'GET',
-		crossDomain : true,
-		dataType : 'json',
-	}).done(function(data, status, jqxhr) {
-		
-				var spot =data;
-				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
-				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
-				$('<strong> Deporte: </strong> ' + spot.deporte + '<br><hr>').appendTo($('#spot_result'));
-				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));
-				$('#uploadedImage').attr('src', spot.imageURL);
-					$.each(spot.comentario, function(i, v) {
-						var comentario = v;
-						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
-						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
-						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
-						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot_result'));						
-						
-						$('#delete-coms'+comentario.idcomentario).click(function(e){
-							e.preventDefault();
-							deleteComment(spot.idspot,comentario.idcomentario);
-							return false;
-						});
-
-					});
-				$('<hr>').appendTo($('#spot_result'));
-				 showEditForm(id) 
-	}).fail(function() {
-		$("#spot_result").text("NO RESULT");
-	});
-}
-
 function loadSpots(url){
 	$('#spots-container').show();
 	var stings = getStings(url, function (stingCollection){
@@ -198,23 +164,6 @@ function loadSpots(url){
 function loadSpot(url){
 	getSpot(url, function(spot){
 		getSpotId(spot.idspot);
-	});
-}
-
-
-function deleteComment(idspot,idcoment) {
-	var url = API_BASE_URL +"/spots/"+idspot+"/comentario/"+idcoment;
-	
-	$.ajax({
-		url : url,
-		type : 'DELETE',
-		crossDomain : true,
-		dataType : 'json',
-	}).done(function(data, status, jqxhr) {
-		alert("Comentari borrado");						
-		getSpotId(idspot);
-	}).fail(function() {
-		alert("ERROR");
 	});
 }
 

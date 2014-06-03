@@ -122,7 +122,7 @@ function getSpotsParam(ciudad, modal) {
 					$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#repos_result'));
 					$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#repos_result'));
 					$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#repos_result'));
-					var link = $('<a id="sting-link" href="'+spot.getLinks("abrir-spot").href+'">'+spot.idspot +'</a>');
+					var link = $('<a id="sting-link" href="'+spot.getLinks("abrir-spot").href+'">'+"Spot detail" +'</a>');
 					link.click(function(e){
 						e.preventDefault();
 						loadSpot($(e.target).attr('href'));

@@ -34,6 +34,7 @@ import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
 
 @Path("/spots")
 public class SpotResource {
+	// Para formatear fechas
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	

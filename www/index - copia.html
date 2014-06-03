@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<title>Spotgram</title>
+	</head>
+	<body>
+		<div class="container theme-showcase" role="main">
+        <div class="jumbotron" style="background: #66FF66;">
+          <h1>SPOTGRAM</h1>
+        </div>
+		<ul class="nav nav-tabs">
+    <li class="active"><a href="#">Home</a></li>
+	
+</ul>
+<h1> </h1>
+		<div>						
+			<button type="button" class="btn btn-success" id="button-list-tasks"><span class="glyphicon glyphicon-ok"> LListar TOT</button>
+			<h1> </h1>
+		</div>
+		<div>						
+			<button type="button" class="btn btn-success" id="button-list-task"><span class="glyphicon glyphicon-ok"> LListar: </button>
+			<button type="button" class="btn btn-danger" id="button-delete-task"><span class="glyphicon glyphicon-trash"> Borrar: </button>
+			<h1> </h1>
+			<label> ID:</label><br>
+				<input type="text" class="form-control" id="buscar_id"><br>
+			<h1> </h1>
+		</div>
+		<div id="exam-error" class="bs-example" hidden >
+<div class="alert alert-danger alert-error">
+    <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+	<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
+    <strong>Error!</strong> Fes el favor de posar alguna cosa!!
+</div>
+</div>  
+<h1> </h1>
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+              <div class="panel-heading" style="background: #66FF66;">
+                <h3 class="panel-title">Crear Tasca</h3>
+              </div>
+			  <div class="panel-body">
+			<form id="create-sting-form">
+				<label>ID</label><br>
+				<input type="text" class="form-control" id="create-id"><br>
+				<label>Summary</label><br>
+				<input type="text" class="form-control" id="create-summary"><br>
+				<label>Description</label><br>
+				<input type="text" class="form-control" id="create-description"><br>
+				<label>Checklist</label><br>
+				<input type="text" class="form-control" id="create-checklist"><br>
+				<label>Duedate</label><br>
+				<input type="text" class="form-control" id="create-duedate"><br>
+			</form>
+			</div>
+		</div>						
+			<button type="button" class="btn btn-success" id="button-create-task"><span class="glyphicon glyphicon-plus"> Create</button>
+			<h1> </h1>
+		</div>
+		<div id="stings-container">
+		<div class="col-sm-4">
+		<div class="panel panel-default">
+              <div class="panel-heading" style="background: #66FF66;">
+                <h3 class="panel-title">Task Collection</h3>
+              </div>
+			  <div class="panel-body">
+			<div id="repos_result">
+			</div>
+			</div>
+		</div>
+		</div>
+		</div>
+		
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+              <div class="panel-heading" style="background: #66FF66;">
+                <h3 class="panel-title">Task Detail</h3>
+              </div>
+			  <div class="panel-body">
+		<div id="sting-detail" style="display: none;">
+			<h2 id="id"></h2>
+			<p id="summary"></p>
+			<p id="description"></p>
+			<p id="checklist"></p>
+			<p id="duedate"></p>
+			<button id="edit-task"  class="btn btn-warning"/><span class="glyphicon glyphicon-pencil"> Edit</button>
+		</div>
+			<form id="edit-task-form" hidden>
+			<h1></h1>
+				<label>ID</label><br>
+				<input type="text" class="form-control" id="edit-id"><br>
+			
+				<label>Summary</label><br>
+				<textarea rows="4" id="edit-summary"class="form-control" form="create-sting-form"></textarea><br>
+				<button id="edit-ok" class="btn btn-success"/> Ok</button>
+				<button id="edit-cancel" class="btn btn-danger"/> Cancel</button>
+			</form>
+		</div>
+		</div>
+		</div>
+		
+		</div>
+		<!-- Scripts -->
+			<!-- jQuery 1.11.0 development -->
+		<script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+		<!--<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>-->
+		<!-- link-headers -->
+		<script type="text/javascript" src="main.js"></script>
+		<!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+	
+	
+</html>

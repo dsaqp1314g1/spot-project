@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      body { background-color:#CCC }
+      #map-outer {  height: 440px; 
+                      padding: 20px; 
+                    border: 2px solid #CCC; 
+                    margin-bottom: 20px; 
+                    background-color:#FFF }
+      #map_canvas { height: 400px;}
+    </style>
+    <script type="text/javascript"
+		src="https://maps.google.com/maps/api/js?sensor=true">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 2,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(-34.397, 150.644),
+			map: map,
+			title:"Skate \n MeGustas: 5 \n Una barra que te cagas"
+		});
+		marker.setMap(map);
+      }
+    </script>
+		<meta charset="utf-8">
+		<title>Spotgram</title>
+	</head>
+	<body>
+	<BODY BACKGROUND="img/imag.jpg" background-position="center" BGPROPERTIES="fixed">
+		<div class="container theme-showcase" role="main">
+        
+		<nav class="navbar navbar-default" role="navigation">
+  <!-- El logotipo y el icono que despliega el menú se agrupan
+       para mostrarlos mejor en los dispositivos móviles -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse"
+            data-target=".navbar-ex1-collapse">
+    </button>
+    <a class="navbar-brand" href="#">Logotipo</a>
+  </div>
+ 
+  <!-- Agrupar los enlaces de navegación, los formularios y cualquier
+       otro elemento que se pueda ocultar al minimizar la barra -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+      <li class="active" id="home"><a href="http://localhost/index.html">Home</a></li>
+      <li id="perfil" ><a href="http://localhost/perfil.html">Perfil</a></li>      
+    </ul>
+ 
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Buscar un amigo..">
+      </div>
+      <button type="submit" class="btn btn-default">Buscar</button>
+    </form>
+ 
+   <p class="navbar-text navbar-right">SPOTGRAM</p> 
+  </div>
+</nav>
+<h1> </h1>
+		<div id="exam-error" class="bs-example" hidden >
+<div class="alert alert-danger alert-error">
+    <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+	<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
+    <strong>Error!</strong>  Escribe algo en el campo requerido!
+</div>
+</div> 
+<h1> </h1>
+<div class="container">
+<form  id="imageForm"  class="form-group" role="form" >
+		<div class="form-group">
+		<div class="col-sm-4" >			
+			<label> Ciudad:</label><br>
+			<input type="text" class="form-control"  placeholder="Enter city name here" id="buscar_ciud"  required="required"><br>			
+		</div>
+		</div>
+		<div class="form-group">
+		<div class="col-sm-4" >			
+			<label> Modalidad:</label><br>
+			<select class="form-control" id="buscar_mod">
+  <option>Todas</option>
+  <option>skate</option>
+  <option>bmx</option>
+  <option>parkour</option>
+</select>			
+		</div>			
+		</div>
+		<br>
+		<div class="col-sm-2" >
+			<button type="submit" class="btn btn-default" style="background: #66FF66;" id="button-list-spots"><span class="glyphicon glyphicon-ok"> Buscar</button>	
+		</div>
+		</form>
+</div>
+ <h1> </h1>
+
+		<div id="spots-container">
+		<div class="col-sm-8" 	>
+		<div class="panel panel-default" style="background: rgba(255, 255, 255, 0.5);">
+              <div class="panel-heading" style="background: #66FF66;">
+                <h3 class="panel-title">Spot Collection</h3>
+              </div>
+			  <div class="panel-body" style="background: rgba(255, 255, 255, 0.1);">			  
+			  					<progress style="display: none;"></progress>
+			<div id="repos_result">
+			</div>
+			</div>
+		</div>
+		</div>
+		</div>
+		
+	<div id ="spot-detail" class="col-sm-4" >
+		<div class="panel panel-default" style="background: rgba(255, 255, 255, 0.5);">
+              <div class="panel-heading" style="background: #66FF66;">
+                <h3 class="panel-title">Spot Detail</h3>
+              </div>
+		 <div class="panel-body">
+			<div class="panel-body">
+			<a>
+					<img id="uploadedImage" class="img-responsive">
+				</a>			  
+			<div id="spot_result">
+			</div>
+			
+			<form id="comment-form" hidden>
+			<h1></h1>
+				<label>Texto</label><br>
+				<textarea rows="4" id="edit-comment" class="form-control" form="comment-form"></textarea><br>
+				<button id="comment-ok" class="btn btn-success"/> Ok</button>
+				<button id="comment-cancel" class="btn btn-danger"/> Cancel</button>
+			</form>
+		</div>
+		</div>
+		</div>
+</div>
+		
+		</div>			
+		<!-- Scripts -->
+			<!-- jQuery 1.11.0 development -->
+		<script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+		<!--<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>-->
+		<!-- link-headers -->
+		<script type="text/javascript" src="main.js"></script>
+		<!-- link-headers -->
+		<script src="./js/api.js"></script>	
+		<script src="./js/uritemplate.js"></script>
+		<script src="./js/linkheaders.js"></script>
+		<!-- jQuery Base64 plugin -->
+		<script src="./js/jquery.base64.js"></script>
+		<!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+	
+	
+</html>

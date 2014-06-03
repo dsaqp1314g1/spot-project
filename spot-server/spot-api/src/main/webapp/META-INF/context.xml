@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource name="jdbc/spotdb" auth="Container" type="javax.sql.DataSource"
+		maxActive="10" maxIdle="5" username="spot" password="spot"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/spotdb?autoReconnect=true" />
+
+	<Realm className="org.apache.catalina.realm.DataSourceRealm"
+		dataSourceName="jdbc/spotdb" localDataSource="true" digest="MD5"
+		userTable="users" userNameCol="username" userCredCol="userpass"
+		userRoleTable="user_roles" roleNameCol="rolename" />
+</Context>

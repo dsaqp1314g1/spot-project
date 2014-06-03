@@ -162,6 +162,13 @@ function getSpotId(id) {
 						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
 						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
 						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
+						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot_result'));						
+						
+						$('#delete-coms'+comentario.idcomentario).click(function(e){
+							e.preventDefault();
+							deleteComment(spot.idspot,comentario.idcomentario);
+							return false;
+						});
 
 					});
 				$('<hr>').appendTo($('#spot_result'));
@@ -194,44 +201,9 @@ function loadSpot(url){
 	});
 }
 
-function getSpot(buscar_id) {
-	$('#sting-detail').show();
-	var url = API_BASE_URL + buscar_id;
-	hideEditForm();
 
-	$("#get_repo_result").text('');
-
-	$.ajax({
-		url : url,
-		type : 'GET',
-		crossDomain : true,
-		dataType : 'json',
-		statusCode: {
-    		404: function() {$('<div class="alert alert-danger"> <strong>Oh!</strong> NO TASK </div>').appendTo($("#update_result"));}
-    	}
-	}).done(function(data, status, jqxhr) {
-
-				var repo = data;
-
-				$('#id').text(repo.id);
-				$('#summary').text(repo.summary);
-				$('#description').text(repo.description);
-				$('#checklist').text(repo.checklist);
-				$('#duedate').text(repo.duedate);
-				$('#edit-task').show();
-
-			}).fail(function() {
-				$('#id').text("TASK NOT FOUND");
-				$('#summary').text("");		
-				$('#edit-sting').hide();
-
-	});				
-		
-	
-}
-
-function deleteComment(buscar_id) {
-	var url = API_BASE_URL + buscar_id;
+function deleteComment(idspot,idcoment) {
+	var url = API_BASE_URL +"/spots/"+idspot+"/comentario/"+idcoment;
 	
 	$.ajax({
 		url : url,
@@ -239,10 +211,8 @@ function deleteComment(buscar_id) {
 		crossDomain : true,
 		dataType : 'json',
 	}).done(function(data, status, jqxhr) {
-		alert("Tasca esborrada");	
-				
-	
-	
+		alert("Comentari borrado");						
+		getSpotId(idspot);
 	}).fail(function() {
 		alert("ERROR");
 	});

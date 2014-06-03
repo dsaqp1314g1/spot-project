@@ -2,16 +2,9 @@ var API_BASE_URL = "http://localhost:8181/spot-api";
 var stingsURL;
 
 $('#buscar-amigo').click(function(e) {
-	e.preventDefault();					
-	if ($('#buscar_campo').val() === '')
-	{
-	$('#exam-error').show();	
-	//getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
-	}
-else
-{
+	e.preventDefault();	
+	$('#comment-form').hide();
 	getUserParam($("#buscar_campo").val());
-}
 });
 $('#button-delete-comment').click(function(e) {
 	e.preventDefault();					
@@ -73,7 +66,9 @@ function loadSpot(url){
 function getSpotByUser(username) {
 	var url = API_BASE_URL + '/user/juan/spots';
 	
-	$("#spots-perfil-container").text("");	
+	$("#spots-perfil-container").text("");
+	$("#spot-perfil-detail").text("");
+	$('#comment-form').hide();
 	
 	$.ajax({
 		url : url,
@@ -108,7 +103,8 @@ function getUserParam(user) {
 	$('progress').toggle();
 
 	$("#perfil_result").text("");
-	
+	$("#spot-perfil-detail").text("");
+	$("#spots-perfil-container").text("");
 	
 	$.ajax({
 		url : url,

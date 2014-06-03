@@ -1,7 +1,7 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.api;
 
 public class MediaType {
-	
+	// MEdia type
 	public final static String API_USER = "application/vnd.catalogo.spot.comentario+json";
 	public final static String API_USER_COLLECTION = "application/vnd.spot.api.comentario.collection+json";
 	public final static String API_SPOT = "application/vnd.spot.api.spot+json";

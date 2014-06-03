@@ -6,11 +6,6 @@
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       body { background-color:#CCC }
-      #map-outer {  height: 440px; 
-                      padding: 20px; 
-                    border: 2px solid #CCC; 
-                    margin-bottom: 20px; 
-                    background-color:#FFF }
       #map_canvas { height: 400px;}
     </style>
     <script type="text/javascript"
@@ -36,7 +31,7 @@
 		<meta charset="utf-8">
 		<title>Spotgram</title>
 	</head>
-	<body>
+	<body onload="initialize()">
 	<BODY BACKGROUND="img/imag.jpg" background-position="center" BGPROPERTIES="fixed">
 		<div class="container theme-showcase" role="main">
         
@@ -58,9 +53,9 @@
       <li id="perfil" ><a href="http://localhost/perfil.html">Perfil</a></li>      
     </ul>
  
-    <form class="navbar-form navbar-left" role="search">
+    <form class="navbar-form navbar-left" role="form">
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="Buscar un amigo..">
+        <input type="text" class="form-control" placeholder="Buscar un amigo.."  id="buscar_campo"  required="required">
       </div>
       <button type="submit" class="btn btn-default">Buscar</button>
     </form>
@@ -110,8 +105,9 @@
               <div class="panel-heading" style="background: #66FF66;">
                 <h3 class="panel-title">Spot Collection</h3>
               </div>
-			  <div class="panel-body" style="background: rgba(255, 255, 255, 0.1);">			  
-			  					<progress style="display: none;"></progress>
+			  <div class="panel-body" style="background: rgba(255, 255, 255, 0.1);">
+			<div id="map_canvas" class="col-sm-12"></div>			  
+			  <progress style="display: none;"></progress>
 			<div id="repos_result">
 			</div>
 			</div>

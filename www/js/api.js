@@ -1,4 +1,4 @@
-var BEETER_API_HOME="http://localhost:8000/beeter-api";
+var BEETER_API_HOME="http://localhost:8000/spot-api";
 
 function Link(rel, linkheader){
 	this.rel = rel;

@@ -141,8 +141,7 @@ function deleteComment(idspot,idcoment) {
 		type : 'DELETE',
 		crossDomain : true,
 		dataType : 'json',
-	}).done(function(data, status, jqxhr) {
-		alert("Comentari borrado");						
+	}).done(function(data, status, jqxhr) {			
 		getSpotId(idspot);
 	}).fail(function() {
 		alert("ERROR");

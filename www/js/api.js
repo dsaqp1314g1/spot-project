@@ -161,11 +161,13 @@ function getSpotId(id) {
 	}).done(function(data, status, jqxhr) {
 		
 				var spot =data;
+				$('<img id="uploadedImage" class="img-responsive"><br>').appendTo($('#spot_result'));
+				$('#uploadedImage').attr('src', spot.imageURL);
 				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br><hr>').appendTo($('#spot_result'));
 				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));
-				$('#uploadedImage').attr('src', spot.imageURL);
+				
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;
 						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				

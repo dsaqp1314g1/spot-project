@@ -40,6 +40,8 @@ public class SpotResource {
 	@Context
 	private SecurityContext security;
 	private DataSource ds = DataSourceSPA.getInstance().getDataSource();
+	
+	@Context
 	private Application app;
 	
 	@GET
@@ -320,7 +322,7 @@ public class SpotResource {
 				spot.setMegusta(rs.getInt("megustas"));
 				System.out.println("Comprovando longitud: "+Integer.toString(spot.getIdspot()) +".png");
 				
-				//spot.setImageURL(app.getProperties().get("imgBaseURL")+Integer.toString(spot.getIdspot())+".png");
+				spot.setImageURL(app.getProperties().get("imgBaseURL")+Integer.toString(spot.getIdspot())+".png");
 				System.out.println("Pasando a recivir los comentarios");
 
 				PreparedStatement stmtr = null;
@@ -408,7 +410,7 @@ public class SpotResource {
 				spot.setMegusta(rs.getInt("megustas"));
 				System.out.println("Comprovando longitud: "+Integer.toString(spot.getIdspot()) +".png");
 				
-				//spot.setImageURL(app.getProperties().get("imgBaseURL")+Integer.toString(spot.getIdspot())+".png");
+				spot.setImageURL(app.getProperties().get("imgBaseURL")+Integer.toString(spot.getIdspot())+".png");
 				System.out.println("Pasando a recivir los comentarios");
 
 				PreparedStatement stmtr = null;

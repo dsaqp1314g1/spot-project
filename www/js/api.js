@@ -216,7 +216,7 @@ function showEditForm(id) {
 					e.preventDefault();
 					var comment = new Object();				
 					// CANVIAR PER AGAFAR L'USUARI QUE TOQUI!!!
-					comment.usuario = 'albert';
+					comment.usuario = 'juan';
 					comment.comentario = $('#edit-comment').val();
 					// AGAFAR LA DATAAA!!!
 					// comment.data = 
@@ -225,8 +225,7 @@ function showEditForm(id) {
 			});
 }
 function createComentario(id,coment){
-	var url = API_BASE_URL + "/spots/"+ id +"/comentario";
-	
+	var url = API_BASE_URL + "/spots/"+ id +"/comentario";	
 	$.ajax({
 		url : url,
 		type : 'POST', 
@@ -236,6 +235,7 @@ function createComentario(id,coment){
 	})
 	.done(function (data, status, jqxhr) {
 		var coment = $.parseJSON(jqxhr.responseText);
+		$('#edit-comment').val('');
 		getSpotId(id);
 	})
     .fail(function (jqXHR, textStatus) {

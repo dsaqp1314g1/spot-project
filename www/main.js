@@ -169,26 +169,6 @@ function loadSpot(url){
 	});
 }
 
-function showEditForm(id) {
-	$('#comment-form').show();
-	$('#edit-ok').click(
-			function(e) {
-				if ($('#edit-comment').val() === '') {
-					$('#exam-error').show();
-				} else {
-					e.preventDefault();
-					var comment = new Object();
-					
-					// CANVIAR PER AGAFAR L'USUARI QUE TOQUI!!!
-					comment.usuario = 'albert';
-					comment.comentario = $('#edit-comment').val();
-					// AGAFAR LA DATAAA!!!
-					// comment.data = 
-					createComentario(id, JSON.stringify(comment));										
-				}
-			});
-}
-
 function hideEditForm() {
 	$('#edit-sting-form').hide();
 }

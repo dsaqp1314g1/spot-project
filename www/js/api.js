@@ -1,4 +1,5 @@
 var BEETER_API_HOME="http://localhost:8000/spot-api";
+var USUARIO="juan";
 
 function Link(rel, linkheader){
 	this.rel = rel;
@@ -173,13 +174,15 @@ function getSpotId(id) {
 						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
 						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
 						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
-						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot_result'));						
-						
+						if (comentario.usuario === USUARIO)
+							{
+						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot_result'));												
 						$('#delete-coms'+comentario.idcomentario).click(function(e){
 							e.preventDefault();
 							deleteComment(spot.idspot,comentario.idcomentario);
 							return false;
 						});
+							}
 
 					});
 				$('<hr>').appendTo($('#spot_result'));

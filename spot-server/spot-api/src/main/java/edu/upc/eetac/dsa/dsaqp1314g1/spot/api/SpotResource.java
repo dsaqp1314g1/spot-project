@@ -371,95 +371,7 @@ public class SpotResource {
 
 		return "select * from spots where idspot=?";
 }
-	private Spot getSpotFromDatabaseByUsername(String title) {
-		Spot spot = new Spot();
-	 
-		Connection conn = null;
-		try {
-			conn = ds.getConnection();
-		} catch (SQLException e) {
-			throw new ServerErrorException("Could not connect to the database",
-					Response.Status.SERVICE_UNAVAILABLE);
-		}
-	 
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(buildGetSpotByIdQueryTitle());
-
-			stmt.setString(1, title);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-
-				System.out.println("Reciviendo los datos de la Query");
-
-				spot.setIdspot(rs.getInt("idspot"));
-				System.out.println("Comprovando id: " + rs.getInt("idspot"));
-				System.out.println("Comprovando titulo: " + rs.getString("title"));
-				spot.setTitle(rs.getString("title"));
-				System.out.println("Comprovando ciudad: " + rs.getString("ciudad"));
-				spot.setCiudad(rs.getString("ciudad"));
-				System.out.println("Comprovando deporte: " + rs.getString("deporte"));
-				spot.setDeporte(rs.getString("deporte"));
-				System.out.println("Comprovando usuario: " + rs.getString("usuario"));
-				spot.setUsuario(rs.getString("usuario"));
-				spot.setLongitud(rs.getDouble("longitud"));
-				System.out.println("Comprovando longitud: " + rs.getDouble("longitud"));
-				spot.setLatitud(rs.getDouble("latitud"));
-				System.out.println("Comprovando latitud: " + rs.getDouble("latitud"));
-				spot.setFechasubida(sdf.format(new java.util.Date(rs.getDate("fechasubida").getTime())));
-				spot.setMegusta(rs.getInt("megustas"));
-				System.out.println("Comprovando longitud: "+Integer.toString(spot.getIdspot()) +".png");
-				
-				spot.setImageURL(app.getProperties().get("imgBaseURL")+Integer.toString(spot.getIdspot())+".png");
-				System.out.println("Pasando a recivir los comentarios");
-
-				PreparedStatement stmtr = null;
-				stmtr = conn.prepareStatement(buildGetComentarioSpotByIdQuery());
-				stmtr.setInt(1, spot.getIdspot());
-
-				ResultSet rsr = stmtr.executeQuery();
-
-				while (rsr.next()) {
-					System.out.println("Comentarios");
-
-					Comentario review = new Comentario();
-					review.setIdcomentario(rsr.getInt("idcomentario"));
-					System.out.println("Comentarios id: "+rsr.getInt("idcomentario") );
-					review.setIdspot(rsr.getInt("idspot"));
-					System.out.println("Comentarios idspot: " + rsr.getInt("idspot"));
-					review.setUsuario(rsr.getString("usuario"));
-					System.out.println("Comentarios usuario: "+rsr.getString("usuario"));
-					System.out.println("Comentarios fechacreacion: "+ rsr.getTimestamp("fechacreacion"));
-					review.setFechacreacion(rsr.getDate("fechacreacion"));
-				
-					review.setComentario(rsr.getString("comentario"));
-					System.out.println("Comentarios comentario: " + rsr.getString("comentario"));
-					spot.addComentario(review);
-					System.out.println("Comentario añadido");
-
-				}
-			}
-
-		} catch (SQLException e) {
-			throw new ServerErrorException(e.getMessage(),
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} finally {
-			try {
-				if (stmt != null)
-					stmt.close();
-				conn.close();
-			} catch (SQLException e) {
-			}
-		}
-		System.out.println("Devolviendo la coleccion de spots");
-		return spot;
-	}
-	
-	private String buildGetSpotByIdQueryTitle() {
-
-		return "select * from spots where title=?";
-}
-
+	//COmentario sin mas
 
     @GET
 	@Path("/{idspot}")
@@ -507,9 +419,12 @@ public class SpotResource {
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				spot = getSpotFromDatabaseByUsername(spot.getTitle());
+				
+				int idspot= rs.getInt(1);
+				spot = getSpotFromDatabase(Integer.toString(idspot));
 			} else {
-				// Something has failed...
+				/*
+			} */
 			}
 		}catch (SQLException e) {
 			throw new ServerErrorException(e.getMessage(),

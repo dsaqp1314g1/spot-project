@@ -11,27 +11,10 @@
     <script type="text/javascript"
 		src="https://maps.google.com/maps/api/js?sensor=true">
     </script>
-    <script type="text/javascript">
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(-34.397, 150.644),
-          zoom: 2,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map_canvas"),
-            mapOptions);
-		var marker = new google.maps.Marker({
-			position: new google.maps.LatLng(-34.397, 150.644),
-			map: map,
-			title:"Skate \n MeGustas: 5 \n Una barra que te cagas"
-		});
-		marker.setMap(map);
-      }
-    </script>
 		<meta charset="utf-8">
 		<title>Spotgram</title>
 	</head>
-	<body onload="initialize()">
+	<body>
 	<BODY BACKGROUND="img/imag.jpg" background-position="center" BGPROPERTIES="fixed">
 		<div class="container theme-showcase" role="main">
         
@@ -141,6 +124,8 @@
 		<!-- link-headers -->
 		<script type="text/javascript" src="main.js"></script>
 		<!-- link-headers -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/ui/jquery.ui.map.js"></script>
 		<script src="./js/api.js"></script>	
 		<script src="./js/uritemplate.js"></script>
 		<script src="./js/linkheaders.js"></script>

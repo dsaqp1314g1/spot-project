@@ -1,4 +1,4 @@
-var BEETER_API_HOME="http://localhost:8000/spot-api";
+var BEETER_API_HOME="http://localhost:8181/spot-api";
 var USUARIO="juan";
 
 function Link(rel, linkheader){
@@ -199,6 +199,44 @@ function deleteSting(url, success){
 	.done(function (data, status, jqxhr) {
 		//var sting = $.parseJSON(jqxhr.responseText);
 		success();
+	})
+    .fail(function (jqXHR, textStatus) {
+		console.log(textStatus);
+	});
+}
+
+function showEditForm(id) {
+	$('#comment-form').show();	
+
+	$('#comment-ok').click(
+			function(e) {
+				if ($('#edit-comment').val() === '') {
+					$('#exam-error').show();
+				} else {
+					e.preventDefault();
+					var comment = new Object();				
+					// CANVIAR PER AGAFAR L'USUARI QUE TOQUI!!!
+					comment.usuario = 'albert';
+					comment.comentario = $('#edit-comment').val();
+					// AGAFAR LA DATAAA!!!
+					// comment.data = 
+					createComentario(id, JSON.stringify(comment));										
+				}
+			});
+}
+function createComentario(id,coment){
+	var url = API_BASE_URL + "/spots/"+ id +"/comentario";
+	
+	$.ajax({
+		url : url,
+		type : 'POST', 
+		crossDomain : true,
+		contentType: 'application/vnd.catalogo.spot.comentario+json',
+		data: coment
+	})
+	.done(function (data, status, jqxhr) {
+		var coment = $.parseJSON(jqxhr.responseText);
+		getSpotId(id);
 	})
     .fail(function (jqXHR, textStatus) {
 		console.log(textStatus);

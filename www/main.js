@@ -1,6 +1,7 @@
-var API_BASE_URL = "http://localhost:8181/spot-api";
+var API_BASE_URL="http://localhost:8181/spot-api";
 var stingsURL;
-var username = 'albert';
+var username="albert";
+var USER="juan";
 var idspot;
 // var password = 'albert';
 // $.ajaxSetup({
@@ -48,11 +49,6 @@ $('#comment-cancel').click(function(e) {
 	$("#edit-comment").val('');
 });
 
-$('#edit-task').click(function(e) {
-	e.preventDefault();
-	showEditForm();
-});
-
 $("#closing").click(function() {
 	$("#exam-error").hide();
 });
@@ -75,6 +71,12 @@ function getSpots() {
 
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
+					console.log(JSON.stringify(spot));
+					var a = parseFloat(spot.latitud);
+					var b = parseFloat(spot.longitud);
+					var c = spot.longitud +","+spot.latitude;
+					//$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': c, 'bounds': true } );
+					$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': '22.345573,-22.098326', 'bounds': true } );
 					$('<h4> ID: ' + spot.idspot + '</h4>').appendTo($('#repos_result'));				
 					$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#repos_result'));
 					$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#repos_result'));
@@ -186,23 +188,7 @@ function showEditForm(id) {
 				}
 			});
 }
-function createComentario(id , coment){
-	var url = API_BASE_URL + "/spots/"+ id +"/comentario";
-	
-	$.ajax({
-		url : url,
-		type : 'POST',
-		crossDomain : true,
-		data: coment
-	})
-	.done(function (data, status, jqxhr) {
-		var coment = $.parseJSON(jqxhr.responseText);
-		getSpotId(id);
-	})
-    .fail(function (jqXHR, textStatus) {
-		console.log(textStatus);
-	});
-}
+
 function hideEditForm() {
 	$('#edit-sting-form').hide();
 }
@@ -213,6 +199,10 @@ $(document).ready(function(){
 // // stingsURL = rootAPI.getLink('spots').href;
 // // loadStings(rootAPI.getLink('spots').href);
 // getTasks();
-// });
+// }); var mapOptions = {
+	// this works! (lat, lng are global variables read from localStorage
 	getSpots();
+	$('#map_canvas').gmap({'center': '-34.397, 100.644'}).bind('init', function() { 
+		   $('#map_canvas').gmap('option', 'zoom', 2); });
+	
 });

@@ -46,7 +46,7 @@ public class SpotResource {
 	
 	@GET
 	@Produces(MediaType.API_SPOT_COLLECTION)
-	public SpotCollection getLibros(@QueryParam("length") int length,
+	public SpotCollection getSpotsCollections(@QueryParam("length") int length,
 			@QueryParam("after") int after) {
 
 		System.out.println("Iniciando Get al recurso");

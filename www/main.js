@@ -75,6 +75,7 @@ function getSpots() {
 
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
+					$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': new google.maps.LatLng(spot.latitud, spot.longitud), 'bounds': true } );
 					$('<h4> ID: ' + spot.idspot + '</h4>').appendTo($('#repos_result'));				
 					$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#repos_result'));
 					$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#repos_result'));
@@ -213,6 +214,9 @@ $(document).ready(function(){
 // // stingsURL = rootAPI.getLink('spots').href;
 // // loadStings(rootAPI.getLink('spots').href);
 // getTasks();
-// });
+// }); var mapOptions = {
+	// this works! (lat, lng are global variables read from localStorage
 	getSpots();
+	$('#map_canvas').gmap({'center': '-34.397, 100.644'}).bind('init', function() { 
+		   $('#map_canvas').gmap('option', 'zoom', 2); });
 });

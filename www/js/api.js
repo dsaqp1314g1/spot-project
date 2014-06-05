@@ -27,6 +27,8 @@ function Spot(spot){
 	this.idspot = spot.idspot;
 	this.title = spot.title;
 	this.deporte = spot.deporte;
+	this.latitud = spot.latitud;
+	this.longitud = spot.longitud;
 	this.ciudad = spot.ciudad;
 	this.links = buildLinks(spot.links);
 	var instance = this;

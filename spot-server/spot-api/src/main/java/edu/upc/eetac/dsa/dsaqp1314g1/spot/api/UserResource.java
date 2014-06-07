@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import javax.sql.DataSource;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -17,7 +19,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Comentario;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.User;
@@ -29,6 +30,77 @@ public class UserResource {
 	@Context
 	private SecurityContext security;
 	private DataSource ds = DataSourceSPA.getInstance().getDataSource();
+	
+	@POST
+	@Consumes(MediaType.API_USER)
+	@Produces(MediaType.API_USER)
+	public User UserLogin (User user) {
+		
+		System.out.println("Comienza el loguin de: " + user.getUsername());
+		 User userlog = new User();
+		System.out.println("Preparando la conexion a la base de datos");
+		Connection conn = null;
+		System.out.println(".............");
+		
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+
+		System.out.println("Preparando Statement");
+		PreparedStatement stmt = null;
+        try {
+			
+			System.out.println("Creando la Query");
+			stmt = conn.prepareStatement(bulidLoginUserQuery());
+			
+			stmt.setString(1, user.getUsername());
+			stmt.setString(2, user.getUserpass());
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				
+			   
+				userlog.setUsername(rs.getString("username"));
+				System.out.println("NombreUsuario: " + userlog.getUsername());
+				userlog.setName(rs.getString("name"));
+				System.out.println("Nombre: " + userlog.getName());
+				userlog.setEmail(rs.getString("email"));
+				System.out.println("Email: " + userlog.getEmail());
+				}
+		} 
+		catch (SQLException e)
+		{
+			
+			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try
+			{
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e)
+			{
+				
+			}
+		}
+		System.out.println("Fin del loging, devolviendo datos del usuario");
+		return userlog;
+		
+	}
+	
+	private String bulidLoginUserQuery()
+	{
+		System.out.println("Ejecutando bulidGetUserQuery");
+		return "select * from users where username=? and userpass= MD5(?)";
+	}
+	
 	
 	@GET
 	@Path("/{username}")

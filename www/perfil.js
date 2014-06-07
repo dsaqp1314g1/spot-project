@@ -1,6 +1,83 @@
 var API_BASE_URL = "http://localhost:8181/spot-api";
 var stingsURL;
 
+
+var centermap = new google.maps.LatLng(41.3850639,2.17340349);
+var mapOptions = {
+  minZoom: 2, 
+  maxZoom: 12,
+  zoom: 4,
+  center: centermap
+};
+
+var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
+function smoothZoom (map, max, cnt) {
+    if (cnt >= max) {
+            return;
+        }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            smoothZoom(map, max, cnt + 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 150);
+    }
+}  
+
+function initialize(myLatlng, contentString, idspot) {
+	 
+
+	  var infowindow = new google.maps.InfoWindow({
+	      content: contentString
+	  });
+
+	  var marker = new google.maps.Marker({
+	      position: myLatlng,
+	      map: map,
+	  });
+	  google.maps.event.addListener(marker, 'click', function() {
+		  getSpotId(idspot);
+		  //map.setZoom(8);
+		  map.setCenter(marker.getPosition());
+		  //map.setCenter(overlay.getPosition());
+		  smoothZoom(map, 10, map.getZoom());
+		  });
+	  
+	  google.maps.event.addListener(marker, 'mouseover', function() {
+	    infowindow.open(map,marker);
+	  });
+	  google.maps.event.addListener(marker, 'mouseout', function() {
+		    infowindow.close(map,marker);
+		  });
+	  marker.setMap(map);
+//	  var strictBounds = new google.maps.LatLngBounds(
+//			     new google.maps.LatLng(-72.26740896926444, 156.09375), 
+//			     new google.maps.LatLng(72.06166091689721, -149.0625)
+//			   );
+//	   // Listen for the dragend event
+//	   google.maps.event.addListener(map, 'drag', function() {
+//	     if (strictBounds.contains(map.getCenter())) return;
+//
+//	     // We're out of bounds - Move the map back within the bounds
+//
+//	     var c = map.getCenter(),
+//	         x = c.lng(),
+//	         y = c.lat(),
+//	         maxX = strictBounds.getNorthEast().lng(),
+//	         maxY = strictBounds.getNorthEast().lat(),
+//	         minX = strictBounds.getSouthWest().lng(),
+//	         minY = strictBounds.getSouthWest().lat();
+//
+//	     if (x < minX) x = minX;
+//	     if (x > maxX) x = maxX;
+//	     if (y < minY) y = minY;
+//	     if (y > maxY) y = maxY;
+//
+//	     map.setCenter(new google.maps.LatLng(y, x));
+//	   });
+}
+
 $('#buscar-amigo').click(function(e) {
 	e.preventDefault();	
 	$('#comment-form').hide();
@@ -39,6 +116,7 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+
 					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
 					link.click(function(e){
 						e.preventDefault();
@@ -79,19 +157,25 @@ function getSpotByUser(username) {
 		var repos = data;
 		$.each(repos.spots, function(i, v) {
 			var spot = new Spot(v);
-			
-			$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spots-perfil-container'));
-			$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spots-perfil-container'));
-			var link = $('<a id="spot-link" href="'+spot.getLinks("abrir-spot").href+'">'+"Spot detail" +'</a>');
-			link.click(function(e){
-				e.preventDefault();
-				idspot = spot.idspot;
-				loadSpott($(e.target).attr('href'));
-				return false;
-			});
-			var div = $('<div></div>')
-			div.append(link);
-			$('#spots-perfil-container').append(div);
+			var idmarker = spot.idspot;
+			var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+			'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
+			'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
+			'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
+			var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
+			initialize(myLatlng, contentString, idmarker);
+//			$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spots-perfil-container'));
+//			$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spots-perfil-container'));
+//			var link = $('<a id="spot-link" href="'+spot.getLinks("abrir-spot").href+'">'+"Spot detail" +'</a>');
+//			link.click(function(e){
+//				e.preventDefault();
+//				idspot = spot.idspot;
+//				loadSpott($(e.target).attr('href'));
+//				return false;
+//			});
+//			var div = $('<div></div>')
+//			div.append(link);
+//			$('#spots-perfil-container').append(div);
 		});
 	}).fail(function() {
 		$("#spots-perfil-container").text("NO RESULT");

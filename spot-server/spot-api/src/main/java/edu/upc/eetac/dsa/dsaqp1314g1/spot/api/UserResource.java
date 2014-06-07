@@ -22,7 +22,7 @@ import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.User;
 
-@Path("/user/{username}")
+@Path("/user")
 public class UserResource {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -31,6 +31,7 @@ public class UserResource {
 	private DataSource ds = DataSourceSPA.getInstance().getDataSource();
 	
 	@GET
+	@Path("/{username}")
 	@Produces(MediaType.API_USER)
 	public User getUser(@PathParam("username") String username) {
 		
@@ -99,7 +100,7 @@ public class UserResource {
 	}
 	
 	@GET
-	@Path("/spots")
+	@Path("/{username}/spots")
 	@Produces(MediaType.API_SPOT_COLLECTION)
 	public SpotCollection getSpots(@PathParam("username") String usuario,@QueryParam("length") int length,
 			@QueryParam("before") long before) {
@@ -174,7 +175,7 @@ public class UserResource {
 	}
 	
 	@GET
-	@Path("/search")
+	@Path("/{username}/search")
 	@Produces(MediaType.API_USER)
 	public User SearchUser(@QueryParam("usersearch") String name) {
 

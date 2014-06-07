@@ -71,12 +71,15 @@ function getSpots() {
 
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
+
 					console.log(JSON.stringify(spot));
 					var a = parseFloat(spot.latitud);
 					var b = parseFloat(spot.longitud);
 					var c = spot.longitud +","+spot.latitude;
 					//$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': c, 'bounds': true } );
 					$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': '22.345573,-22.098326', 'bounds': true } );
+					$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': new google.maps.LatLng(spot.latitud, spot.longitud), 'bounds': true } );
+
 					$('<h4> ID: ' + spot.idspot + '</h4>').appendTo($('#repos_result'));				
 					$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#repos_result'));
 					$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#repos_result'));
@@ -184,5 +187,4 @@ $(document).ready(function(){
 	getSpots();
 	$('#map_canvas').gmap({'center': '-34.397, 100.644'}).bind('init', function() { 
 		   $('#map_canvas').gmap('option', 'zoom', 2); });
-	
 });

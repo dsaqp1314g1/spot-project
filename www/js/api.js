@@ -27,6 +27,8 @@ function Spot(spot){
 	this.idspot = spot.idspot;
 	this.title = spot.title;
 	this.deporte = spot.deporte;
+	this.latitud = spot.latitud;
+	this.longitud = spot.longitud;
 	this.ciudad = spot.ciudad;
 	this.links = buildLinks(spot.links);
 	var instance = this;
@@ -162,11 +164,13 @@ function getSpotId(id) {
 	}).done(function(data, status, jqxhr) {
 		
 				var spot =data;
+				$('<img id="uploadedImage" class="img-responsive"><br>').appendTo($('#spot_result'));
+				$('#uploadedImage').attr('src', spot.imageURL);
 				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br><hr>').appendTo($('#spot_result'));
 				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));
-				$('#uploadedImage').attr('src', spot.imageURL);
+				
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;
 						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
@@ -204,7 +208,6 @@ function deleteSting(url, success){
 		console.log(textStatus);
 	});
 }
-
 function showEditForm(id) {
 	$('#comment-form').show();	
 

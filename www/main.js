@@ -7,6 +7,39 @@ var idspot;
 // headers: { 'Authorization': "Basic "+$.base64.btoa(username+':'+password) }
 // });
 
+var centermap = new google.maps.LatLng(-25.363882,131.044922);
+var mapOptions = {
+  zoom: 4,
+  center: centermap
+};
+
+var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
+function initialize(myLatlng, contentString, idspot) {
+	 
+
+	  var infowindow = new google.maps.InfoWindow({
+	      content: contentString
+	  });
+
+	  var marker = new google.maps.Marker({
+	      position: myLatlng,
+	      map: map,
+	  });
+	  google.maps.event.addListener(marker, 'click', function() {
+		  getSpotId(idspot);
+		  });
+	  
+	  google.maps.event.addListener(marker, 'mouseover', function() {
+	    infowindow.open(map,marker);
+	  });
+	  google.maps.event.addListener(marker, 'mouseout', function() {
+		    infowindow.close(map,marker);
+		  });
+	  marker.setMap(map);
+}
+
+
 
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();
@@ -75,21 +108,13 @@ function getSpots() {
 
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
-					$('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': new google.maps.LatLng(spot.latitud, spot.longitud), 'bounds': true } );
-					$('<h4> ID: ' + spot.idspot + '</h4>').appendTo($('#repos_result'));				
-					$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#repos_result'));
-					$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#repos_result'));
-					$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#repos_result'));
-					var link = $('<a id="sting-link" href="'+spot.getLinks("abrir-spot").href+'">'+"Spot detail" +'</a>');
-					link.click(function(e){
-						e.preventDefault();
-						idspot = spot.idspot;
-						loadSpot($(e.target).attr('href'));
-						return false;
-					});
-					var div = $('<div></div>')
-					div.append(link);
-					$('#repos_result').append(div);
+					var idmarker = spot.idspot;
+					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
+					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
+					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
+					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
+					initialize(myLatlng, contentString, idmarker);
 				});												
 
 	}).fail(function() {
@@ -217,6 +242,4 @@ $(document).ready(function(){
 // }); var mapOptions = {
 	// this works! (lat, lng are global variables read from localStorage
 	getSpots();
-	$('#map_canvas').gmap({'center': '-34.397, 100.644'}).bind('init', function() { 
-		   $('#map_canvas').gmap('option', 'zoom', 2); });
 });

@@ -24,8 +24,7 @@ function login(user){
 		crossDomain : true,
 		dataType : 'application/vnd.spot.api.user+json',
 		data: user
-	})
-	.done(function (data, status, jqxhr) {
+		}).done(function (data, status, jqxhr) {
 		console.log("Reciviendo respuesta");
 		var user = $.parseJSON(jqxhr.responseText);
 	})

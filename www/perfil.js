@@ -91,7 +91,6 @@ $('#comment-cancel').click(function(e) {
 	e.preventDefault();					
 	$("#edit-comment").val('');
 });
-
 $("#closing").click(function() {
 	$("#exam-error").hide();
 });
@@ -120,7 +119,7 @@ function getUser() {
 					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
 					link.click(function(e){
 						e.preventDefault();
-						loadSpot($(e.target).attr('href'));
+						loadSpots($(e.target).attr('href'));
 						return false;
 					});
 					var div = $('<div></div>')
@@ -135,7 +134,7 @@ function getUser() {
 	});
 }
 
-function loadSpot(url){	
+function loadSpots(url){	
 	getSpot(url, function(user){ 
 		getSpotByUser(user.username);
 	});
@@ -204,7 +203,7 @@ function getUserParam(user) {
 					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
 					link.click(function(e){
 						e.preventDefault();
-						loadSpot($(e.target).attr('href'));
+						loadSpots($(e.target).attr('href'));
 						return false;
 					});
 					var div = $('<div></div>')
@@ -223,23 +222,4 @@ function loadSpott(url){
 	getSpot(url, function(spot){
 		getSpotId(spot.idspot);
 	});
-}
-function showEditForm(id) {
-	$('#comment-form').show();
-	$('#edit-ok').click(
-			function(e) {
-				if ($('#edit-comment').val() === '') {
-					$('#exam-error').show();
-				} else {
-					e.preventDefault();
-					var comment = new Object();
-					
-					// CANVIAR PER AGAFAR L'USUARI QUE TOQUI!!!
-					comment.usuario = 'albert';
-					comment.comentario = $('#edit-comment').val();
-					// AGAFAR LA DATAAA!!!
-					// comment.data = 
-					createComentario(id, JSON.stringify(comment));										
-				}
-			});
 }

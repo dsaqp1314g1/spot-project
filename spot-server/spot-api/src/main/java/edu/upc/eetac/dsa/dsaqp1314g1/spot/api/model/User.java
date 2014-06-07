@@ -1,5 +1,6 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.Link;
@@ -22,6 +23,9 @@ public class User {
 	private String email;
 	private SpotCollection spotcollection;
 	
+	public User () {
+		super();
+	}
 	public SpotCollection getSpotcollection() {
 		return spotcollection;
 	}

@@ -148,7 +148,7 @@ function getSpots() {
 
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
-<<<<<<< HEAD
+
 					console.log(JSON.stringify(spot));
 					var a = parseFloat(spot.latitud);
 					var b = parseFloat(spot.longitud);
@@ -171,8 +171,7 @@ function getSpots() {
 					var div = $('<div></div>')
 					div.append(link);
 					$('#repos_result').append(div);
-=======
->>>>>>> refs/remotes/origin/master
+
 					var idmarker = spot.idspot;
 					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
 					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
@@ -271,10 +270,6 @@ $(document).ready(function(){
 // }); var mapOptions = {
 	// this works! (lat, lng are global variables read from localStorage
 	getSpots();
-<<<<<<< HEAD
 	$('#map_canvas').gmap({'center': '-34.397, 100.644'}).bind('init', function() { 
 		   $('#map_canvas').gmap('option', 'zoom', 2); });
-=======
-
->>>>>>> refs/remotes/origin/master
 });

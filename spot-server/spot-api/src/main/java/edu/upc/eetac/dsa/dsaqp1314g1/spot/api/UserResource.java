@@ -62,7 +62,6 @@ public class UserResource {
 			ResultSet rs = stmt.executeQuery();
 			
 			if(rs.next()) {
-				
 			   
 				userlog.setUsername(rs.getString("username"));
 				System.out.println("NombreUsuario: " + userlog.getUsername());
@@ -74,7 +73,6 @@ public class UserResource {
 		} 
 		catch (SQLException e)
 		{
-			
 			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
 		} 
 		finally 
@@ -92,7 +90,6 @@ public class UserResource {
 		}
 		System.out.println("Fin del loging, devolviendo datos del usuario");
 		return userlog;
-		
 	}
 	
 	private String bulidLoginUserQuery()

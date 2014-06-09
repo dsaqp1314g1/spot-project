@@ -161,5 +161,20 @@ $(document).ready(function(){
 // getTasks();
 // }); var mapOptions = {
 	// this works! (lat, lng are global variables read from localStorage
+	
+	
+	
+	//comprovacion de la cookie
+//	var user = new User(JSON.parse($.cookie('user')));
+//		  if(user.username!="") {
+//			  console.log("Usuario autentificado");
+//			  getSpots();
+//		  }
+//		  else{
+//			  console.log("Usuario no autentificado");
+//			  location.href = "C:/Users/Developer/git/spot-project/www/auth.html";
+//			  }
 	getSpots();
+	
+	
 });

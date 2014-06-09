@@ -26,9 +26,13 @@
       <li><a href="http://localhost/index.html">Home</a></li>
       <li class="active"><a href="http://localhost/perfil.html">Perfil</a></li>      
     </ul>
-    <form class="navbar-form navbar-left" role="form">  			
-			<input type="text" class="form-control"  placeholder="Enter user name.." id="buscar_campo"  required="required">			
-			<button type="submit" id="buscar-amigo" class="btn btn-default">Buscar</button>				
+    <form class="navbar-form navbar-left"> 
+		<form class="form-horizontal col-md-4" role="form" >	
+			<div class="form-group">	
+				<input name="amigow" type="text" id="buscar_campo" class="form-control"  placeholder="Enter user name.." required="required">			
+			</div>
+			<button class="btn btn-default"  id="buscar-amigo" type="submit">Buscar</button>				
+	</form>
 	</form>
    <p class="navbar-text navbar-right">SPOTGRAM </p> 
   
@@ -109,6 +113,7 @@
 		<script src="./js/linkheaders.js"></script>
 		<!-- jQuery Base64 plugin -->
 		<script src="./js/jquery.base64.js"></script>
+		<script src="./js/jquery.cookie.js"></script>		
 		<!-- Latest compiled and minified CSS -->
       <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 

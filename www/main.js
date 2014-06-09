@@ -7,7 +7,7 @@ var idspot;
 // $.ajaxSetup({
 // headers: { 'Authorization': "Basic "+$.base64.btoa(username+':'+password) }
 // });
-
+var markers = [];
 var centermap = new google.maps.LatLng(41.3850639,2.17340349);
 var mapOptions = {
   minZoom: 2, 
@@ -37,11 +37,12 @@ function initialize(myLatlng, contentString, idspot) {
 	  var infowindow = new google.maps.InfoWindow({
 	      content: contentString
 	  });
-
+	  
 	  var marker = new google.maps.Marker({
 	      position: myLatlng,
 	      map: map,
 	  });
+	  markers.push(marker);
 	  google.maps.event.addListener(marker, 'click', function() {
 		  getSpotId(idspot);
 		  //map.setZoom(8);
@@ -84,7 +85,36 @@ function initialize(myLatlng, contentString, idspot) {
 //	   });
 }
 
+//function addMarker(location) {
+//	  var marker = new google.maps.Marker({
+//	      position: location,
+//	      map: map,
+//	  });
+//	  markers.push(marker);
+//}
 
+//Sets the map on all markers in the array.
+function setAllMap(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+  setAllMap(null);
+}
+
+// Shows any markers currently in the array.
+function showMarkers() {
+  setAllMap(map);
+}
+
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}
 
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();
@@ -95,6 +125,7 @@ $("#button-list-spots").click(function(e) {
 	}
 else
 {
+	deleteMarkers();
 	getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
 }
 });
@@ -178,7 +209,6 @@ function getSpotsParam(ciudad, modal) {
 		var url = API_BASE_URL + '/spots/search?ciudad='+ciudad;
 	
 	$("#repos_result").text("");	
-	
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -189,21 +219,23 @@ function getSpotsParam(ciudad, modal) {
 				$('progress').toggle();
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
-					$('<h4> ID: ' + spot.idspot + '</h4>').appendTo($('#repos_result'));				
-					$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#repos_result'));
-					$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#repos_result'));
-					$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#repos_result'));
-					var link = $('<a id="sting-link" href="'+spot.getLinks("abrir-spot").href+'">'+"Spot detail" +'</a>');
-					link.click(function(e){
-						e.preventDefault();
-						loadSpot($(e.target).attr('href'));
-						return false;
+					var idmarker = spot.idspot;
+					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
+					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
+					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
+					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
+					initialize(myLatlng, contentString, idmarker);
+					
 					});
-					var div = $('<div></div>')
-					div.append(link);
-					$('#repos_result').append(div);
-				});
 				
+					var idmarker = spot.idspot;
+					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
+					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
+					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
+					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
+					initialize(myLatlng, contentString, idmarker);								
 
 	}).fail(function() {
 		$('progress').toggle();
@@ -246,5 +278,4 @@ $(document).ready(function(){
 // }); var mapOptions = {
 	// this works! (lat, lng are global variables read from localStorage
 	getSpots();
-
 });

@@ -4,17 +4,10 @@ var API_BASE = "http://localhost:8181";
 $("#button-auth").click(function(e) {
 	e.preventDefault();
 	console.log("Comienza el log");
-	if ($('#nombre-auth').val() === '' || $('#password-auth').val() === '')
-	{
-	$('#exam-error').show();	
-	}
-else
-{
 	var user = new Object();
 	user.username = $('#nombre-auth').val();
 	user.userpass = $('#password-auth').val();
 	login(JSON.stringify(user));	
-}
 });
 
 function login(user){

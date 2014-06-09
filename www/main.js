@@ -227,22 +227,16 @@ function getSpotsParam(ciudad, modal) {
 					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
 					initialize(myLatlng, contentString, idmarker);
 					
-					
-//					$('<h4> ID: ' + spot.idspot + '</h4>').appendTo($('#repos_result'));				
-//					$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#repos_result'));
-//					$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#repos_result'));
-//					$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#repos_result'));
-//					var link = $('<a id="sting-link" href="'+spot.getLinks("abrir-spot").href+'">'+"Spot detail" +'</a>');
-//					link.click(function(e){
-//						e.preventDefault();
-//						loadSpot($(e.target).attr('href'));
-//						return false;
-//					});
-//					var div = $('<div></div>')
-//					div.append(link);
-//					$('#repos_result').append(div);
-				});
+					});
 				
+					var idmarker = spot.idspot;
+					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
+					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
+					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
+					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
+					initialize(myLatlng, contentString, idmarker);								
+				});		
 
 	}).fail(function() {
 		$('progress').toggle();

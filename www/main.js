@@ -236,7 +236,6 @@ function getSpotsParam(ciudad, modal) {
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
 					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
 					initialize(myLatlng, contentString, idmarker);								
-				});		
 
 	}).fail(function() {
 		$('progress').toggle();

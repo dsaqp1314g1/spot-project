@@ -32,6 +32,38 @@ function initialize(myLatlng, contentString, idspot) {
 	      content: contentString
 	  });
 
+	  var boxText = document.createElement("div");
+      boxText.style.cssText = "border:2px solid white;"+
+      "margin-top: 6px;"+
+      "background:#333;"+
+      "color:#FFF;"+
+      "font-family:Arial, Helvetica, sans-serif;"+
+      "font-size:16px;"+
+      "padding: .5em 1em;"+
+      "-webkit-border-radius: 2px;"+
+      "-moz-border-radius: 2px;"+
+      "border-radius: 8px;"+
+      "text-shadow:0 -1px #000000;"+
+      "-webkit-box-shadow: 0 0  8px #000;"+
+      "box-shadow: 0 0 8px #000;";
+      boxText.innerHTML = contentString;
+	  
+	  var infobox = new InfoBox({
+	         content: boxText,
+	         disableAutoPan: false,
+	         maxWidth: 150,
+	         pixelOffset: new google.maps.Size(-140, 0),
+	         zIndex: null,
+	         boxStyle: {
+	            background: "url('http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/examples/tipbox.gif') no-repeat",
+	            opacity: 0.85,
+	            width: "200px"
+	        },
+	        closeBoxMargin: "-10000000px -100000000px 0px 0px",
+	        //closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+	        infoBoxClearance: new google.maps.Size(1, 1)
+	    });
+	  
 	  var marker = new google.maps.Marker({
 	      position: myLatlng,
 	      map: map,
@@ -44,38 +76,13 @@ function initialize(myLatlng, contentString, idspot) {
 		  smoothZoom(map, 10, map.getZoom());
 		  });
 	  
-	  google.maps.event.addListener(marker, 'mouseover', function() {
-	    infowindow.open(map,marker);
-	  });
-	  google.maps.event.addListener(marker, 'mouseout', function() {
-		    infowindow.close(map,marker);
+	  	google.maps.event.addListener(marker, 'mouseover', function() {
+		    infobox.open(map, marker);
 		  });
-	  marker.setMap(map);
-//	  var strictBounds = new google.maps.LatLngBounds(
-//			     new google.maps.LatLng(-72.26740896926444, 156.09375), 
-//			     new google.maps.LatLng(72.06166091689721, -149.0625)
-//			   );
-//	   // Listen for the dragend event
-//	   google.maps.event.addListener(map, 'drag', function() {
-//	     if (strictBounds.contains(map.getCenter())) return;
-//
-//	     // We're out of bounds - Move the map back within the bounds
-//
-//	     var c = map.getCenter(),
-//	         x = c.lng(),
-//	         y = c.lat(),
-//	         maxX = strictBounds.getNorthEast().lng(),
-//	         maxY = strictBounds.getNorthEast().lat(),
-//	         minX = strictBounds.getSouthWest().lng(),
-//	         minY = strictBounds.getSouthWest().lat();
-//
-//	     if (x < minX) x = minX;
-//	     if (x > maxX) x = maxX;
-//	     if (y < minY) y = minY;
-//	     if (y > maxY) y = maxY;
-//
-//	     map.setCenter(new google.maps.LatLng(y, x));
-//	   });
+		  google.maps.event.addListener(marker, 'mouseout', function() {
+			    infobox.close(map, marker);
+			  });
+		  marker.setMap(map);
 }
 
 $('#buscar-amigo').click(function(e) {
@@ -115,16 +122,16 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-
-					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
-					link.click(function(e){
-						e.preventDefault();
-						loadSpots($(e.target).attr('href'));
-						return false;
-					});
-					var div = $('<div></div>')
-					div.append(link);
-					$('#perfil_result').append(div);
+					getSpotByUser(user.username);
+//					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
+//					link.click(function(e){
+//						e.preventDefault();
+//						loadSpots($(e.target).attr('href'));
+//						return false;
+//					});
+//					var div = $('<div></div>')
+//					div.append(link);
+//					$('#perfil_result').append(div);
 														
 
 	}).fail(function() {
@@ -157,24 +164,12 @@ function getSpotByUser(username) {
 		$.each(repos.spots, function(i, v) {
 			var spot = new Spot(v);
 			var idmarker = spot.idspot;
-			var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+			var contentString ='<h4> Titulo: ' + spot.title + '</h4>'+ 
 			'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
 			'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 			'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
 			var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
 			initialize(myLatlng, contentString, idmarker);
-//			$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spots-perfil-container'));
-//			$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spots-perfil-container'));
-//			var link = $('<a id="spot-link" href="'+spot.getLinks("abrir-spot").href+'">'+"Spot detail" +'</a>');
-//			link.click(function(e){
-//				e.preventDefault();
-//				idspot = spot.idspot;
-//				loadSpott($(e.target).attr('href'));
-//				return false;
-//			});
-//			var div = $('<div></div>')
-//			div.append(link);
-//			$('#spots-perfil-container').append(div);
 		});
 	}).fail(function() {
 		$("#spots-perfil-container").text("NO RESULT");

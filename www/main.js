@@ -7,6 +7,7 @@ var idspot;
 // $.ajaxSetup({
 // headers: { 'Authorization': "Basic "+$.base64.btoa(username+':'+password) }
 // });
+
 var markers = [];
 var centermap = new google.maps.LatLng(41.3850639,2.17340349);
 var mapOptions = {
@@ -38,6 +39,38 @@ function initialize(myLatlng, contentString, idspot) {
 	      content: contentString
 	  });
 	  
+	  var boxText = document.createElement("div");
+      boxText.style.cssText = "border:2px solid white;"+
+      "margin-top: 6px;"+
+      "background:#333;"+
+      "color:#FFF;"+
+      "font-family:Arial, Helvetica, sans-serif;"+
+      "font-size:16px;"+
+      "padding: .5em 1em;"+
+      "-webkit-border-radius: 2px;"+
+      "-moz-border-radius: 2px;"+
+      "border-radius: 8px;"+
+      "text-shadow:0 -1px #000000;"+
+      "-webkit-box-shadow: 0 0  8px #000;"+
+      "box-shadow: 0 0 8px #000;";
+      boxText.innerHTML = contentString;
+	  
+	  var infobox = new InfoBox({
+	         content: boxText,
+	         disableAutoPan: false,
+	         maxWidth: 150,
+	         pixelOffset: new google.maps.Size(-140, 0),
+	         zIndex: null,
+	         boxStyle: {
+	            background: "url('http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/examples/tipbox.gif') no-repeat",
+	            opacity: 0.85,
+	            width: "200px"
+	        },
+	        closeBoxMargin: "-10000000px -100000000px 0px 0px",
+	        //closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+	        infoBoxClearance: new google.maps.Size(1, 1)
+	    });
+	  
 	  var marker = new google.maps.Marker({
 	      position: myLatlng,
 	      map: map,
@@ -52,10 +85,14 @@ function initialize(myLatlng, contentString, idspot) {
 		  });
 	  
 	  google.maps.event.addListener(marker, 'mouseover', function() {
-	    infowindow.open(map,marker);
+	    infobox.open(map, marker);
+
+	    //infowindow.open(map,marker);
 	  });
 	  google.maps.event.addListener(marker, 'mouseout', function() {
-		    infowindow.close(map,marker);
+		    infobox.close(map, marker);
+
+		    //infowindow.close(map,marker);
 		  });
 	  marker.setMap(map);
 //	  var strictBounds = new google.maps.LatLngBounds(
@@ -180,7 +217,7 @@ function getSpots() {
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
 					var idmarker = spot.idspot;
-					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+					var contentString ='<h4> Titulo: ' + spot.title + '</h4>'+ 
 					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
 					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
@@ -220,28 +257,20 @@ function getSpotsParam(ciudad, modal) {
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
 					var idmarker = spot.idspot;
-					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
+					var contentString ='<h4> Titulo: ' + spot.title + '</h4>'+ 
 					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
 					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
 					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
 					initialize(myLatlng, contentString, idmarker);
-					
-					});
-				
-					var idmarker = spot.idspot;
-					var contentString ='<h4> ID: ' + spot.idspot + '</h4>'+ 
-					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
-					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
-					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
-					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
-					initialize(myLatlng, contentString, idmarker);								
+				});
 
 	}).fail(function() {
 		$('progress').toggle();
 		$("#repos_result").text("NO RESULT");
 	});
 }
+
 function loadSpots(url){
 	$('#spots-container').show();
 	var stings = getStings(url, function (stingCollection){

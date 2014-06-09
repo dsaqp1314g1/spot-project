@@ -32,7 +32,7 @@ function smoothZoom (map, max, cnt) {
     }
 }  
 
-function initialize(myLatlng, contentString, idspot) {
+function initialize(myLatlng, contentString, idspot, image) {
 	 
 
 	  var infowindow = new google.maps.InfoWindow({
@@ -74,6 +74,8 @@ function initialize(myLatlng, contentString, idspot) {
 	  var marker = new google.maps.Marker({
 	      position: myLatlng,
 	      map: map,
+	      icon:image,
+	      animation: google.maps.Animation.DROP
 	  });
 	  markers.push(marker);
 	  google.maps.event.addListener(marker, 'click', function() {
@@ -129,6 +131,24 @@ function initialize(myLatlng, contentString, idspot) {
 //	  });
 //	  markers.push(marker);
 //}
+
+function icnMarker(deporte){
+	var image;
+	if (deporte == 'bmx'){
+		image  = 'icn_marker/bmx.png';
+		return 	image;
+	}
+	
+	else if (deporte == 'skate'){
+		image  = 'icn_marker/rollerskate.png';
+		return 	image;
+	}
+	else if (deporte == 'parkour'){
+		image  = 'icn_marker/parkour.png';
+		return 	image;	
+	}
+
+}
 
 //Sets the map on all markers in the array.
 function setAllMap(map) {
@@ -222,7 +242,7 @@ function getSpots() {
 					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
 					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
-					initialize(myLatlng, contentString, idmarker);
+					initialize(myLatlng, contentString, idmarker, icnMarker(spot.deporte));
 				});												
 
 	}).fail(function() {
@@ -262,7 +282,7 @@ function getSpotsParam(ciudad, modal) {
 					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
 					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
-					initialize(myLatlng, contentString, idmarker);
+					initialize(myLatlng, contentString, idmarker, icnMarker(spot.deporte));
 				});
 
 	}).fail(function() {

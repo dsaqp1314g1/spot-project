@@ -25,7 +25,7 @@ function smoothZoom (map, max, cnt) {
     }
 }  
 
-function initialize(myLatlng, contentString, idspot) {
+function initialize(myLatlng, contentString, idspot, imagen) {
 	 
 
 	  var infowindow = new google.maps.InfoWindow({
@@ -67,6 +67,8 @@ function initialize(myLatlng, contentString, idspot) {
 	  var marker = new google.maps.Marker({
 	      position: myLatlng,
 	      map: map,
+	      icon:imagen,
+	      animation: google.maps.Animation.DROP
 	  });
 	  google.maps.event.addListener(marker, 'click', function() {
 		  getSpotId(idspot);
@@ -83,6 +85,24 @@ function initialize(myLatlng, contentString, idspot) {
 			    infobox.close(map, marker);
 			  });
 		  marker.setMap(map);
+}
+
+function icnMarker(deporte){
+	var image;
+	if (deporte == 'bmx'){
+		image  = 'icn_marker/bmx.png';
+		return 	image;
+	}
+	
+	else if (deporte == 'skate'){
+		image  = 'icn_marker/rollerskate.png';
+		return 	image;
+	}
+	else if (deporte == 'parkour'){
+		image  = 'icn_marker/parkour.png';
+		return 	image;	
+	}
+
 }
 
 $('#buscar-amigo').click(function(e) {
@@ -169,7 +189,7 @@ function getSpotByUser(username) {
 			'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 			'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
 			var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
-			initialize(myLatlng, contentString, idmarker);
+			initialize(myLatlng, contentString, idmarker, icnMarker(spot.deporte));
 		});
 	}).fail(function() {
 		$("#spots-perfil-container").text("NO RESULT");
@@ -195,15 +215,16 @@ function getUserParam(user) {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
-					link.click(function(e){
-						e.preventDefault();
-						loadSpots($(e.target).attr('href'));
-						return false;
-					});
-					var div = $('<div></div>')
-					div.append(link);
-					$('#perfil_result').append(div);
+					getSpotByUser(user.username);
+//					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
+//					link.click(function(e){
+//						e.preventDefault();
+//						loadSpots($(e.target).attr('href'));
+//						return false;
+//					});
+//					var div = $('<div></div>')
+//					div.append(link);
+//					$('#perfil_result').append(div);
 														
 
 	}).fail(function() {

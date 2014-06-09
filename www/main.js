@@ -17,7 +17,10 @@ $("#button-list-spots").click(function(e) {
 	}
 else
 {
+	//eliminar los markers paramostrar los nuevos
 	deleteMarkers();
+	//centra el mapa en la ciudad buscada como parametro
+	codeAddress();
 	getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
 }
 });

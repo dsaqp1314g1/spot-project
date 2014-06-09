@@ -1,4 +1,4 @@
-
+var geocoder;
 var markers = [];
 var centermap = new google.maps.LatLng(41.3850639,2.17340349);
 var mapOptions = {
@@ -25,7 +25,7 @@ function smoothZoom (map, max, cnt) {
 
 function initialize(myLatlng, contentString, idspot, image) {
 	 
-
+	  geocoder = new google.maps.Geocoder();
 	  var infowindow = new google.maps.InfoWindow({
 	      content: contentString
 	  });
@@ -124,6 +124,17 @@ function initialize(myLatlng, contentString, idspot, image) {
 //	  });
 //	  markers.push(marker);
 //}
+
+function codeAddress() {
+    var address = document.getElementById("buscar_ciud").value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
 
 function icnMarker(deporte){
 	var image;

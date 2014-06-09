@@ -19,9 +19,11 @@ function login(user){
 		contentType: 'application/vnd.spot.api.user+json',
 		data: user
 		}).done(function (data, status, jqxhr) {
+		var usuario = new User(data);
+		$.cookie('user', JSON.stringify(usuario), { expires: 1 });//guardamos el valor del nombre del usuario en la cooki y ponemos un tiempo de espiracion de un dia
 		console.log("Reciviendo respuesta");
 		var user = $.parseJSON(jqxhr.responseText);
-		open(API_BASE + "/www/index.html");
+		location.href = "C:/Users/Developer/git/spot-project/www/index.html";
 	})
     .fail(function (jqXHR, textStatus) {
     	console.log("Fallo: ");

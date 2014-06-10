@@ -12,37 +12,34 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotCollection;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAPI;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAndroidException;
-import edu.upc.eetac.dsa.egalmes.beeter.android.api.*;
 
 public class SpotSearchActivity extends ListActivity {
 
-	private class FetchStingsTask extends
+	private class FetchSpotsTask extends
 			AsyncTask<Void, Void, SpotCollection> {
 		private ProgressDialog pd;
 
 		@Override
 		protected SpotCollection doInBackground(Void... params) {
-			SpotCollection stings = null;
+			SpotCollection Spots = null;
 			try {
-				stings = BeeterAPI.getInstance(SpotSearchActivity.this)
-						.getStings();
+				Spots = SpotgramAPI.getInstance(SpotSearchActivity.this)
+						.getSpots();
 			} catch (SpotgramAndroidException e) {
 				e.printStackTrace();
 			}
-			return stings;
+			return Spots;
 		}
 
 		@Override
 		protected void onPostExecute(SpotCollection result) {
-			addStings(result);
+			addSpots(result);
 			if (pd != null) {
 				pd.dismiss();
 			}
@@ -58,11 +55,11 @@ public class SpotSearchActivity extends ListActivity {
 		}
 
 	}
-	private void addStings(SpotCollection stings){
-		stingList.addAll(stings.getSpots());
+	private void addSpots(SpotCollection Spots){
+		SpotList.addAll(Spots.getSpots());
 		adapter.notifyDataSetChanged();
 	}
-	private ArrayList<Spot> stingList;
+	private ArrayList<Spot> SpotList;
 	private SpotAdapter adapter;
 
 	private final static String TAG = SpotSearchActivity.class.toString();
@@ -84,42 +81,23 @@ public class SpotSearchActivity extends ListActivity {
 		});
 		Log.d(TAG, "authenticated with " + username + ":" + password);
 	 
-		stingList = new ArrayList<>();
-		adapter = new SpotAdapter(this, stingList);
+		SpotList = new ArrayList<>();
+		adapter = new SpotAdapter(this, SpotList);
 		setListAdapter(adapter);
-		(new FetchStingsTask()).execute();
+		(new FetchSpotsTask()).execute();
 	}
 	
 
 	@Override
 	// detecta click en la pantalla
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Sting sting = stingList.get(position);
-		Log.d(TAG, sting.getLinks().get("self").getTarget());
+		Spot Spot = SpotList.get(position);
+		Log.d(TAG, Spot.getLinks().get("self").getTarget());
 
 		Intent intent = new Intent(this, SpotDetailActivity.class);
-		intent.putExtra("url", sting.getLinks().get("self").getTarget());
+		intent.putExtra("url", Spot.getLinks().get("self").getTarget());
 		startActivity(intent);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.beeter_actions, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.miWrite:
-			Intent intent = new Intent(this, WriteStingActivity.class);
-			startActivity(intent);
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-
-	}
 
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Spot {
 	private Map<String, Link> links = new HashMap<>();
-	private int idspot;
+	private String idspot;
 	private String title;
 	private double latitud;
 	private double longitud;
@@ -53,10 +53,10 @@ public class Spot {
 		comentario.add(review);
 	}
 	
-	public int getIdspot() {
+	public String getIdspot() {
 		return idspot;
 	}
-	public void setIdspot(int idspot) {
+	public void setIdspot(String idspot) {
 		this.idspot = idspot;
 	}
 	public double getLatitud() {

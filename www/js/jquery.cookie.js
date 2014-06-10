@@ -1,96 +1,62 @@
-/*!
- * jQuery Cookie Plugin v1.3.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2013 Klaus Hartl
- * Released under the MIT license
- */
-(function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as anonymous module.
-		define(['jquery'], factory);
-	} else {
-		// Browser globals.
-		factory(jQuery);
-	}
-}(function ($) {
+/*
+----------------------------------------------------------------------
+Fichero.....: cookie.js
+Fecha.......: 22-Sep-2003
+Descripción.: Funciones para el uso de cookies.
+              Curso de Javascript - Víctor Rivas Santos
+              http://geneura.ugr.es/~victor
+----------------------------------------------------------------------
+*/
 
-	var pluses = /\+/g;
+// Esta es la función que usa Heinle para recuperar una cookie
+// name - nombre de la cookie deseada
+// devuelve un string conteniendo el valor de la cookie especificada o null si la cookie no existe
 
-	function decode(s) {
-		if (config.raw) {
-			return s;
-		}
-		return decodeURIComponent(s.replace(pluses, ' '));
-	}
+function getCookie(name){
+  var cname = name + "=";               
+  var dc = document.cookie;             
+  if (dc.length > 0) {              
+    begin = dc.indexOf(cname);       
+    if (begin != -1) {           
+      begin += cname.length;       
+      end = dc.indexOf(";", begin);
+      if (end == -1) end = dc.length;
+        return unescape(dc.substring(begin, end));
+    } 
+  }
+  return null;
+}
 
-	function decodeAndParse(s) {
-		if (s.indexOf('"') === 0) {
-			// This is a quoted cookie as according to RFC2068, unescape...
-			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-		}
 
-		s = decode(s);
+// Esta es una adaptación de la función de Dorcht para establecer una cookie
+// name - nombre de la cookie
+// value - valor de la cookie
+// [expires] - fecha de caducidad de la cookie (por defecto, el final de la sesi?n)
+// [path] - camino para el cual la cookie es válida (por defecto, el camino del documento que hace la llamada)
+// [domain] - dominio para el cual la cookie es válida (por defecto, el dominio del documento que hace la llamada)
+// [secure] - valor booleano que indica si la trasnmisión de la cookie requiere una transmisión segura
+// al especificar el valor null, el argumento tomará su valor por defecto
 
-		try {
-			return config.json ? JSON.parse(s) : s;
-		} catch(e) {}
-	}
+function setCookie(name, value, expires, path, domain, secure) {
+  document.cookie = name + "=" + escape(value) + 
+  ((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
+  ((path == null) ? "" : "; path=" + path) +
+  ((domain == null) ? "" : "; domain=" + domain) +
+  ((secure == null) ? "" : "; secure");
+}
 
-	var config = $.cookie = function (key, value, options) {
 
-		// Write
-		if (value !== undefined) {
-			options = $.extend({}, config.defaults, options);
+// Esta es una adaptación de la función de Dorcht para borrar una cookie
+// name - nombre de la cookie
+// [path] - camino de la cookie (debe ser el mismo camino que el especificado al crear la cookie)
+// [domain] - dominio de la cookie (debe ser el mismo dominio que el especificado al crear la cookie)
+// se considera el camino y dominio por defecto si se especifica null o no se proporcionan argumentos
 
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setDate(t.getDate() + days);
-			}
-
-			value = config.json ? JSON.stringify(value) : String(value);
-
-			return (document.cookie = [
-				config.raw ? key : encodeURIComponent(key),
-				'=',
-				config.raw ? value : encodeURIComponent(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
-		}
-
-		// Read
-		var cookies = document.cookie.split('; ');
-		var result = key ? undefined : {};
-		for (var i = 0, l = cookies.length; i < l; i++) {
-			var parts = cookies[i].split('=');
-			var name = decode(parts.shift());
-			var cookie = parts.join('=');
-
-			if (key && key === name) {
-				result = decodeAndParse(cookie);
-				break;
-			}
-
-			if (!key) {
-				result[name] = decodeAndParse(cookie);
-			}
-		}
-
-		return result;
-	};
-
-	config.defaults = {};
-
-	$.removeCookie = function (key, options) {
-		if ($.cookie(key) !== undefined) {
-			// Must not alter options, thus extending a fresh object...
-			$.cookie(key, '', $.extend({}, options, { expires: -1 }));
-			return true;
-		}
-		return false;
-	};
-
-}));
+function delCookie (name,path,domain) {
+  if (getCookie(name)) {
+    document.cookie = name + "=" +
+    ((path == null) ? "" : "; path=" + path) +
+    ((domain == null) ? "" : "; domain=" + domain) +
+    "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+  }
+}

@@ -1,5 +1,4 @@
 var BEETER_API_HOME="http://localhost:8181/spot-api";
-var USUARIO="juan";
 
 function Link(rel, linkheader){
 	this.rel = rel;

@@ -1,15 +1,5 @@
 var API_BASE_URL="http://localhost:8181/spot-api";
 var stingsURL;
-var username="albert";
-var USER="juan";
-var idspot;
-// var password = 'albert';
-// $.ajaxSetup({
-// headers: { 'Authorization': "Basic "+$.base64.btoa(username+':'+password) }
-// });
-
-
-
 
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();

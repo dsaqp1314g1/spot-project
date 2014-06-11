@@ -165,18 +165,17 @@ $(document).ready(function(){
 // }); var mapOptions = {
 	// this works! (lat, lng are global variables read from localStorage
 	
-	getSpots();
+	//getSpots();
 	
 	//comprovacion de la cookie
-//		  if(getCookie("username")=== null) {
-//			  console.log("Usuario no autentificado");
-//			  location.href = "C:/Users/Developer/git/spot-project/www/auth.html";
-//			 
-//		  }
-//		  else{
-//			  console.log("Usuario autentificado");
-//			  getSpots();
-//			  }
+		  if($.cookie('username')) {
+			  console.log("Usuario autentificado");
+			  getSpots();
+		  }
+		  else{
+			  console.log("Usuario no autentificado");
+			  location.href = "C:/Users/Developer/git/spot-project/www/auth.html";
+		  }
 	
 	
 });

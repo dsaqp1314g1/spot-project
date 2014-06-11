@@ -10,6 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/spotimagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
  
     <TextView
         android:id="@+id/tvDetailContent"

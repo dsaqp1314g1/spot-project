@@ -1,6 +1,7 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.android;
 
-import java.text.SimpleDateFormat;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAPI;
@@ -9,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
  
 public class SpotDetailActivity extends Activity {
@@ -18,8 +20,14 @@ public class SpotDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sting_detail_layout);
-		String urlSpot = (String) getIntent().getExtras().get("url");
-		(new FetchSpotTask()).execute(urlSpot);
+		URL url = null;
+		try {
+			url = new URL((String) getIntent().getExtras().get("url"));
+		} catch (MalformedURLException e) {
+		}
+		(new FetchSpotTask()).execute(url);
+//		String urlSpot = (String) getIntent().getExtras().get("url");
+//		(new FetchSpotTask()).execute(urlSpot);
 	}
 	//metodo privado a partir del Spot recuèrado del servicio damos valores a las etiketas qe hemos dado
 	private void loadSpot(Spot Spot) {
@@ -27,21 +35,22 @@ public class SpotDetailActivity extends Activity {
 		TextView tvDetailContent = (TextView) findViewById(R.id.tvDetailContent);
 		TextView tvDetailUsername = (TextView) findViewById(R.id.tvDetailUsername);
 		TextView tvDetailDate = (TextView) findViewById(R.id.tvDetailDate);
-	 
+		ImageView imagespot = (ImageView) findViewById(R.id.spotimagen);
 		tvDetailSubject.setText(Spot.getTitle());
 		tvDetailContent.setText(Spot.getCiudad());
 		tvDetailUsername.setText(Spot.getUsuario());
 		tvDetailDate.setText(Spot.getDeporte());
+		//imagespot.setBackground(Spot.getImageURL());
 	}
 	//Clase anidada fetchSpottasktarea en background va a beeterapi, obtiene instancia i llama get Spot pasando la url que hemos recperado del recurso
 	//decalramos esas strin task , tipo de parametros del background 
 	
 	
-	private class FetchSpotTask extends AsyncTask<String, Void, Spot> {
+	private class FetchSpotTask extends AsyncTask<URL, Void, Spot> {
 		private ProgressDialog pd;
 	 
 		@Override
-		protected Spot doInBackground(String... params) {
+		protected Spot doInBackground(URL... params) {
 			Spot Spot = null;
 			try {
 				Spot = SpotgramAPI.getInstance(SpotDetailActivity.this)

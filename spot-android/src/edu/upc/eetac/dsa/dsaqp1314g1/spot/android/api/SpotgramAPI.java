@@ -39,7 +39,7 @@ public class SpotgramAPI {
 		String serverAddress = config.getProperty("server.address");//obtiene los valores de es fichero
 		String serverPort = config.getProperty("server.port");
 		url = new URL("http://" + serverAddress + ":" + serverPort
-				+ "/beeter-api"); //se qeda cn la base url esta si utilizamos hateoas nunca cambia
+				+ "/spot-api"); //se qeda cn la base url esta si utilizamos hateoas nunca cambia
  
 		Log.d("LINKS", url.toString());
 		getRootAPI();
@@ -57,7 +57,7 @@ public class SpotgramAPI {
 		return instance;
 	}
  
-	private void getRootAPI() throws SpotgramAndroidException { //rea un modelo y ataka al servicio
+	private void getRootAPI() throws SpotgramAndroidException { 
 		Log.d(TAG, "getRootAPI()");
 		rootAPI = new SpotgramRootAPI();
 		HttpURLConnection urlConnection = null;
@@ -68,7 +68,7 @@ public class SpotgramAPI {
 			urlConnection.connect();
 		} catch (IOException e) {
 			throw new SpotgramAndroidException(
-					"Can't connect to Beeter API Web Service");
+					"Can't connect to SPOT API Web Service");
 		}
  
 		BufferedReader reader;
@@ -86,9 +86,9 @@ public class SpotgramAPI {
 			parseLinks(jsonLinks, rootAPI.getLinks());//lo proceso con el metodo priado de esta clase y lo guardas en el modelo rootAPI
 		} catch (IOException e) {
 			throw new SpotgramAndroidException(
-					"Can't get response from Beeter API Web Service");
+					"Can't get response from SPOT API Web Service");
 		} catch (JSONException e) {
-			throw new SpotgramAndroidException("Error parsing Beeter Root API");
+			throw new SpotgramAndroidException("Error parsing SPOT Root API");
 		}
  
 	}
@@ -100,13 +100,13 @@ public class SpotgramAPI {
 		HttpURLConnection urlConnection = null;
 		try {
 			urlConnection = (HttpURLConnection) new URL(rootAPI.getLinks()
-					.get("Spots").getTarget()).openConnection();
+					.get("spots").getTarget()).openConnection();
 			urlConnection.setRequestMethod("GET");
 			urlConnection.setDoInput(true);
 			urlConnection.connect();
 		} catch (IOException e) {
 			throw new SpotgramAndroidException(
-					"Can't connect to Beeter API Web Service");
+					"Can't connect to SPOT API Web Service");
 		}
  
 		BufferedReader reader;
@@ -123,13 +123,13 @@ public class SpotgramAPI {
 			JSONArray jsonLinks = jsonObject.getJSONArray("links");//atributoss
 			parseLinks(jsonLinks, Spots.getLinks());
  
-			JSONArray jsonSpots = jsonObject.getJSONArray("Spots");
+			JSONArray jsonSpots = jsonObject.getJSONArray("spots");
 			for (int i = 0; i < jsonSpots.length(); i++) {
 				Spot Spot = new Spot();//creo un Spot
 				JSONObject jsonSpot = jsonSpots.getJSONObject(i);// le doy valor a traves del array y lo añado a la coleccion qe es lo qe lo devuelves
 				Spot.setUsuario(jsonSpot.getString("usuario"));
 				Spot.setIdspot(jsonSpot.getString("idspot"));//se van añadiendo
-				Spot.setTitle(jsonSpot.getString("titulo"));
+				Spot.setTitle(jsonSpot.getString("title"));
 				Spot.setDeporte(jsonSpot.getString("deporte"));
 				Spot.setCiudad(jsonSpot.getString("ciudad"));
 				jsonLinks = jsonSpot.getJSONArray("links");
@@ -138,9 +138,9 @@ public class SpotgramAPI {
 			}
 		} catch (IOException e) {
 			throw new SpotgramAndroidException(
-					"Can't get response from Beeter API Web Service");
+					"Can't get response from Spot API Web Service");
 		} catch (JSONException e) {
-			throw new SpotgramAndroidException("Error parsing Beeter Root API");
+			throw new SpotgramAndroidException("Error parsing Spot Root API");
 		}
  
 		return Spots;
@@ -151,7 +151,6 @@ public class SpotgramAPI {
 		for (int i = 0; i < jsonLinks.length(); i++) {
 			Link link = SimpleLinkHeaderParser
 					.parseLink(jsonLinks.getString(i));
-			//REL PODIA ser multiple rel=" home boomark self" -> 3 enlaces qe obtienes a traves del mapa
 			String rel = link.getParameters().get("rel");//tb podria obteet el title i el target(?) pRA QITARME LOS ESPACIOS BLANCOS DE ENCIAM
 			String rels[] = rel.split("\\s");
 			for (String s : rels)
@@ -159,13 +158,13 @@ public class SpotgramAPI {
 		}
 	}
 	
-	public Spot getSpot(String urlSpot) throws SpotgramAndroidException {
+	public Spot getSpot(URL urlSpot) throws SpotgramAndroidException {
 		Spot Spot = new Spot();
 	 
 		HttpURLConnection urlConnection = null;
 		try {
-			URL url = new URL(urlSpot);
-			urlConnection = (HttpURLConnection) url.openConnection();
+			//URL url = new URL(urlSpot);
+			urlConnection = (HttpURLConnection) urlSpot.openConnection();
 			urlConnection.setRequestMethod("GET");
 			urlConnection.setDoInput(true);
 			urlConnection.connect();
@@ -179,7 +178,7 @@ public class SpotgramAPI {
 			JSONObject jsonSpot = new JSONObject(sb.toString()); //revuperado json, i procesado json
 			Spot.setUsuario(jsonSpot.getString("usuario"));
 			Spot.setIdspot(jsonSpot.getString("idspot"));
-			Spot.setTitle(jsonSpot.getString("titulo"));
+			Spot.setTitle(jsonSpot.getString("title"));
 			Spot.setCiudad(jsonSpot.getString("ciudad"));
 			Spot.setDeporte(jsonSpot.getString("deporte"));
 			JSONArray jsonLinks = jsonSpot.getJSONArray("links");
@@ -197,10 +196,10 @@ public class SpotgramAPI {
 	 
 		return Spot;
 	}
-	public Spot createSpot(String deporte, String titulo) throws SpotgramAndroidException {
+	public Spot createSpot(String deporte, String title) throws SpotgramAndroidException {
 		Spot Spot = new Spot();
 		Spot.setDeporte(deporte);
-		Spot.setTitle(titulo);
+		Spot.setTitle(title);
 		HttpURLConnection urlConnection = null;
 		try {
 			JSONObject jsonSpot = createJsonSpot(Spot);
@@ -229,10 +228,10 @@ public class SpotgramAPI {
 			jsonSpot = new JSONObject(sb.toString());
 	 
 			Spot.setUsuario(jsonSpot.getString("usuario"));
-			Spot.setIdspot(jsonSpot.getString("id"));
+			Spot.setIdspot(jsonSpot.getString("idspot"));
 			Spot.setDeporte(jsonSpot.getString("deporte"));
 			Spot.setCiudad(jsonSpot.getString("ciudad"));
-			Spot.setTitle(jsonSpot.getString("titulo"));
+			Spot.setTitle(jsonSpot.getString("title"));
 			JSONArray jsonLinks = jsonSpot.getJSONArray("links");
 			parseLinks(jsonLinks, Spot.getLinks());
 		} catch (JSONException e) {
@@ -256,7 +255,7 @@ public class SpotgramAPI {
 	//post obtenemos  do input leemos, doutpu envamios, createSpotjson, atraves de el metodo pivado, se crea json object i se van colocando valores 
 	private JSONObject createJsonSpot(Spot Spot) throws JSONException {
 		JSONObject jsonSpot = new JSONObject();
-		jsonSpot.put("titulo", Spot.getTitle());
+		jsonSpot.put("title", Spot.getTitle());
 		jsonSpot.put("deporte", Spot.getDeporte());
 	 
 		return jsonSpot;

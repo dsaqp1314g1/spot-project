@@ -1,14 +1,19 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.android;
 
+import java.io.IOException;
 import java.net.Authenticator;
+import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +25,8 @@ import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAPI;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAndroidException;
 
 public class SpotSearchActivity extends ListActivity {
-
+	String serverAddress;
+	String serverPort;
 	private class FetchSpotsTask extends
 			AsyncTask<Void, Void, SpotCollection> {
 		private ProgressDialog pd;
@@ -80,7 +86,18 @@ public class SpotSearchActivity extends ListActivity {
 			}
 		});
 		Log.d(TAG, "authenticated with " + username + ":" + password);
-	 
+		AssetManager assetManager = getAssets();
+    	Properties config = new Properties();
+    	try {
+    		config.load(assetManager.open("config.properties"));
+    		serverAddress = config.getProperty("server.address");
+    		serverPort = config.getProperty("server.port");
+     
+    		Log.d(TAG, "Configured server " + serverAddress + ":" + serverPort);
+    	} catch (IOException e) {
+    		Log.e(TAG, e.getMessage(), e);
+    		finish();
+    	}
 		SpotList = new ArrayList<>();
 		adapter = new SpotAdapter(this, SpotList);
 		setListAdapter(adapter);
@@ -91,12 +108,28 @@ public class SpotSearchActivity extends ListActivity {
 	@Override
 	// detecta click en la pantalla
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Spot Spot = SpotList.get(position);
-		Log.d(TAG, Spot.getLinks().get("self").getTarget());
-
-		Intent intent = new Intent(this, SpotDetailActivity.class);
-		intent.putExtra("url", Spot.getLinks().get("self").getTarget());
-		startActivity(intent);
+		
+		position = position+1;
+    	// HATEOAS version
+    	URL url = null;
+    	try {
+    		url = new URL("http://" + serverAddress + ":" + serverPort
+    				+ "/spot-api/spots/" + position);
+    	} catch (MalformedURLException e) {
+    		return;
+    	}
+    	Intent intent = new Intent(this, SpotDetailActivity.class);
+    	intent.putExtra("url", url.toString());
+    	startActivity(intent);
+//    	
+//    	VERSION CON HATEOAS
+//    	
+//		Spot Spot = SpotList.get(position);
+//		Log.d(TAG, Spot.getLinks().get("abrir-spot").getTarget());
+//
+//		Intent intent = new Intent(this, SpotDetailActivity.class);
+//		intent.putExtra("url", Spot.getLinks().get("abrir-spot").getTarget());
+//		startActivity(intent);
 	}
 
 

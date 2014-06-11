@@ -40,6 +40,7 @@ function Spot(spot){
 function User(user){
 	this.username = user.username;
 	this.name = user.name;
+	this.userpass = user.userpass;
 	this.email = user.email;
 	this.links = buildLinks(user.links);
 	this.getLinks = function(rel){

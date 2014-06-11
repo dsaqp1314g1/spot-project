@@ -1,24 +1,13 @@
-package edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model;
+package edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.ws.rs.core.Link;
-
-import org.glassfish.jersey.linking.Binding;
-import org.glassfish.jersey.linking.InjectLink;
-import org.glassfish.jersey.linking.InjectLinks;
-import org.glassfish.jersey.linking.InjectLink.Style;
-
-import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.MediaType;
-import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.SpotResource;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Spot {
-
-	@InjectLinks({
-		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "abrir-spot", title = "abrir-spot", method = "getSpot", bindings = @Binding(name = "idspot", value = "${instance.idspot}"), type = MediaType.API_SPOT)})
-	private List<Link> links;
-	private int idspot;
+	private Map<String, Link> links = new HashMap<>();
+	private String idspot;
 	private String title;
 	private double latitud;
 	private double longitud;
@@ -30,14 +19,7 @@ public class Spot {
 	private String imageURL;
 	private List<Comentario> comentario;
 	
-	public List<Link> getLinks() {
-		return links;
-	}
-
-	public void setLinks(List<Link> links) {
-		this.links = links;
-	}
-
+	
 	public String getTitle() {
 		return title;
 	}
@@ -71,10 +53,10 @@ public class Spot {
 		comentario.add(review);
 	}
 	
-	public int getIdspot() {
+	public String getIdspot() {
 		return idspot;
 	}
-	public void setIdspot(int idspot) {
+	public void setIdspot(String idspot) {
 		this.idspot = idspot;
 	}
 	public double getLatitud() {
@@ -119,7 +101,8 @@ public class Spot {
 	public void setFechasubida(String fechasubida) {
 		this.fechasubida = fechasubida;
 	}
-	
-	
+	public Map<String, Link> getLinks() {
+		return links;
+	}
 
 }

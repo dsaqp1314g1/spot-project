@@ -62,13 +62,14 @@ public class UserResource {
 			ResultSet rs = stmt.executeQuery();
 			
 			if(rs.next()) {
-			   
 				userlog.setUsername(rs.getString("username"));
 				System.out.println("NombreUsuario: " + userlog.getUsername());
 				userlog.setName(rs.getString("name"));
 				System.out.println("Nombre: " + userlog.getName());
 				userlog.setEmail(rs.getString("email"));
 				System.out.println("Email: " + userlog.getEmail());
+				userlog.setUserpass(rs.getString("userpass"));
+				System.out.println("Password: " + userlog.getUserpass());
 				}
 		} 
 		catch (SQLException e)

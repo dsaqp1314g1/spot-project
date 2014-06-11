@@ -168,19 +168,18 @@ $(document).ready(function(){
 // }); var mapOptions = {
 	// this works! (lat, lng are global variables read from localStorage
 	
-	
+	getSpots();
 	
 	//comprovacion de la cookie
-//	var user = new User(JSON.parse($.cookie('user')));
-//		  if(user.username!="") {
-//			  console.log("Usuario autentificado");
-//			  getSpots();
-//		  }
-//		  else{
+//		  if(getCookie("username")=== null) {
 //			  console.log("Usuario no autentificado");
 //			  location.href = "C:/Users/Developer/git/spot-project/www/auth.html";
+//			 
+//		  }
+//		  else{
+//			  console.log("Usuario autentificado");
+//			  getSpots();
 //			  }
-	getSpots();
 	
 	
 });

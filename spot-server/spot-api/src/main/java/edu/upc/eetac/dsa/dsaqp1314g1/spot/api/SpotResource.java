@@ -15,6 +15,7 @@ import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -28,6 +29,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Application;
 
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.MediaType;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Comentario;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
@@ -529,6 +531,65 @@ public class SpotResource {
 	private String buildInsertComentario() {
 		return "insert into comentarios (idspot, usuario, comentario) value (?, ?, ?)";
 	}
+	
+	@PUT
+	@Path("/{idspot}/megustas")
+	@Consumes(MediaType.API_SPOT)
+	@Produces(MediaType.API_SPOT)
+	public Spot updateMegustas(@PathParam("idspot") String idspot, 
+			Spot spot)
+	{
+		System.out.println("entramos en PUT");
+		spot = getSpotFromDatabase(idspot);
+		System.out.println(spot.getCiudad());
+		//validateUser(idspot);
+		//validateUpdateMegustas(spot);
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+	 
+		PreparedStatement stmt = null;
+		try {
+			
+			String sql = buildUpdateMegustas();
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, spot.getMegusta()+1);
+			stmt.setInt(2, Integer.valueOf(idspot));
+	 
+			int rows = stmt.executeUpdate();
+			if (rows == 1){
+				spot = getSpotFromDatabase(idspot);
+				System.out.println("nuevo megustas "+spot.getMegusta());
+			}
+			else {
+				throw new NotFoundException("There's no spot with idspot="
+						+ idspot);
+			}
+	 
+		} catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+			}
+		}
+	 
+		return spot;
+	}
+	 
+	 
+	private String buildUpdateMegustas() {
+		return "update spots set megustas=? where idspot=?";
+	}
+	
 	
 	@DELETE
 	@Path("/{idspot}/comentario/{idcomentario}")

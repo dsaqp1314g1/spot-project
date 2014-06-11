@@ -8,6 +8,9 @@ var idspot;
 // headers: { 'Authorization': "Basic "+$.base64.btoa(username+':'+password) }
 // });
 
+
+
+
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();
 	if ($('#buscar_ciud').val() === '')

@@ -172,10 +172,22 @@ function getSpotId(id) {
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spot_result'));
 				$('<strong> Megustas: </strong> ' + spot.megusta + '<br>').appendTo($('#spot_result'));
 				//FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
+				$('<button id="NOmegustas'+spot.idspot+'" class="btn btn-default" hidden>'+"Ya no Megustas"+'</button><br><br>').appendTo($('#spot_result'));
+				$('#NOmegustas'+spot.idspot).click(function(e){
+					e.preventDefault();
+					 NOMegustaSpot(spot.idspot);
+					 $('#NOmegustas'+spot.idspot).hide();
+					 $('#megustas'+spot.idspot).show();
+
+					return false;
+				});
 				$('<button id="megustas'+spot.idspot+'" class="btn btn-success">'+"Megustas"+'</button><br><br><hr>').appendTo($('#spot_result'));												
 				$('#megustas'+spot.idspot).click(function(e){
 					e.preventDefault();
 					 MegustaSpot(spot.idspot);
+					 $('#megustas'+spot.idspot).hide();
+					 $('#NOmegustas'+spot.idspot).show();
+
 					return false;
 				});
 				
@@ -203,7 +215,21 @@ function getSpotId(id) {
 	});
 }
 
-// se duplican los datos ?¿?¿?¿?***********************************************************************
+function NOMegustaSpot(id) {
+	var url = API_BASE_URL + '/spots/'+id+ '/NOmegustas';
+	
+	$.ajax({
+		url : url,
+		type : 'PUT',
+		crossDomain : true,
+		dataType : 'json',
+	}).done(function(data, status, jqxhr) {
+		getSpotId(id);
+	}).fail(function() {
+		$("#spot_result").text("NO RESULT");
+	});
+}
+
 function MegustaSpot(id) {
 	var url = API_BASE_URL + '/spots/'+id+ '/megustas';
 	

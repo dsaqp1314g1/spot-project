@@ -585,7 +585,60 @@ public class SpotResource {
 		return spot;
 	}
 	 
+	@PUT
+	@Path("/{idspot}/NOmegustas")
+	@Consumes(MediaType.API_SPOT)
+	@Produces(MediaType.API_SPOT)
+	public Spot updateNoMegustas(@PathParam("idspot") String idspot, 
+			Spot spot)
+	{
+		System.out.println("entramos en PUT");
+		spot = getSpotFromDatabase(idspot);
+		System.out.println(spot.getCiudad());
+		//validateUser(idspot);
+		//validateUpdateMegustas(spot);
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
 	 
+		PreparedStatement stmt = null;
+		try {
+			
+			String sql = buildUpdateMegustas();
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, spot.getMegusta()-1);
+			stmt.setInt(2, Integer.valueOf(idspot));
+	 
+			int rows = stmt.executeUpdate();
+			if (rows == 1){
+				spot = getSpotFromDatabase(idspot);
+				System.out.println("nuevo megustas "+spot.getMegusta());
+			}
+			else {
+				throw new NotFoundException("There's no spot with idspot="
+						+ idspot);
+			}
+	 
+		} catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+			}
+		}
+	 
+		return spot;
+	}
+	 
+	
 	private String buildUpdateMegustas() {
 		return "update spots set megustas=? where idspot=?";
 	}

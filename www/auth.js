@@ -40,8 +40,7 @@ function login(user){
 		      var currentusr = $.cookie('username');
 		      console.log("Usuario guardad en la cookie : " + currentusr);
 		      console.log("Usuario guardad en la cookie2 : " + $.cookie('username'));
-		      location.href = "C:/Users/Developer/git/spot-project/www/index.html";
-		     
+		      window.location.replace("/index.html");
 			}
 			else{
 				    $("#error-auth-div").show();
@@ -87,7 +86,7 @@ function register(user){
 			console.log("Reciviendo respuesta");
 			var usuario = new User(data);
 			console.log("Usuario registrado correctamente");
-		    location.href = "C:/Users/Developer/git/spot-project/www/auth.html";
+			 window.location.replace("/auth.html");
 	})
     .fail(function (jqXHR, textStatus) {
     	console.log("Fallo: ");

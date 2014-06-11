@@ -172,12 +172,12 @@ $(document).ready(function(){
 	
 	//comprovacion de la cookie
 		  if($.cookie('username')) {
-			  console.log("Usuario autentificado");
+			  console.log("Usuario autentificado : " + $.cookie('username'));
 			  getSpots();
 		  }
 		  else{
 			  console.log("Usuario no autentificado");
-			  location.href = "C:/Users/Developer/git/spot-project/www/auth.html";
+			  window.location.replace("/register.html");
 		  }
 	
 	

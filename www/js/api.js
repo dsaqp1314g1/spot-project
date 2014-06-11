@@ -26,6 +26,7 @@ function Spot(spot){
 	this.usuario = spot.usuario;
 	this.idspot = spot.idspot;
 	this.title = spot.title;
+	this.megusta = spot.megusta;
 	this.deporte = spot.deporte;
 	this.latitud = spot.latitud;
 	this.longitud = spot.longitud;
@@ -169,9 +170,29 @@ function getSpotId(id) {
 				$('#uploadedImage').attr('src', spot.imageURL);
 				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
-				$('<strong> Deporte: </strong> ' + spot.deporte + '<br><hr>').appendTo($('#spot_result'));
-				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));
+				$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spot_result'));
+				$('<strong> Megustas: </strong> ' + spot.megusta + '<br>').appendTo($('#spot_result'));
+				//FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
+				$('<button id="NOmegustas'+spot.idspot+'" class="btn btn-default" hidden>'+"Ya no Megustas"+'</button><br><br>').appendTo($('#spot_result'));
+				$('#NOmegustas'+spot.idspot).click(function(e){
+					e.preventDefault();
+					 NOMegustaSpot(spot.idspot);
+					 $('#NOmegustas'+spot.idspot).hide();
+					 $('#megustas'+spot.idspot).show();
+
+					return false;
+				});
+				$('<button id="megustas'+spot.idspot+'" class="btn btn-success">'+"Megustas"+'</button><br><br><hr>').appendTo($('#spot_result'));												
+				$('#megustas'+spot.idspot).click(function(e){
+					e.preventDefault();
+					 MegustaSpot(spot.idspot);
+					 $('#megustas'+spot.idspot).hide();
+					 $('#NOmegustas'+spot.idspot).show();
+
+					return false;
+				});
 				
+				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));				
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;
 						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
@@ -190,6 +211,36 @@ function getSpotId(id) {
 					});
 				$('<hr>').appendTo($('#spot_result'));
 				 showEditForm(id) 
+	}).fail(function() {
+		$("#spot_result").text("NO RESULT");
+	});
+}
+
+function NOMegustaSpot(id) {
+	var url = API_BASE_URL + '/spots/'+id+ '/NOmegustas';
+	
+	$.ajax({
+		url : url,
+		type : 'PUT',
+		crossDomain : true,
+		dataType : 'json',
+	}).done(function(data, status, jqxhr) {
+		getSpotId(id);
+	}).fail(function() {
+		$("#spot_result").text("NO RESULT");
+	});
+}
+
+function MegustaSpot(id) {
+	var url = API_BASE_URL + '/spots/'+id+ '/megustas';
+	
+	$.ajax({
+		url : url,
+		type : 'PUT',
+		crossDomain : true,
+		dataType : 'json',
+	}).done(function(data, status, jqxhr) {
+		getSpotId(id);
 	}).fail(function() {
 		$("#spot_result").text("NO RESULT");
 	});

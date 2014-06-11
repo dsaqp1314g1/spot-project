@@ -44,6 +44,13 @@
 		
 <h1> </h1>
 <div class="container">
+<div id="exam-error" class="bs-example col-sm-10" hidden >
+<div class="alert alert-danger alert-error">
+    <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+	<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
+    <strong>Error!</strong>  Escribe algo en el campo de la ciudad!
+</div>
+</div>
 <form  id="imageForm"  class="form-group" role="form" >
 		<div class="form-group">
 		<div class="col-sm-4" >			
@@ -93,10 +100,9 @@
               </div>
 		 <div class="panel-body">
 			<div class="panel-body">
-				  
 			<div id="spot_result">
-			</div>
 			
+			</div>
 			<form id="comment-form" hidden>
 			<h1></h1>
 				<label>Texto</label><br>

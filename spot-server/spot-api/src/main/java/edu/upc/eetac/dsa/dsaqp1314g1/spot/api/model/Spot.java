@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.core.Link;
 
+import org.glassfish.jersey.linking.Binding;
 import org.glassfish.jersey.linking.InjectLink;
 import org.glassfish.jersey.linking.InjectLinks;
 import org.glassfish.jersey.linking.InjectLink.Style;
@@ -15,7 +16,7 @@ import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.SpotResource;
 public class Spot {
 
 	@InjectLinks({
-		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "abrir-spot", title = "abrir-spot", method = "getSpot", type = MediaType.API_SPOT)})
+		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "abrir-spot", title = "abrir-spot", method = "getSpot", bindings = @Binding(name = "idspot", value = "${instance.idspot}"), type = MediaType.API_SPOT)})
 	private List<Link> links;
 	private int idspot;
 	private String title;
@@ -28,7 +29,6 @@ public class Spot {
 	private String fechasubida;
 	private String imageURL;
 	private List<Comentario> comentario;
-	
 	
 	public List<Link> getLinks() {
 		return links;

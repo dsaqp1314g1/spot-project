@@ -4,8 +4,17 @@ var stingsURL;
 
 $('#buscar-amigo').click(function(e) {
 	e.preventDefault();	
+
+	if($('#buscar_campo').val()===''){
+		$('#buscar-error').show();
+}
+	else{
 	$('#comment-form').hide();
-	getUserParam($("#buscar_campo").val());
+	getUserParam($("#buscar_campo").val());}
+});
+
+$("#closing").click(function() {
+	$("#buscar-error").hide();
 });
 $('#button-delete-comment').click(function(e) {
 	e.preventDefault();					

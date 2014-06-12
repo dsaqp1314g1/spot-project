@@ -17,7 +17,8 @@ public class SpotRootAPI {
 	
 	@InjectLinks({
 		@InjectLink(resource = SpotRootAPIResources.class, style = Style.ABSOLUTE, rel = "self bookmark home", title = "Spot Root API", method = "getRootAPI"),
-		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "spots", title = "spots", type = MediaType.API_SPOT_COLLECTION, method = "getSpotsCollections")})
+		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "spots", title = "spots", type = MediaType.API_SPOT_COLLECTION, method = "getSpotsCollections"),
+		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "create-spot", title = "Create spot", type = MediaType.API_SPOT)})
 private List<Link> links;
 
 public List<Link> getLinks() {

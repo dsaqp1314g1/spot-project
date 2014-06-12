@@ -12,10 +12,12 @@ import java.util.Properties;
  
 
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
  
+
 
 
 import android.content.Context;
@@ -145,6 +147,58 @@ public class SpotgramAPI {
  
 		return Spots;
 	}
+	public SpotCollection getSpots(URL urlSpot) throws SpotgramAndroidException {
+		Log.d(TAG, "getSpots()");
+		SpotCollection Spots = new SpotCollection();
+ 
+		HttpURLConnection urlConnection = null;
+		try {
+			//URL url = new URL(urlSpot);
+			urlConnection = (HttpURLConnection) urlSpot.openConnection();
+			urlConnection.setRequestMethod("GET");
+			urlConnection.setDoInput(true);
+			urlConnection.connect();
+		} catch (IOException e) {
+			throw new SpotgramAndroidException(
+					"Can't connect to SPOT API Web Service");
+		}
+ 
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new InputStreamReader(
+					urlConnection.getInputStream()));
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+			}
+ 
+			JSONObject jsonObject = new JSONObject(sb.toString());
+			JSONArray jsonLinks = jsonObject.getJSONArray("links");//atributoss
+			parseLinks(jsonLinks, Spots.getLinks());
+ 
+			JSONArray jsonSpots = jsonObject.getJSONArray("spots");
+			for (int i = 0; i < jsonSpots.length(); i++) {
+				Spot Spot = new Spot();//creo un Spot
+				JSONObject jsonSpot = jsonSpots.getJSONObject(i);// le doy valor a traves del array y lo añado a la coleccion qe es lo qe lo devuelves
+				Spot.setUsuario(jsonSpot.getString("usuario"));
+				Spot.setIdspot(jsonSpot.getString("idspot"));//se van añadiendo
+				Spot.setTitle(jsonSpot.getString("title"));
+				Spot.setDeporte(jsonSpot.getString("deporte"));
+				Spot.setCiudad(jsonSpot.getString("ciudad"));
+				jsonLinks = jsonSpot.getJSONArray("links");
+				parseLinks(jsonLinks, Spot.getLinks());
+				Spots.getSpots().add(Spot);
+			}
+		} catch (IOException e) {
+			throw new SpotgramAndroidException(
+					"Can't get response from Spot API Web Service");
+		} catch (JSONException e) {
+			throw new SpotgramAndroidException("Error parsing Spot Root API");
+		}
+ 
+		return Spots;
+	}
  
 	private void parseLinks(JSONArray jsonLinks, Map<String, Link> map)
 			throws SpotgramAndroidException, JSONException {
@@ -196,47 +250,52 @@ public class SpotgramAPI {
 	 
 		return Spot;
 	}
-	public Spot createSpot(String deporte, String title) throws SpotgramAndroidException {
+	public Spot createSpot(String usuario, String ciudad, String deporte, String title, String urlSpot)
+			throws SpotgramAndroidException {
+		URL urls = null;
+		try {
+			urls = new URL(urlSpot);
+		} catch (MalformedURLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		Log.d(TAG, "createSpot()");
 		Spot Spot = new Spot();
 		Spot.setDeporte(deporte);
 		Spot.setTitle(title);
+		Spot.setCiudad(ciudad);
+		Spot.setUsuario(usuario);
+		JSONObject jsonSpot=null;
+		try {
+			jsonSpot = createJsonSpot(Spot);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		HttpURLConnection urlConnection = null;
 		try {
-			JSONObject jsonSpot = createJsonSpot(Spot);
-			URL urlPostSpots = new URL(rootAPI.getLinks().get("create-Spots")
-					.getTarget());
-			urlConnection = (HttpURLConnection) urlPostSpots.openConnection();
+			urlConnection = (HttpURLConnection) urls.openConnection();
+			Log.d(TAG, urlConnection.toString());
 			urlConnection.setRequestProperty("Accept",
 					MediaType.API_SPOT);
 			urlConnection.setRequestProperty("Content-Type",
 					MediaType.API_SPOT);
 			urlConnection.setRequestMethod("POST");
-			urlConnection.setDoInput(true);
 			urlConnection.setDoOutput(true);
 			urlConnection.connect();
+
+    		Log.d(TAG, "conexio establerta: "+urlConnection);
+		}
+			catch (IOException e) {
+				throw new SpotgramAndroidException(
+						"Can't connect to SPOT API Web Service");
+			}
+		try{
 			PrintWriter writer = new PrintWriter(
 					urlConnection.getOutputStream());
 			writer.println(jsonSpot.toString());
-			writer.close();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					urlConnection.getInputStream()));
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line);
-			}
-			jsonSpot = new JSONObject(sb.toString());
-	 
-			Spot.setUsuario(jsonSpot.getString("usuario"));
-			Spot.setIdspot(jsonSpot.getString("idspot"));
-			Spot.setDeporte(jsonSpot.getString("deporte"));
-			Spot.setCiudad(jsonSpot.getString("ciudad"));
-			Spot.setTitle(jsonSpot.getString("title"));
-			JSONArray jsonLinks = jsonSpot.getJSONArray("links");
-			parseLinks(jsonLinks, Spot.getLinks());
-		} catch (JSONException e) {
-			Log.e(TAG, e.getMessage(), e);
-			throw new SpotgramAndroidException("Error parsing response");
+			writer.close();			
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage(), e);
 			throw new SpotgramAndroidException("Error getting response");
@@ -257,6 +316,8 @@ public class SpotgramAPI {
 		JSONObject jsonSpot = new JSONObject();
 		jsonSpot.put("title", Spot.getTitle());
 		jsonSpot.put("deporte", Spot.getDeporte());
+		jsonSpot.put("usuario", Spot.getUsuario());
+		jsonSpot.put("ciudad", Spot.getCiudad());
 	 
 		return jsonSpot;
 	}

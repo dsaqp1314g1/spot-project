@@ -80,6 +80,7 @@ function getSpotByUser(username) {
 	$("#spots-perfil-container").text("");
 	$("#spot_result").text("");
 	$('#comment-form').hide();
+	deleteMarkers();
 	
 	$.ajax({
 		url : url,

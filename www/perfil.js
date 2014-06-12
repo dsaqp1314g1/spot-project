@@ -4,7 +4,8 @@ var stingsURL;
 
 $('#buscar-amigo').click(function(e) {
 	e.preventDefault();	
-
+	 $("#error-perfil-div").hide();
+	 $('#buscar-error').hide();
 	if($('#buscar_campo').val()===''){
 		$('#buscar-error').show();
 }
@@ -119,6 +120,12 @@ function getUserParam(user) {
 				var user = new User(data);
 				$('progress').toggle();
 				
+				if (user.name==null)
+					{
+					 $("#error-perfil-div").show();
+					}
+				else{
+			    
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
 					getSpotByUser(user.username);
@@ -131,6 +138,7 @@ function getUserParam(user) {
 //					var div = $('<div></div>')
 //					div.append(link);
 //					$('#perfil_result').append(div);
+				}
 														
 
 	}).fail(function() {

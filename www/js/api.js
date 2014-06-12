@@ -1,5 +1,24 @@
 var BEETER_API_HOME="http://localhost:8181/spot-api";
 
+//FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
+$('#NOmegustas').click(function(e){
+	e.preventDefault();
+	 NOMegustaSpot(spot.idspot);
+	 $('#NOmegustas'+spot.idspot).hide();
+	 $('#megustas'+spot.idspot).show();
+
+	return false;
+});
+$('#megustas').click(function(e){
+	e.preventDefault();
+	 MegustaSpot(spot.idspot);
+	 $('#megustas'+spot.idspot).hide();
+	 $('#NOmegustas'+spot.idspot).show();
+
+	return false;
+});
+
+
 function Link(rel, linkheader){
 	this.rel = rel;
 	this.href = decodeURIComponent(linkheader.find(rel).template().template);
@@ -170,27 +189,7 @@ function getSpotId(id) {
 				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spot_result'));
-				$('<strong> Megustas: </strong> ' + spot.megusta + '<br>').appendTo($('#spot_result'));
-				//FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
-				$('<button id="NOmegustas'+spot.idspot+'" class="btn btn-default" hidden>'+"Ya no Megustas"+'</button><br><br>').appendTo($('#spot_result'));
-				$('#NOmegustas'+spot.idspot).click(function(e){
-					e.preventDefault();
-					 NOMegustaSpot(spot.idspot);
-					 $('#NOmegustas'+spot.idspot).hide();
-					 $('#megustas'+spot.idspot).show();
-
-					return false;
-				});
-				$('<button id="megustas'+spot.idspot+'" class="btn btn-success">'+"Megustas"+'</button><br><br><hr>').appendTo($('#spot_result'));												
-				$('#megustas'+spot.idspot).click(function(e){
-					e.preventDefault();
-					 MegustaSpot(spot.idspot);
-					 $('#megustas'+spot.idspot).hide();
-					 $('#NOmegustas'+spot.idspot).show();
-
-					return false;
-				});
-				
+				$('<strong> Megustas: </strong> ' + spot.megusta + '<br><hr>').appendTo($('#spot_result'));
 				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));				
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;

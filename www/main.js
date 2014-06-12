@@ -1,12 +1,5 @@
 var API_BASE_URL="http://localhost:8181/spot-api";
 var stingsURL;
-var username="albert";
-var USER="juan";
-var idspot;
-// var password = 'albert';
-// $.ajaxSetup({
-// headers: { 'Authorization': "Basic "+$.base64.btoa(username+':'+password) }
-// });
 
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();
@@ -165,18 +158,17 @@ $(document).ready(function(){
 // }); var mapOptions = {
 	// this works! (lat, lng are global variables read from localStorage
 	
-	getSpots();
+	//getSpots();
 	
 	//comprovacion de la cookie
-//		  if(getCookie("username")=== null) {
-//			  console.log("Usuario no autentificado");
-//			  location.href = "C:/Users/Developer/git/spot-project/www/auth.html";
-//			 
-//		  }
-//		  else{
-//			  console.log("Usuario autentificado");
-//			  getSpots();
-//			  }
+		  if($.cookie('username')) {
+			  console.log("Usuario autentificado : " + $.cookie('username'));
+			  getSpots();
+		  }
+		  else{
+			  console.log("Usuario no autentificado");
+			  window.location.replace("/register.html");
+		  }
 	
 	
 });

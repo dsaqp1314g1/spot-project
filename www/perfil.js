@@ -33,7 +33,7 @@ $(document).ready(function(){
 	});
 
 function getUser() {
-	var url = API_BASE_URL + '/user/juan';	
+	var url = API_BASE_URL + '/user/' + $.cookie('username');	
 	$('progress').toggle();
 	$("#perfil_result").text("");	
 	
@@ -74,11 +74,12 @@ function loadSpots(url){
 }
 
 function getSpotByUser(username) {
-	var url = API_BASE_URL + '/user/juan/spots';
+	var url = API_BASE_URL + '/user/'+ username +'/spots';
 	
 	$("#spots-perfil-container").text("");
 	$("#spot_result").text("");
 	$('#comment-form').hide();
+	deleteMarkers();
 	
 	$.ajax({
 		url : url,

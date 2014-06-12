@@ -30,7 +30,6 @@ public class Spot {
 	private String imageURL;
 	private List<Comentario> comentario;
 	
-	
 	public List<Link> getLinks() {
 		return links;
 	}

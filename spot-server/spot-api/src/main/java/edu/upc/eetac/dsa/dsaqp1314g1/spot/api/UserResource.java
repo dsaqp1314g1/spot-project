@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 import javax.sql.DataSource;
@@ -30,6 +31,70 @@ public class UserResource {
 	@Context
 	private SecurityContext security;
 	private DataSource ds = DataSourceSPA.getInstance().getDataSource();
+	
+	@POST
+	@Path("/{username}")
+	@Consumes(MediaType.API_USER)
+	@Produces(MediaType.API_USER)
+	public User UserCreate (User user) {
+		
+		System.out.println("Comienza la creacion de un nuevo usuario : " + user.getUsername());
+		User userlog = new User();
+		System.out.println("Preparando la conexion a la base de datos");
+		Connection conn = null;
+		System.out.println(".............");
+		
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+
+		System.out.println("Preparando Statement");
+		PreparedStatement stmt = null;
+        try {
+			
+			System.out.println("Creando la Query");
+			String sql = bulidCreateUserQuery();
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			stmt.setString(1, user.getUsername());
+			stmt.setString(2, user.getUserpass());
+			stmt.setString(3, user.getName());
+			stmt.setString(4, user.getEmail());
+			
+			stmt.executeUpdate();
+			
+			userlog = getUserFromDatabase(user.getUsername());	
+			
+		} 
+		catch (SQLException e)
+		{
+			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try
+			{
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e)
+			{
+				
+			}
+		}
+		System.out.println("Fin de la creacion de un usuario, devolviendo datos del usuario");
+		return userlog;
+	}
+	
+	private String bulidCreateUserQuery()
+	{
+		System.out.println("Ejecutando bulidGetUserQuery");
+		return "insert into users (username, userpass, name, email) value (?, MD5(?), ?, ?)";
+	}
 	
 	@POST
 	@Consumes(MediaType.API_USER)
@@ -167,6 +232,66 @@ public class UserResource {
 	{
 		System.out.println("Ejecutando bulidGetUserQuery");
 		return "select * from users where username=?";
+	}
+	
+	public User getUserFromDatabase (String username)
+	{
+		
+		User dbuser = new User();
+		Connection conn = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+		} 
+		catch (SQLException e)
+		{
+			throw new ServerErrorException("Could not connect to the database",Response.Status.SERVICE_UNAVAILABLE);
+		}
+		
+		PreparedStatement stmt = null;
+		
+		try {
+			
+			stmt = conn.prepareStatement(bulidGetUserQuery());
+			
+			System.out.println("Usuario es: " + username);
+			stmt.setString(1,username);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				dbuser.setUsername(rs.getString("username"));
+				System.out.println("NombreUsuario: " + dbuser.getUsername());
+				dbuser.setName(rs.getString("name"));
+				System.out.println("Nombre: " + dbuser.getName());
+				dbuser.setEmail(rs.getString("email"));
+				System.out.println("Email: " + dbuser.getEmail());
+				}
+		} 
+		catch (SQLException e)
+		{
+			
+			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try
+			{
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e)
+			{
+				
+			}
+		}
+		
+		
+	 System.out.println("Fin de getUserFromDatabase");
+		return dbuser;
 	}
 	
 	@GET

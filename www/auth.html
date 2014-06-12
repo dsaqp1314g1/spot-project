@@ -14,9 +14,13 @@
       <h1> </h1>
 		<br>
 		<div class="col-md-12">
-		<div class="alert alert-danger">
-  <button type="button" class="close" data-dismiss="alert" id="error-auth" hidden>&times;</button>
-  <strong>¡Error!</strong> Contraseña o usuario incorrectos
+		<div class="alert alert-info" style='display:none;' id="alerta-auth-div">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>¡Campo sin rellenar maik!</strong>
+</div>
+		<div class="alert alert-danger" style='display:none;' id="error-auth-div">
+  <button type="button" class="close" data-dismiss="alert" id="error-auth" >&times;</button>
+  <strong>¡Contraseña o usuario incorrectos!</strong> 
 </div>
     <form class="form-horizontal col-md-4" role="form" >			
 					<div class="form-group">

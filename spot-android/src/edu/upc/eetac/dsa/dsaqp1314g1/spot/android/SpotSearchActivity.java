@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -113,7 +114,7 @@ public class SpotSearchActivity extends ListActivity {
 	}
 	
 	public void searchAll(View v) {
-	
+		(new FetchSpotsTask()).execute();
 	}
     public void searchBy(View v) {
     	AssetManager assetManager = getAssets();
@@ -128,8 +129,8 @@ public class SpotSearchActivity extends ListActivity {
     		Log.e(TAG, e.getMessage(), e);
     		finish();
     	}
-    	String ciudad = nombrecity.toString();
-    	String modal = nombresport.toString();
+    	Editable ciudad = nombrecity.getText();
+    	Editable modal = nombresport.getText();
     	URL url = null;
     	try {
     		url = new URL("http://" + serverAddress + ":" + serverPort
@@ -173,7 +174,7 @@ public class SpotSearchActivity extends ListActivity {
 			SpotCollection Spots = null;
 			try {
 				Spots = SpotgramAPI.getInstance(SpotSearchActivity.this)
-						.getSpots();
+						.getSpots(params[0]);
 			} catch (SpotgramAndroidException e) {
 				e.printStackTrace();
 			}

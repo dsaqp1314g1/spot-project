@@ -4,12 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@+id/textCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.65" >
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="162dp" >
+        
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -58,8 +56,8 @@
             android:layout_alignRight="@+id/textSport"
             android:layout_below="@+id/textSport"
             android:layout_marginTop="14dp"
-            android:onClick="signIn"
-            android:text="searchBy" />
+            android:onClick="searchBy"
+            android:text="Search" />
 
         <Button
             android:id="@+id/button2"
@@ -70,9 +68,8 @@
             android:layout_marginLeft="24dp"
             android:onClick="searchAll"
             android:text="Mostrar Todos" />
-
+        
     </RelativeLayout>
-
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"

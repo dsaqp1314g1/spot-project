@@ -395,10 +395,13 @@ public class SpotResource {
 //	}
     
     @POST
-	@Consumes(MediaType.API_SPOT)
-	@Produces(MediaType.API_SPOT)
-	public Spot createSpot(Spot spot) {
-    	
+    @Consumes(MediaType.API_SPOT)
+    @Produces(MediaType.API_SPOT)
+	public void createSpot(Spot spot) {
+
+		System.out.println("Subiendo un spot");
+
+		System.out.println("Subiendo titulo: "+ spot.getTitle());
 		validateSpot(spot);
 		Connection conn = null;
 		try {
@@ -440,7 +443,6 @@ public class SpotResource {
 			}
 		}
 	 
-		return spot;
 	}
 	private void validateSpot(Spot spot) {
 		if (spot.getTitle() == null)

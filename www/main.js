@@ -3,6 +3,7 @@ var stingsURL;
 
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();
+	$('#exam-error').hide();
 	if ($('#buscar_ciud').val() === '')
 	{
 	$('#exam-error').show();	

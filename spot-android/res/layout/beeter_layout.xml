@@ -3,10 +3,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
- 
+
+    <RelativeLayout
+        android:id="@+id/textCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.65" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="14dp"
+            android:text="   Sport: "
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="23dp"
+            android:text="   City: "
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/textCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_alignLeft="@+id/textSport"
+            android:ems="10" >
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/textSport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView2"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_toRightOf="@+id/textView2"
+            android:ems="10" >
+        </EditText>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/textSport"
+            android:layout_below="@+id/textSport"
+            android:layout_marginTop="14dp"
+            android:onClick="signIn"
+            android:text="searchBy" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="24dp"
+            android:onClick="searchAll"
+            android:text="Mostrar Todos" />
+
+    </RelativeLayout>
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
- 
+        android:layout_height="294dp" />
+
 </LinearLayout>

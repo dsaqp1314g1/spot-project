@@ -196,7 +196,7 @@ function getSpotId(id) {
 						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
 						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
 						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
-						if (comentario.usuario === USUARIO)
+						if (comentario.usuario === $.cookie('username'))
 							{
 						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot_result'));												
 						$('#delete-coms'+comentario.idcomentario).click(function(e){
@@ -269,7 +269,7 @@ function showEditForm(id) {
 					e.preventDefault();
 					var comment = new Object();				
 					// CANVIAR PER AGAFAR L'USUARI QUE TOQUI!!!
-					comment.usuario = 'juan';
+					comment.usuario = $.cookie('username');
 					comment.comentario = $('#edit-comment').val();
 					// AGAFAR LA DATAAA!!!
 					// comment.data = 

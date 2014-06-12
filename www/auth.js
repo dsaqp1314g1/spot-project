@@ -36,7 +36,7 @@ function login(user){
 			if(password == usuario.userpass){
 			   //guardamos el valor del nombre del usuario en la cookie
 				var nombreusuario = usuario.username;
-			  $.cookie('username', nombreusuario, { expires: 1 });
+			  $.cookie('username', nombreusuario);
 		      var currentusr = $.cookie('username');
 		      console.log("Usuario guardad en la cookie : " + currentusr);
 		      console.log("Usuario guardad en la cookie2 : " + $.cookie('username'));

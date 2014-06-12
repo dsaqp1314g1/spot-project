@@ -42,8 +42,6 @@ public class SpotDetailActivity extends Activity {
 		tvDetailDate.setText(Spot.getDeporte());
 		//imagespot.setBackground(Spot.getImageURL());
 	}
-	//Clase anidada fetchSpottasktarea en background va a beeterapi, obtiene instancia i llama get Spot pasando la url que hemos recperado del recurso
-	//decalramos esas strin task , tipo de parametros del background 
 	
 	
 	private class FetchSpotTask extends AsyncTask<URL, Void, Spot> {

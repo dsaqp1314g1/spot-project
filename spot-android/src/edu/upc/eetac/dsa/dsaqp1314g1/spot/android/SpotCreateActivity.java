@@ -1,80 +1,118 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.android;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import java.net.Authenticator;
+import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.util.Properties;
 
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.Spot;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotCollection;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAPI;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAndroidException;
 import android.app.Activity;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.LocationManager;
-import android.net.Uri;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.AssetManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.text.Editable;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.EditText;
 
 public class SpotCreateActivity extends Activity{
-	public class MainActivity extends Activity {
-		double LAT = 41.279275;
-		double LONG = 1.976776;
-		
-		static final int REQUEST_IMAGE_CAPTURE = 1;
-		static final int REQUEST_TAKE_PHOTO = 1;
-		ImageView resultat;
-		Button cam;
-		double longit;
-		double latit;
-		LocationManager mlocManager;
-		
-		
+	 /** Called when the activity is first created. */
+    EditText ciudad;
+	EditText deporte;
+	String city;
+	String sport;
+	String title;
+	String usuario="juan";
+	EditText titulo;
+	String serverAddress;
+	String serverPort;
+	String url;
+	private final static String TAG = SpotCreateActivity.class.toString();
+	
+	private class PullSpotsTask extends
+	AsyncTask<String, Void, Spot> {
+		private ProgressDialog pd;
+
 		@Override
-		protected void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.create);
+		protected Spot doInBackground(String... params) {
+			Spot Spot = null;
+			try {
+				Spot = SpotgramAPI.getInstance(SpotCreateActivity.this)
+						.createSpot(params[0], params[1], params[2], params[3], params[4]);
+			} catch (SpotgramAndroidException e) {
+				e.printStackTrace();
+			}
+			return Spot;
 		}
 
-		public void seguent() {
-			// TODO Auto-generated method stub		
-
-			String Text = "My current location is: " +latit +" "  +longit;
-			Toast.makeText(getApplicationContext(),	Text, Toast.LENGTH_SHORT).show();
-			getCity();
+		@Override
+		protected void onPostExecute(Spot result) {
+			finish();
+			if (pd != null) {
+				pd.dismiss();
+			}
 		}
-		
-		private void getCity(){
-			 /*------- To get city name from coordinates -------- */
-	        String cityName = null;
-	        Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-	        List<Address> addresses;
-	        try {
-	            addresses = gcd.getFromLocation(latit,
-	                   longit, 1);
-	            if (addresses.size() > 0)
-	                System.out.println(addresses.get(0).getLocality());
-	            cityName = addresses.get(0).getLocality();
-	        }
-	        catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        String s = "My Current City is: "
-	            + cityName;
-	        Toast.makeText(getApplicationContext(),	s, Toast.LENGTH_SHORT).show();
-		}	
 
-
-		
-		@Override 
-		public void onPause()
-		{
-		    super.onPause();
-		    //mlocManager.removeUpdates(mlocListener);
+		@Override
+		protected void onPreExecute() {
+			pd = new ProgressDialog(SpotCreateActivity.this);
+			pd.setTitle("Searching...");
+			pd.setCancelable(false);
+			pd.setIndeterminate(true);
+			pd.show();
 		}
+
+}
+	
+	@Override//getextras qe se los pasa el mainactivity
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.create);
+		ciudad = (EditText) findViewById(R.id.textCiudad);
+		deporte = (EditText) findViewById(R.id.textDeporte);
+		titulo = (EditText) findViewById(R.id.textTitulo);	
+		SharedPreferences prefs = getSharedPreferences("spot-profile",
+				Context.MODE_PRIVATE);
+		final String username = prefs.getString("username", null);
+		final String password = prefs.getString("password", null);
+	 
+		Authenticator.setDefault(new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password
+						.toCharArray());
+			}
+		});
+		Log.d(TAG, "authenticated with " + username + ":" + password);
+		AssetManager assetManager = getAssets();
+    	Properties config = new Properties();
+    	try {
+    		config.load(assetManager.open("config.properties"));
+    		serverAddress = config.getProperty("server.address");
+    		serverPort = config.getProperty("server.port");
+    		Log.d(TAG, "Configured server " + serverAddress + ":" + serverPort);
+    		url = "http://" + serverAddress + ":" + serverPort + "/spot-api/spots/";
+    	} catch (IOException e) {
+    		Log.e(TAG, e.getMessage(), e);
+    		finish();
+    	}
+//		String urlSpot = (String) getIntent().getExtras().get("url");
+//		(new FetchSpotTask()).execute(urlSpot);
 	}
+	public void sendServer(View v) {
 
+			city = ciudad.getText().toString();
+			sport = deporte.getText().toString();
+			title = titulo.getText().toString();			
+		
+		(new PullSpotsTask()).execute(city, sport, title,usuario,url);
+	}
+    
 }

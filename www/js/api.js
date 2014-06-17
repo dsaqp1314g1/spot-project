@@ -1,4 +1,22 @@
 var BEETER_API_HOME="http://localhost:8181/spot-api";
+var spotID;
+//FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
+$('#NOmegusta').click(function(e){
+	 e.preventDefault();
+	 console.log("entro e funcion click no me gusta");
+	 $('#NOmegusta').hide();
+	 $('#megusta').show();
+	 NOMegustaSpot(spotID);
+	return false;
+});
+$('#megusta').click(function(e){
+	 e.preventDefault();
+	 console.log("entro en funcion click me gusta");
+	 $('#megusta').hide();
+	 $('#NOmegusta').show();
+	 MegustaSpot(spotID);
+	return false;
+});
 
 function Link(rel, linkheader){
 	this.rel = rel;
@@ -173,9 +191,9 @@ function deleteComment(idspot,idcoment) {
 
 function getSpotId(id) {
 	var url = API_BASE_URL + '/spots/'+id;
-	
+	 console.log("entro en getspot id");
+
 	$("#spot_result").text("");	
-	
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -184,32 +202,13 @@ function getSpotId(id) {
 	}).done(function(data, status, jqxhr) {
 		
 				var spot =data;
+				spotID=spot.idspot;
 				$('<img id="uploadedImage" class="img-responsive"><br>').appendTo($('#spot_result'));
 				$('#uploadedImage').attr('src', spot.imageURL);
 				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spot_result'));
-				$('<strong> Megustas: </strong> ' + spot.megusta + '<br>').appendTo($('#spot_result'));
-				//FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
-				$('<button id="NOmegustas'+spot.idspot+'" class="btn btn-default" hidden>'+"Ya no Megustas"+'</button><br><br>').appendTo($('#spot_result'));
-				$('#NOmegustas'+spot.idspot).click(function(e){
-					e.preventDefault();
-					 NOMegustaSpot(spot.idspot);
-					 $('#NOmegustas'+spot.idspot).hide();
-					 $('#megustas'+spot.idspot).show();
-
-					return false;
-				});
-				$('<button id="megustas'+spot.idspot+'" class="btn btn-success">'+"Megustas"+'</button><br><br><hr>').appendTo($('#spot_result'));												
-				$('#megustas'+spot.idspot).click(function(e){
-					e.preventDefault();
-					 MegustaSpot(spot.idspot);
-					 $('#megustas'+spot.idspot).hide();
-					 $('#NOmegustas'+spot.idspot).show();
-
-					return false;
-				});
-				
+				$('<strong> Megustas: </strong> ' + spot.megusta + '<br><hr>').appendTo($('#spot_result'));
 				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));				
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;
@@ -235,7 +234,7 @@ function getSpotId(id) {
 }
 
 function NOMegustaSpot(id) {
-	var url = API_BASE_URL + '/spots/'+id+ '/NOmegustas';
+	var url = API_BASE_URL + '/spots/'+id+ '/NOmegustas/'+$.cookie('username');
 	
 	$.ajax({
 		url : url,
@@ -250,7 +249,7 @@ function NOMegustaSpot(id) {
 }
 
 function MegustaSpot(id) {
-	var url = API_BASE_URL + '/spots/'+id+ '/megustas';
+	var url = API_BASE_URL + '/spots/'+id+ '/megustas/'+$.cookie('username');
 	
 	$.ajax({
 		url : url,

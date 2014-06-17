@@ -42,6 +42,14 @@ create table comentarios(
 
 );
 
+create table megustas (	
+	idmegustas			int not null auto_increment primary key,
+	idspot				int not null ,		
+	usuario 			varchar (20) not null,	
+	foreign key(usuario) references users(username),
+	foreign key(idspot) references spots(idspot)
+);
+
 create table actualizaciones(
 
 	idcomentario 		int not null auto_increment primary key,

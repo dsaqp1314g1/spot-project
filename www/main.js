@@ -18,10 +18,18 @@ else
 	getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
 }
 });
+
 $('#buscar-amigo').click(function(e) {
 	e.preventDefault();	
+	 $("#error-perfil-div").hide();
+	 $('#buscar-error').hide();
+	if($('#buscar_campo').val()===''){
+		$('#buscar-error').show();
+}
+	else{
 	$('#comment-form').hide();
-	//getUserParam($("#buscar_campo").val());
+	window.location.replace("/perfil.html");
+	getUserParam($("#buscar_campo").val());}
 });
 
 $("#button-list-one").click(function(e) {

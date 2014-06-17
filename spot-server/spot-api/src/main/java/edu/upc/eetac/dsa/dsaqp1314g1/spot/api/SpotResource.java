@@ -1,18 +1,25 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.api;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.sql.DataSource;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -28,6 +35,9 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Application;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.MediaType;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Comentario;
@@ -111,35 +121,6 @@ public class SpotResource {
 				System.out.println("Comprovando latitud: " + rs.getDouble("latitud"));
 				spot.setFechasubida(sdf.format(new java.util.Date(rs.getDate("fechasubida").getTime())));
 				spot.setMegusta(rs.getInt("megustas"));
-				System.out.println("Pasando a recivir los comentarios");
-				/*
-
-				PreparedStatement stmtr = null;
-				stmtr = conn.prepareStatement(buildGetComentarioSpotByIdQuery());
-				stmtr.setInt(1, spot.getIdspot());
-
-				ResultSet rsr = stmtr.executeQuery();
-
-				while (rsr.next()) {
-					System.out.println("Comentarios");
-
-					Comentario review = new Comentario();
-					review.setIdcomentario(rsr.getInt("idcomentario"));
-					System.out.println("Comentarios id");
-					review.setIdspot(rsr.getInt("idspot"));
-					System.out.println("Comentarios idspot");
-					review.setUsuario(rsr.getString("usuario"));
-					System.out.println("Comentarios usuario");
-					//System.out.println("Comentarios fechaedicion: "+ rsr.getTimestamp("fechaedicion"));
-					//review.setFechacreacion(rsr.getDate("fechaedicion"));
-				
-					review.setComentario(rsr.getString("comentario"));
-					System.out.println("Comentarios p");
-					spot.addComentario(review);
-					System.out.println("Comentarios pu");
-
-				}*/
-
 				spotcollection.addSpot(spot);
 				System.out.println("Pasando a recivir el siguiente spot de mysql");
 			}
@@ -379,27 +360,49 @@ public class SpotResource {
 	@Path("/{idspot}")
 	@Produces(MediaType.API_SPOT)
 	public Spot getSpot(@PathParam("idspot") String idspot,@Context Request request) {
-    	
     	System.out.println("Comenzando a recivir un Spot de id: " +idspot);
-    	
-	 
 		Spot spot = getSpotFromDatabase(idspot);
-	 
-		// Calculate the ETag on last modified date of user resource
-		
 		return spot;
 	}
-//	private String builGetsComentariosDeSpot() {
-//		
-//		return "SELECT comentarios.*, spots.idspot FROM spots INNER JOIN comentarios ON(idlibro= ? and spots.idspot=comentarios.idspot)";
-//	}
+    
+    
+    private UUID writeAndConvertImage(InputStream file, int idspot) {
+
+    	System.out.println("Comienza funcion de insercion de imagen");
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(file);
+			System.out.println("Imagen leida");
+
+		} catch (IOException e) {
+			throw new InternalServerErrorException(
+					"Something has been wrong when reading the file.");
+		}
+		UUID uuid = UUID.randomUUID();
+		System.out.println("randomUUID ejecutado");
+		String filename = Integer.toString(idspot) + ".png";
+		System.out.println("Nombre de la imagen : " + filename);
+		try {
+			ImageIO.write(image,"png",new File(app.getProperties().get("imgBaseURL") + filename));
+			System.out.println("Imagen guardada en la carpeta");
+		} catch (IOException e) {
+			throw new InternalServerErrorException(
+					"Something has been wrong when converting the file.");
+		}
+		System.out.println("Fin de la funcion de guarado de imagen");
+		return uuid;
+	}
+    
     
     @POST
 	@Consumes(MediaType.API_SPOT)
 	@Produces(MediaType.API_SPOT)
-	public Spot createSpot(Spot spot) {
-    	
+	public Spot createSpot(Spot spot,
+			@FormDataParam("image") InputStream image,
+			@FormDataParam("image") FormDataContentDisposition fileDisposition) {
+    	System.out.println("Comienza funcion de creacion de un spot");
 		validateSpot(spot);
+		System.out.println("Campos del spot validados corectamente");
 		Connection conn = null;
 		try {
 			conn = ds.getConnection();
@@ -409,20 +412,27 @@ public class SpotResource {
 		}
 	 
 		PreparedStatement stmt = null;
+		System.out.println("Conexion a sql hecha");
 		try {
+			
+			System.out.println("Prepardo la Query");
 			String sql = buildInsertSpot();
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	 
+			System.out.println("Insertando valores en la tabla");
 			stmt.setString(1, spot.getTitle());
 			stmt.setString(2, spot.getUsuario());
 			stmt.setString(3, spot.getDeporte());
 			stmt.setString(4, spot.getCiudad());
 
 			stmt.executeUpdate();
+			System.out.println("Query ejecutada");
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
 				
 				int idspot= rs.getInt(1);
+				System.out.println("Praparando para guardar la imagen");
+				UUID uuid = writeAndConvertImage(image, rs.getInt(1) );
+				System.out.println("Pasando a recoger el spot creado");
 				spot = getSpotFromDatabase(Integer.toString(idspot));
 			} else {
 				/*
@@ -440,6 +450,7 @@ public class SpotResource {
 			}
 		}
 	 
+		System.out.println("Fin de la creacion de un spot, devolviendo dicho spot");
 		return spot;
 	}
 	private void validateSpot(Spot spot) {
@@ -464,12 +475,7 @@ public class SpotResource {
 	public Spot createComentario(@PathParam("idspot") String idspot,
 			Comentario comentario) {
 
-		/*if (!security.isUserInRole("registered"))
-			throw new ForbiddenException(
-					"You are not allowed to create reviews for a book");*/
-
 		System.out.println("Subiendo un comentario");
-
 		Spot spot = new Spot();
 		validateComentario(comentario);
 		Connection conn = null;
@@ -501,7 +507,10 @@ public class SpotResource {
 			System.out.println("Query ejecutara");
 			if (rs.next()) {
 				spot = getSpotFromDatabase(idspot);
-
+				
+				System.out.println("Informando al creador del spot " + spot.getUsuario() + " que el usuario " +comentario.getUsuario() + " ha hecho un comentario de su spot id " + spot.getIdspot() );
+				actualizacioncomentario(spot.getIdspot(),spot.getTitle(),spot.getUsuario(),comentario.getUsuario());
+				
 			} else {
 				// Something has failed...
 			}
@@ -516,7 +525,7 @@ public class SpotResource {
 			} catch (SQLException e) {
 			}
 		}
-
+		System.out.println("Devolviendo spot para actualizar la informacion del spot");
 		return spot;
 	}
 
@@ -531,6 +540,7 @@ public class SpotResource {
 	private String buildInsertComentario() {
 		return "insert into comentarios (idspot, usuario, comentario) value (?, ?, ?)";
 	}
+	
 	
 	@PUT
 	@Path("/{idspot}/megustas")
@@ -697,5 +707,53 @@ public class SpotResource {
 	private String buildDeleteReview() {
 		return "delete from comentarios where idcomentario=? and idspot=?";
 	}
+	
+	private void actualizacioncomentario(int idspot, String spottitle, String creadorspot, String creadorcomentario){
 
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+		System.out.println("Conexion a mysql hecha");
+		PreparedStatement stmt = null;
+		try {
+			String sql = buildInsertActualizacion();
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			System.out.println("Creando la query");
+			stmt.setInt(1, idspot);
+			stmt.setString(2, spottitle );
+			System.out.println("Titulo spot : " +spottitle);
+			stmt.setString(3, creadorspot );
+			System.out.println("Username: " +creadorspot );
+			stmt.setString(4, creadorcomentario);
+			System.out.println("Usuario que comento: " + creadorcomentario);
+			System.out.println("Ejecutando la Query");
+			stmt.executeUpdate();
+			System.out.println("Query ejecutada");
+			System.out.println("...............");
+		} 
+		catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e) {
+			}
+		}
+
+    }
+	
+	private String buildInsertActualizacion() {
+		return "insert into actualizaciones (idspot, nombrespot, userspot, usercomentario) value (? ,?, ?, ?)";
+	}
 }

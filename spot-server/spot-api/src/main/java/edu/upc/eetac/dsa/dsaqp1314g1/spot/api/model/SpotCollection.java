@@ -20,6 +20,7 @@ public class SpotCollection {
 	@InjectLinks({
 		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "spots", title = "spots", type = MediaType.API_SPOT_COLLECTION, method = "getSpotsCollections")})
 	private List<Link> links;
+	private List<Spot> spots;
 	public List<Link> getLinks() {
 		return links;
 	}
@@ -27,7 +28,7 @@ public class SpotCollection {
 		this.links = links;
 	}
 
-	private List<Spot> spots;
+	
 	public SpotCollection () {
 		super();
 		spots = new ArrayList<Spot>();

@@ -41,3 +41,17 @@ create table comentarios(
 	foreign key(usuario) references users(username)
 
 );
+
+create table actualizaciones(
+
+	idcomentario 		int not null auto_increment primary key,
+	idspot 				int not null,
+	nombrespot				varchar(20) not null,
+	userspot				varchar(20) not null,
+	usercomentario			varchar(20) not null,
+	fechacreacion       timestamp not null,
+	foreign key(idspot) references spots(idspot),
+	foreign key(userspot) references users(username),
+	foreign key(usercomentario) references users(username)
+	
+);

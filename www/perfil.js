@@ -29,7 +29,7 @@ $("#closing").click(function() {
 	$("#exam-error").hide();
 });
 
-$(document).ready(function(){	
+$(document).ready(function(){
 		getUser();
 	});
 
@@ -49,6 +49,17 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
+					$.each(user.actualizacionescollection.actualizacion, function(i, v) {
+						var actualizacion = v;
+						$('<strong> --------------------------- </strong><br>').appendTo($('#perfil_result'));
+						console.log("Usuario: " + actualizacion.usercomentario);
+						$('<strong> El usuario : </strong>' + actualizacion.usercomentario + '<br>').appendTo($('#perfil_result'));
+						console.log("Spot : " + actualizacion.nombrecomentario);
+						$('<strong> A hecho un comentario en el spot : </strong> ' + actualizacion.nombrecomentario + '<br>').appendTo($('#perfil_result'));
+						console.log("Dia : " + actualizacion.fechacreacion);
+						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil_result'));
+					});
 					getSpotByUser(user.username);
 //					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
 //					link.click(function(e){
@@ -76,7 +87,6 @@ function loadSpots(url){
 
 function getSpotByUser(username) {
 	var url = API_BASE_URL + '/user/'+ username +'/spots';
-	
 	$("#spots-perfil-container").text("");
 	$("#spot_result").text("");
 	$('#comment-form').hide();
@@ -101,51 +111,6 @@ function getSpotByUser(username) {
 		});
 	}).fail(function() {
 		$("#spots-perfil-container").text("NO RESULT");
-	});
-}
-
-function getUserParam(user) {
-	var url = API_BASE_URL + '/user/'+user;
-	$('progress').toggle();
-
-	$("#perfil_result").text("");
-	$("#spot_result").text("");
-	$("#spots-perfil-container").text("");
-	
-	$.ajax({
-		url : url,
-		type : 'GET',
-		crossDomain : true,
-		dataType : 'json',
-	}).done(function(data, status, jqxhr) {
-				var user = new User(data);
-				$('progress').toggle();
-				
-				if (user.name==null)
-					{
-					 $("#error-perfil-div").show();
-					}
-				else{
-			    
-					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
-					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					getSpotByUser(user.username);
-//					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
-//					link.click(function(e){
-//						e.preventDefault();
-//						loadSpots($(e.target).attr('href'));
-//						return false;
-//					});
-//					var div = $('<div></div>')
-//					div.append(link);
-//					$('#perfil_result').append(div);
-				}
-														
-
-	}).fail(function() {
-		$('progress').toggle();
-
-		$("#perfil_result").text("NO RESULT");
 	});
 }
 

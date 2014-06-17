@@ -22,10 +22,20 @@ public class User {
 	private String name;
 	private String email;
 	private SpotCollection spotcollection;
+	private ActualizacionesCollection actualizacionescollection;
 	
 	public User () {
 		super();
 	}
+	public ActualizacionesCollection getActualizacionescollection() {
+		return actualizacionescollection;
+	}
+
+	public void setActualizacionescollection(
+			ActualizacionesCollection actualizacionescollection) {
+		this.actualizacionescollection = actualizacionescollection;
+	}
+
 	public SpotCollection getSpotcollection() {
 		return spotcollection;
 	}

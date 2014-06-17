@@ -20,6 +20,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Actualizaciones;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.ActualizacionesCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.User;
@@ -204,6 +206,9 @@ public class UserResource {
 				System.out.println("Nombre: " + usuario.getName());
 				usuario.setEmail(rs.getString("email"));
 				System.out.println("Email: " + usuario.getEmail());
+				
+				usuario.setActualizacionescollection(actualizacionesByUser(usuario.getUsername()));
+				
 				}
 		} 
 		catch (SQLException e)
@@ -239,27 +244,19 @@ public class UserResource {
 		
 		User dbuser = new User();
 		Connection conn = null;
-		
 		try {
 			conn = ds.getConnection();
-			
 		} 
 		catch (SQLException e)
 		{
 			throw new ServerErrorException("Could not connect to the database",Response.Status.SERVICE_UNAVAILABLE);
 		}
-		
 		PreparedStatement stmt = null;
-		
 		try {
-			
 			stmt = conn.prepareStatement(bulidGetUserQuery());
-			
 			System.out.println("Usuario es: " + username);
 			stmt.setString(1,username);
-			
 			ResultSet rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				
 				dbuser.setUsername(rs.getString("username"));
@@ -272,7 +269,6 @@ public class UserResource {
 		} 
 		catch (SQLException e)
 		{
-			
 			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
 		} 
 		finally 
@@ -288,10 +284,69 @@ public class UserResource {
 				
 			}
 		}
-		
-		
 	 System.out.println("Fin de getUserFromDatabase");
 		return dbuser;
+	}
+	
+	private ActualizacionesCollection actualizacionesByUser(String username){
+		
+		ActualizacionesCollection actualizaciones = new ActualizacionesCollection();
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} 
+		catch (SQLException e)
+		{
+			throw new ServerErrorException("Could not connect to the database",Response.Status.SERVICE_UNAVAILABLE);
+		}
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(bulidGetUserActualizacionesQuery());
+			System.out.println("Usuario es: " + username);
+			stmt.setString(1,username);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				
+				Actualizaciones act = new Actualizaciones();
+				act.setIdcomentario(rs.getInt("idcomentario"));
+				System.out.println("Idcomentario : " + rs.getInt("idcomentario"));
+				act.setIdspot(rs.getInt("idspot"));
+				System.out.println("Idspot : " + rs.getInt("idspot"));
+				act.setUsercomentario(rs.getString("usercomentario"));
+				System.out.println("NombreUsuario: " + rs.getString("usercomentario"));
+				act.setNombrecomentario(rs.getString("nombrespot"));
+				System.out.println("Nombre del spot: " + rs.getString("nombrespot"));
+				act.setFechacreacion(rs.getString("fechacreacion"));
+				System.out.println("Nombrecracion: " + rs.getString("fechacreacion"));
+				
+				actualizaciones.addActualizacion(act);
+				System.out.println("Actualizacion añadida a la colecion");
+				
+				}
+		} 
+		catch (SQLException e)
+		{
+			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try
+			{
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e)
+			{
+				
+			}
+		}
+	 System.out.println("Fin de getUserFromDatabase");
+		return actualizaciones;
+	}
+	private String bulidGetUserActualizacionesQuery()
+	{
+		return "select * from actualizaciones where userspot=?";
 	}
 	
 	@GET

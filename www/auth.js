@@ -12,7 +12,6 @@ $("#button-auth").click(function(e) {
 		}
 	else 
 		{
-	console.log("Comienza el log");
 	var user = new Object();
 	user.username = $('#nombre-auth').val();
 	user.userpass = $('#password-auth').val();
@@ -30,16 +29,12 @@ function login(user){
 		contentType: 'application/vnd.spot.api.user+json',
 		data: user
 		}).done(function (data, status, jqxhr) {
-			console.log("Reciviendo respuesta");
 			var usuario = new User(data);
-			console.log("Usuario registrado: " + usuario.username);
 			if(password == usuario.userpass){
 			   //guardamos el valor del nombre del usuario en la cookie
 				var nombreusuario = usuario.username;
 			  $.cookie('username', nombreusuario);
 		      var currentusr = $.cookie('username');
-		      console.log("Usuario guardad en la cookie : " + currentusr);
-		      console.log("Usuario guardad en la cookie2 : " + $.cookie('username'));
 		      window.location.replace("/index.html");
 			}
 			else{
@@ -48,7 +43,6 @@ function login(user){
 			}
 	})
     .fail(function (jqXHR, textStatus) {
-    	console.log("Fallo: ");
 		console.log(textStatus);
 	});
 }
@@ -62,14 +56,12 @@ $("#button-regist").click(function(e) {
 	   $("#alerta-auth-div").show();
 	}
 	else {
-	console.log("Comienza el register");
 	username=$('#user-regist').val();
 	var user = new Object();
 	user.username = $('#user-regist').val();
 	user.userpass = $('#password-regist').val();
 	user.name = $('#name-regist').val();
 	user.email = $('#mail-regist').val();
-	console.log("Usuario que solicita registrarse : " + username);
 	register(JSON.stringify(user));	
 	}
 });
@@ -83,13 +75,10 @@ function register(user){
 		contentType: 'application/vnd.spot.api.user+json',
 		data: user
 		}).done(function (data, status, jqxhr) {
-			console.log("Reciviendo respuesta");
 			var usuario = new User(data);
-			console.log("Usuario registrado correctamente");
 			 window.location.replace("/auth.html");
 	})
     .fail(function (jqXHR, textStatus) {
-    	console.log("Fallo: ");
 		console.log(textStatus);
 	});
 }

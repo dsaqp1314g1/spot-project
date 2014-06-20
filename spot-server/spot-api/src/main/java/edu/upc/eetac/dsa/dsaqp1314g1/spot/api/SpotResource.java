@@ -515,9 +515,11 @@ public class SpotResource {
 			if (rs.next()) {
 				spot = getSpotFromDatabase(idspot);
 				
-				System.out.println("Informando al creador del spot " + spot.getUsuario() + " que el usuario " +comentario.getUsuario() + " ha hecho un comentario de su spot id " + spot.getIdspot() );
-				actualizacioncomentario(spot.getIdspot(),spot.getTitle(),spot.getUsuario(),comentario.getUsuario());
-				
+				if (!comentario.getUsuario().equals(spot.getUsuario()))
+						{
+				            System.out.println("Informando al creador del spot " + spot.getUsuario() + " que el usuario " +comentario.getUsuario() + " ha hecho un comentario de su spot id " + spot.getIdspot() );
+				             actualizacioncomentario(spot.getIdspot(),spot.getTitle(),spot.getUsuario(),comentario.getUsuario());
+						}
 			} else {
 				// Something has failed...
 			}
@@ -547,113 +549,7 @@ public class SpotResource {
 	private String buildInsertComentario() {
 		return "insert into comentarios (idspot, usuario, comentario) value (?, ?, ?)";
 	}
-	
-	
-//	@PUT
-//	@Path("/{idspot}/megustas")
-//	@Consumes(MediaType.API_SPOT)
-//	@Produces(MediaType.API_SPOT)
-//	public Spot updateMegustas(@PathParam("idspot") String idspot, 
-//			Spot spot)
-//	{
-//		System.out.println("entramos en PUT");
-//		spot = getSpotFromDatabase(idspot);
-//		System.out.println(spot.getCiudad());
-//		//validateUser(idspot);
-//		//validateUpdateMegustas(spot);
-//		Connection conn = null;
-//		try {
-//			conn = ds.getConnection();
-//		} catch (SQLException e) {
-//			throw new ServerErrorException("Could not connect to the database",
-//					Response.Status.SERVICE_UNAVAILABLE);
-//		}
-//	 
-//		PreparedStatement stmt = null;
-//		try {
-//			
-//			String sql = buildUpdateMegustas();
-//			stmt = conn.prepareStatement(sql);
-//			stmt.setInt(1, spot.getMegusta()+1);
-//			stmt.setInt(2, Integer.valueOf(idspot));
-//	 
-//			int rows = stmt.executeUpdate();
-//			if (rows == 1){
-//				spot = getSpotFromDatabase(idspot);
-//				System.out.println("nuevo megustas "+spot.getMegusta());
-//			}
-//			else {
-//				throw new NotFoundException("There's no spot with idspot="
-//						+ idspot);
-//			}
-//	 
-//		} catch (SQLException e) {
-//			throw new ServerErrorException(e.getMessage(),
-//					Response.Status.INTERNAL_SERVER_ERROR);
-//		} finally {
-//			try {
-//				if (stmt != null)
-//					stmt.close();
-//				conn.close();
-//			} catch (SQLException e) {
-//			}
-//		}
-//	 
-//		return spot;
-//	}
-//	 
-//	@PUT
-//	@Path("/{idspot}/NOmegustas")
-//	@Consumes(MediaType.API_SPOT)
-//	@Produces(MediaType.API_SPOT)
-//	public Spot updateNoMegustas(@PathParam("idspot") String idspot, 
-//			Spot spot)
-//	{
-//		System.out.println("entramos en PUT");
-//		spot = getSpotFromDatabase(idspot);
-//		System.out.println(spot.getCiudad());
-//		//validateUser(idspot);
-//		//validateUpdateMegustas(spot);
-//		Connection conn = null;
-//		try {
-//			conn = ds.getConnection();
-//		} catch (SQLException e) {
-//			throw new ServerErrorException("Could not connect to the database",
-//					Response.Status.SERVICE_UNAVAILABLE);
-//		}
-//	 
-//		PreparedStatement stmt = null;
-//		try {
-//			
-//			String sql = buildUpdateMegustas();
-//			stmt = conn.prepareStatement(sql);
-//			stmt.setInt(1, spot.getMegusta()-1);
-//			stmt.setInt(2, Integer.valueOf(idspot));
-//	 
-//			int rows = stmt.executeUpdate();
-//			if (rows == 1){
-//				spot = getSpotFromDatabase(idspot);
-//				System.out.println("nuevo megustas "+spot.getMegusta());
-//			}
-//			else {
-//				throw new NotFoundException("There's no spot with idspot="
-//						+ idspot);
-//			}
-//	 
-//		} catch (SQLException e) {
-//			throw new ServerErrorException(e.getMessage(),
-//					Response.Status.INTERNAL_SERVER_ERROR);
-//		} finally {
-//			try {
-//				if (stmt != null)
-//					stmt.close();
-//				conn.close();
-//			} catch (SQLException e) {
-//			}
-//		}
-//	 
-//		return spot;
-//	}
+
 	
 	@PUT
 	@Path("/{idspot}/megustas/{username}")
@@ -937,5 +833,53 @@ public class SpotResource {
 	
 	private String buildInsertActualizacion() {
 		return "insert into actualizaciones (idspot, nombrespot, userspot, usercomentario) value (? ,?, ?, ?)";
+	}
+	
+	@DELETE
+	@Path("/{idspot}/actualizacion/{idactualizacion}")
+	public void deleteactualizacion(@PathParam("idspot") String idspot,
+			@PathParam("idactualizacion") String idactualizacion) {
+
+		System.out.println("Comenzando eliminacion de una actualizacion");
+
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+		System.out.println("Conexion a mysql hecha");
+		PreparedStatement stmt = null;
+		try {
+
+			System.out.println("Preparando la Query");
+			System.out.println("Id del spot : " + idspot
+					+ " Id de la acualizacion a eliminar: " + idactualizacion);
+			String sql = buildDeleteActualizacion();
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, Integer.valueOf(idactualizacion));
+			stmt.setInt(2, Integer.valueOf(idspot));
+
+			int rows = stmt.executeUpdate();
+			if (rows == 0)
+				throw new NotFoundException("There's no sting with stingid="
+						+ idspot);
+		} catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+			}
+		}
+		System.out.println("Comentario eliminado");
+	}
+
+	private String buildDeleteActualizacion() {
+		return "delete from actualizaciones where idcomentario=? and idspot=?";
 	}
 }

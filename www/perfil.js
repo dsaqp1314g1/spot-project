@@ -53,12 +53,17 @@ function getUser() {
 					$.each(user.actualizacionescollection.actualizacion, function(i, v) {
 						var actualizacion = v;
 						$('<strong> --------------------------- </strong><br>').appendTo($('#perfil_result'));
-						console.log("Usuario: " + actualizacion.usercomentario);
 						$('<strong> El usuario : </strong>' + actualizacion.usercomentario + '<br>').appendTo($('#perfil_result'));
-						console.log("Spot : " + actualizacion.nombrecomentario);
 						$('<strong> A hecho un comentario en el spot : </strong> ' + actualizacion.nombrecomentario + '<br>').appendTo($('#perfil_result'));
-						console.log("Dia : " + actualizacion.fechacreacion);
 						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil_result'));
+						
+						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil_result'));												
+						$('#ver-actu'+actualizacion.idspot).click(function(e){
+							e.preventDefault();
+							deleteActualizacion(actualizacion.idspot, actualizacion.idcomentario);
+							getSpotId(actualizacion.idspot);
+							return false;
+						});
 					});
 					getSpotByUser(user.username);
 //					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
@@ -88,7 +93,6 @@ function loadSpots(url){
 function getSpotByUser(username) {
 	var url = API_BASE_URL + '/user/'+ username +'/spots';
 	$("#spots-perfil-container").text("");
-	$("#spot_result").text("");
 	$('#comment-form').hide();
 	deleteMarkers();
 	

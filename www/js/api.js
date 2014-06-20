@@ -189,10 +189,23 @@ function deleteComment(idspot,idcoment) {
 	});
 }
 
+function deleteActualizacion(idspot, idcomentario) {
+	var url = API_BASE_URL +"/spots/"+idspot+"/actualizacion/"+idcomentario;
+	
+	$.ajax({
+		url : url,
+		type : 'DELETE',
+		crossDomain : true,
+		dataType : 'json',
+	}).done(function(data, status, jqxhr) {	
+		getUser();
+	}).fail(function() {
+		alert("ERROR");
+	});
+}
+
 function getSpotId(id) {
 	var url = API_BASE_URL + '/spots/'+id;
-	 console.log("entro en getspot id");
-
 	$("#spot_result").text("");	
 	$.ajax({
 		url : url,
@@ -227,7 +240,21 @@ function getSpotId(id) {
 
 					});
 				$('<hr>').appendTo($('#spot_result'));
-				 showEditForm(id) 
+				$('<label>Texto</label><br>').appendTo($('#spot_result'));
+				$('<textarea rows="4" id="edit-comment" class="form-control" form="comment-form"></textarea><br>').appendTo($('#spot_result'));
+				$('<button id="comment-ok" class="btn btn-default">'+"OK"+'</button><br><br>').appendTo($('#spot_result'));
+				$('<button id="comment-cancel" class="btn btn-default">'+"Cancel"+'</button><br><br>').appendTo($('#spot_result'));
+				$('#comment-ok').click(function(e) {
+					if ($('#edit-comment').val() === '') {
+						$('#exam-error').show();
+					} else {
+						e.preventDefault();
+						var comment = new Object();	
+						comment.usuario = $.cookie('username');
+						comment.comentario = $('#edit-comment').val();
+						createComentario(spot.idspot, JSON.stringify(comment));										
+					}
+				});
 	}).fail(function() {
 		$("#spot_result").text("NO RESULT");
 	});
@@ -277,26 +304,9 @@ function deleteSting(url, success){
 		console.log(textStatus);
 	});
 }
-function showEditForm(id) {
-	$('#comment-form').show();	
 
-	$('#comment-ok').click(
-			function(e) {
-				if ($('#edit-comment').val() === '') {
-					$('#exam-error').show();
-				} else {
-					e.preventDefault();
-					var comment = new Object();				
-					// CANVIAR PER AGAFAR L'USUARI QUE TOQUI!!!
-					comment.usuario = $.cookie('username');
-					comment.comentario = $('#edit-comment').val();
-					// AGAFAR LA DATAAA!!!
-					// comment.data = 
-					createComentario(id, JSON.stringify(comment));										
-				}
-			});
-}
 function createComentario(id,coment){
+	console.log("entro en createcomentario idspot :" +id);
 	var url = API_BASE_URL + "/spots/"+ id +"/comentario";	
 	$.ajax({
 		url : url,
@@ -307,7 +317,6 @@ function createComentario(id,coment){
 	})
 	.done(function (data, status, jqxhr) {
 		var coment = $.parseJSON(jqxhr.responseText);
-		$('#edit-comment').val('');
 		getSpotId(id);
 	})
     .fail(function (jqXHR, textStatus) {

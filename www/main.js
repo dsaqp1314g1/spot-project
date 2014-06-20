@@ -176,7 +176,7 @@ $(document).ready(function(){
 		  }
 		  else{
 			  console.log("Usuario no autentificado");
-			  window.location.replace("/register.html");
+			  window.location.replace("/auth.html");
 		  }
 	
 	

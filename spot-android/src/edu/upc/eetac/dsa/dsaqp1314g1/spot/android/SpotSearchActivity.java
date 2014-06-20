@@ -18,6 +18,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -59,7 +61,7 @@ public class SpotSearchActivity extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			pd = new ProgressDialog(SpotSearchActivity.this);
-			pd.setTitle("Searching...");
+			pd.setTitle("Receiving Spots...");
 			pd.setCancelable(false);
 			pd.setIndeterminate(true);
 			pd.show();
@@ -112,7 +114,28 @@ public class SpotSearchActivity extends ListActivity {
 		setListAdapter(adapter);
 		(new FetchSpotsTask()).execute();
 	}
-	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.beeter_actions, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.miWrite:
+			Intent intent = new Intent(this, SpotCreateActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.miAbout:
+			Intent intent2 = new Intent(this, AboutActivity.class);
+			startActivity(intent2);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+
+	}
 	public void searchAll(View v) {
 		(new FetchSpotsTask()).execute();
 	}
@@ -192,7 +215,7 @@ public class SpotSearchActivity extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			pd = new ProgressDialog(SpotSearchActivity.this);
-			pd.setTitle("Searching...");
+			pd.setTitle("Receiving spot...");
 			pd.setCancelable(false);
 			pd.setIndeterminate(true);
 			pd.show();

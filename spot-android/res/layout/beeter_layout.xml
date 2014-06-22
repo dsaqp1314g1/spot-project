@@ -26,7 +26,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="23dp"
             android:text="   City: "
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            />
 
         <EditText
             android:id="@+id/textCity"
@@ -36,7 +37,6 @@
             android:layout_alignBottom="@+id/textView1"
             android:layout_alignLeft="@+id/textSport"
             android:ems="10" >
-
         </EditText>
 
         <EditText

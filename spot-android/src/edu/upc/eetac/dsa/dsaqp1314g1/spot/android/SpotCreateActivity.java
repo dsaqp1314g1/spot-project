@@ -1,5 +1,6 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.android;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.MalformedURLException;
@@ -14,10 +15,14 @@ import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAndroidException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +42,7 @@ public class SpotCreateActivity extends Activity{
 	String url;
 	private final static String TAG = SpotCreateActivity.class.toString();
 	
+	
 	private class PullSpotsTask extends
 	AsyncTask<String, Void, Spot> {
 		private ProgressDialog pd;
@@ -55,7 +61,7 @@ public class SpotCreateActivity extends Activity{
 
 		@Override
 		protected void onPostExecute(Spot result) {
-			finish();
+			showSpots();
 			if (pd != null) {
 				pd.dismiss();
 			}
@@ -64,7 +70,7 @@ public class SpotCreateActivity extends Activity{
 		@Override
 		protected void onPreExecute() {
 			pd = new ProgressDialog(SpotCreateActivity.this);
-			pd.setTitle("Searching...");
+			pd.setTitle("Creating Spot...");
 			pd.setCancelable(false);
 			pd.setIndeterminate(true);
 			pd.show();
@@ -103,16 +109,62 @@ public class SpotCreateActivity extends Activity{
     		Log.e(TAG, e.getMessage(), e);
     		finish();
     	}
+
+    	Intent intent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //		String urlSpot = (String) getIntent().getExtras().get("url");
 //		(new FetchSpotTask()).execute(urlSpot);
 	}
 	public void sendServer(View v) {
-
+			usuario = "juan";
 			city = ciudad.getText().toString();
 			sport = deporte.getText().toString();
 			title = titulo.getText().toString();			
 		
-		(new PullSpotsTask()).execute(city, sport, title,usuario,url);
+		(new PullSpotsTask()).execute(usuario, city, sport,title,url);
 	}
-    
+	/** Called when the user recieves the location*/
+	public void sendCamara() {		
+		    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		    // Ensure that there's a camera activity to handle the intent
+		    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+		        // Create the File where the photo should go
+		        File photoFile = null;
+		        try {
+		        	 photoFile = createImageFile();
+				        // Continue only if the File was successfully created		        		            		          
+		        	 if (photoFile != null) {
+		        	 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+			                    Uri.fromFile(photoFile));
+		        	 }
+		        } catch (IOException ex) {
+		            // Error occurred while creating the File
+		          
+		        }
+		        }		    		
+	}
+	String mCurrentPhotoPath;
+	private File createImageFile() throws IOException {
+	    // Create an image file name
+	    String name = "caca " ;
+	    
+	    String imageFileName = name + "_";
+	    File storageDir = Environment.getExternalStoragePublicDirectory(
+	            Environment.DIRECTORY_PICTURES);
+	    File image = File.createTempFile(
+	        imageFileName,  /* prefix */
+	        ".png",         /* suffix */
+	        storageDir      /* directory */
+	    );
+
+	    // Save a file: path for use with ACTION_VIEW intents
+	    mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+	    return image;
+	}
+	
+	private void showSpots() {
+		Intent intent = new Intent(this, SpotSearchActivity.class);
+		
+		startActivity(intent);
+		finish();
+	}
 }

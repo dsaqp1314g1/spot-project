@@ -398,10 +398,10 @@ public class SpotResource {
     @POST
 	@Consumes(MediaType.API_SPOT)
 	@Produces(MediaType.API_SPOT)
-	public Spot createSpot(Spot spot,
-			@FormDataParam("image") InputStream image,
-			@FormDataParam("image") FormDataContentDisposition fileDisposition) {
-
+	public Spot createSpot(Spot spot) {
+//    	public Spot createSpot(Spot spot,
+//    			@FormDataParam("image") InputStream image,
+//    			@FormDataParam("image") FormDataContentDisposition fileDisposition) {
 		System.out.println("Subiendo un spot");
 
 		System.out.println("Subiendo titulo: "+ spot.getTitle());
@@ -435,7 +435,9 @@ public class SpotResource {
 				
 				int idspot= rs.getInt(1);
 				System.out.println("Praparando para guardar la imagen");
-				UUID uuid = writeAndConvertImage(image, rs.getInt(1) );
+				
+				// DESCOMENTAR PER PUJAR LA IMATGE!!!
+				//UUID uuid = writeAndConvertImage(image, rs.getInt(1) );
 				System.out.println("Pasando a recoger el spot creado");
 				spot = getSpotFromDatabase(Integer.toString(idspot));
 			} else {

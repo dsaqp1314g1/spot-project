@@ -20,6 +20,7 @@ else
 });
 $('#perfil').click(function(e) {
 	e.preventDefault();	
+	getUser();
 	$('#spots-perfil').show();
 });
 $('#buscar-amigo').click(function(e) {

@@ -252,9 +252,6 @@ function getSpotId(id) {
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;
 						$('<section id='+comentario.idcomentario+'><h4>'+comentario.usuario+'     '+comentario.fechacreacion+'</h4><p>' + comentario.comentario + '</p></section>').appendTo($('#spot-scroll-able'));
-//						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
-//						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
-//						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
 						if (comentario.usuario === $.cookie('username'))
 							{
 						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot-scroll-able'));												
@@ -355,7 +352,7 @@ function getUserParam(user) {
 	$("#perfil_result").text("");
 	$("#spot_result").text("");
 	$("#spots-perfil-container").text("");
-	
+	$("#perfil-scroll-able").hide();
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -370,7 +367,7 @@ function getUserParam(user) {
 					 $("#error-perfil-div").show();
 					}
 				else{
-			    
+					$("#perfil-titulo-spot").text(user.username);
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
 					getSpotByUser(user.username);

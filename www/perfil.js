@@ -37,6 +37,8 @@ function getUser() {
 	var url = API_BASE_URL + '/user/' + $.cookie('username');	
 	$('progress').toggle();
 	$("#perfil_result").text("");	
+	$("#perfil-titulo-spot").text($.cookie('username'));
+
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -48,35 +50,37 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					$('<strong> Actualizaciones : </strong><br>').appendTo($('#perfil_result'));
+					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
 					$.each(user.actualizacionescollection.actualizacion, function(i, v) {
 						var actualizacion = v;
-						$('<strong> --------------------------- </strong><br>').appendTo($('#perfil_result'));
-						$('<strong> El usuario : </strong>' + actualizacion.usercomentario + '<br>').appendTo($('#perfil_result'));
-						$('<strong> A hecho un comentario en el spot : </strong> ' + actualizacion.nombrecomentario + '<br>').appendTo($('#perfil_result'));
-						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil_result'));
+						$('<strong> El usuario : </strong>' + actualizacion.usercomentario + '<br>').appendTo($('#perfil-scroll-able'));
+						$('<strong> A hecho un comentario en el spot : </strong> ' + actualizacion.nombrecomentario + '<br>').appendTo($('#perfil-scroll-able'));
+						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able'));
 						
-						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil_result'));												
+						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil-scroll-able'));												
 						$('#ver-actu'+actualizacion.idspot).click(function(e){
 							e.preventDefault();
 							deleteActualizacion(actualizacion.idspot, actualizacion.idcomentario);
 							getSpotId(actualizacion.idspot);
 							return false;
 						});
+						$('<hr>').appendTo($('#perfil-scroll-able'));
+
 					});
 					$.each(user.actumegustacollection.actualizacion, function(i, v) {
 						var actualizacion = v;
-						$('<strong> --------------------------- </strong><br>').appendTo($('#perfil_result'));
-						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#perfil_result'));
-						$('<strong> Dio a ' + actualizacion.estado + ' sobre el espot spot </strong> ' + actualizacion.nombrespot + '<br>').appendTo($('#perfil_result'));
+						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#pperfil-scroll-able'));
+						$('<strong> Dio a ' + actualizacion.estado + ' sobre el espot spot </strong> ' + actualizacion.nombrespot + '<br>').appendTo($('#perfil-scroll-able'));
 						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil_result'));
-						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil_result'));												
+						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil-scroll-able'));												
 						$('#ver-actu'+actualizacion.idspot).click(function(e){
 							e.preventDefault();
 							deleteActuMegusta(actualizacion.idspot, actualizacion.userspot);
 							getSpotId(actualizacion.idspot);
 							return false;
 						});
+						$('<hr>').appendTo($('#perfil-scroll-able'));
+
 					});
 					getSpotByUser(user.username);
 //					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
@@ -92,6 +96,7 @@ function getUser() {
 
 	}).fail(function() {
 		$('progress').toggle();
+
 		$("#perfil_result").text("NO RESULT");
 	});
 }

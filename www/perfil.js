@@ -37,7 +37,6 @@ function getUser() {
 	var url = API_BASE_URL + '/user/' + $.cookie('username');	
 	$('progress').toggle();
 	$("#perfil_result").text("");	
-	
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -49,7 +48,7 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
+					$('<strong> Actualizaciones : </strong><br>').appendTo($('#perfil_result'));
 					$.each(user.actualizacionescollection.actualizacion, function(i, v) {
 						var actualizacion = v;
 						$('<strong> --------------------------- </strong><br>').appendTo($('#perfil_result'));
@@ -61,6 +60,20 @@ function getUser() {
 						$('#ver-actu'+actualizacion.idspot).click(function(e){
 							e.preventDefault();
 							deleteActualizacion(actualizacion.idspot, actualizacion.idcomentario);
+							getSpotId(actualizacion.idspot);
+							return false;
+						});
+					});
+					$.each(user.actumegustacollection.actualizacion, function(i, v) {
+						var actualizacion = v;
+						$('<strong> --------------------------- </strong><br>').appendTo($('#perfil_result'));
+						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#perfil_result'));
+						$('<strong> Dio a ' + actualizacion.estado + ' sobre el espot spot </strong> ' + actualizacion.nombrespot + '<br>').appendTo($('#perfil_result'));
+						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil_result'));
+						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil_result'));												
+						$('#ver-actu'+actualizacion.idspot).click(function(e){
+							e.preventDefault();
+							deleteActuMegusta(actualizacion.idspot, actualizacion.userspot);
 							getSpotId(actualizacion.idspot);
 							return false;
 						});
@@ -79,7 +92,6 @@ function getUser() {
 
 	}).fail(function() {
 		$('progress').toggle();
-
 		$("#perfil_result").text("NO RESULT");
 	});
 }

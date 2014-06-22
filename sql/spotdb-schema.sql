@@ -61,5 +61,17 @@ create table actualizaciones(
 	foreign key(idspot) references spots(idspot),
 	foreign key(userspot) references users(username),
 	foreign key(usercomentario) references users(username)
-	
+);
+
+create table actumegusta(
+
+	idspot 				int not null,
+	nombrespot				varchar(20) not null,
+	estado				varchar(20) not null,
+	userspot				varchar(20) not null,
+	usermegusta			varchar(20) not null,
+	fechacreacion       timestamp not null,
+	foreign key(idspot) references spots(idspot),
+	foreign key(userspot) references users(username),
+	foreign key(usermegusta) references users(username)
 );

@@ -517,7 +517,7 @@ public class SpotResource {
 				
 				if (!comentario.getUsuario().equals(spot.getUsuario()))
 						{
-				            System.out.println("Informando al creador del spot " + spot.getUsuario() + " que el usuario " +comentario.getUsuario() + " ha hecho un comentario de su spot id " + spot.getIdspot() );
+				             System.out.println("Informando al creador del spot " + spot.getUsuario() + " que el usuario " +comentario.getUsuario() + " ha hecho un comentario de su spot id " + spot.getIdspot() );
 				             actualizacioncomentario(spot.getIdspot(),spot.getTitle(),spot.getUsuario(),comentario.getUsuario());
 						}
 			} else {
@@ -558,6 +558,7 @@ public class SpotResource {
 	public Spot updateMegustas(@PathParam("idspot") String idspot, @PathParam("username") String username,
 			Spot spot)	{
 		//String username = security.getUserPrincipal().getName();
+		System.out.println("Comenzando el registro de Me Gusta");
 		spot = getSpotFromDatabase(idspot);
 		//user = getUserFromDatabase(username);
 		System.out.println(username);
@@ -598,9 +599,14 @@ public class SpotResource {
 					stmt2.setInt(1, Integer.valueOf(idspot));
 					stmt2.setString(2, username);
 					stmt2.executeUpdate();
+					System.out.println("Ejecutando la queri");
 					int rows = stmt.executeUpdate();
+					System.out.println("Query ejecutada");
+					System.out.println("Reciviendo el id de el me gusta recien creado");
 				if (rows == 1){
-						spot = getSpotFromDatabase(idspot);
+					
+				       actumegusta(spot, "megusta", username);
+					   spot = getSpotFromDatabase(idspot);
 					}
 					
 					else {
@@ -691,6 +697,7 @@ public class SpotResource {
 					stmt2.executeUpdate();
 					int rows = stmt.executeUpdate();
 				if (rows == 1){
+					
 						spot = getSpotFromDatabase(idspot);
 					}
 					
@@ -778,12 +785,60 @@ public class SpotResource {
 			} catch (SQLException e) {
 			}
 		}
+		
 		System.out.println("Comentario eliminado");
 		return getSpotFromDatabase(idspot);
 	}
 
 	private String buildDeleteReview() {
 		return "delete from comentarios where idcomentario=? and idspot=?";
+	}
+	
+	private void actumegusta(Spot spot, String estado, String usermegusta){
+
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+		System.out.println("Conexion a mysql hecha");
+		PreparedStatement stmt = null;
+		try {
+			String sql = buildInsertActumegusta();
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			System.out.println("Creando la query");
+			stmt.setInt(1, spot.getIdspot());
+			stmt.setString(2, spot.getTitle() );
+			stmt.setString(3, estado );
+			stmt.setString(4, spot.getUsuario());
+			stmt.setString(5, usermegusta);
+			System.out.println("Ejecutando la Query");
+			stmt.executeUpdate();
+			System.out.println("Query ejecutada");
+			System.out.println("...............");
+		} 
+		catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e) {
+			}
+		}
+
+    }
+	
+	private String buildInsertActumegusta() {
+		return "insert into actumegusta (idspot, nombrespot, estado, userspot, usermegusta) value (? ,?, ?, ?, ?)";
 	}
 	
 	private void actualizacioncomentario(int idspot, String spottitle, String creadorspot, String creadorcomentario){
@@ -881,5 +936,53 @@ public class SpotResource {
 
 	private String buildDeleteActualizacion() {
 		return "delete from actualizaciones where idcomentario=? and idspot=?";
+	}
+	
+	@DELETE
+	@Path("/{idspot}/actumegusta/{userspot}")
+	public void deleteActuMegusta(@PathParam("idspot") String idspot,
+			@PathParam("userspot") String userspot) {
+
+		System.out.println("Comenzando eliminacion de una actualizacion de megusta");
+
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+		System.out.println("Conexion a mysql hecha");
+		PreparedStatement stmt = null;
+		try {
+
+			System.out.println("Preparando la Query");
+			System.out.println("Id del spot : " + idspot
+					+ " Id de la acualizacion a eliminar: " + userspot);
+			String sql = buildDeleteActuMegusta();
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, Integer.valueOf(idspot));
+			stmt.setString(2, userspot);
+
+			int rows = stmt.executeUpdate();
+			if (rows == 0)
+				throw new NotFoundException("There's no sting with stingid="
+						+ idspot);
+		} catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+			}
+		}
+		System.out.println("Comentario eliminado");
+	}
+
+	private String buildDeleteActuMegusta() {
+		return "delete from actumegusta where idspot=? and userspot=?";
 	}
 }

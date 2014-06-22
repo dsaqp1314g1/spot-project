@@ -69,6 +69,7 @@ function User(user){
 	this.userpass = user.userpass;
 	this.email = user.email;
 	this.actualizacionescollection = user.actualizacionescollection;
+	this.actumegustacollection = user.actumegustacollection;
 	this.links = buildLinks(user.links);
 	this.getLinks = function(rel){
 		return this.links[rel];
@@ -91,7 +92,9 @@ function Actualizaciones(actualizaciones){
 	}
 }
 
-
+function Actumegustacollection(actumegustacollection){
+	this.actualizacion = actumegustacollection.actualizacion;
+}
 
 function StingCollection(stingCollection){
 	this.oldestTimestamp = stingCollection.oldestTimestamp;
@@ -199,6 +202,21 @@ function deleteComment(idspot,idcoment) {
 
 function deleteActualizacion(idspot, idcomentario) {
 	var url = API_BASE_URL +"/spots/"+idspot+"/actualizacion/"+idcomentario;
+	
+	$.ajax({
+		url : url,
+		type : 'DELETE',
+		crossDomain : true,
+		dataType : 'json',
+	}).done(function(data, status, jqxhr) {	
+		getUser();
+	}).fail(function() {
+		alert("ERROR");
+	});
+}
+
+function deleteActuMegusta(idspot, userspot) {
+	var url = API_BASE_URL +"/spots/"+idspot+"/actumegusta/"+userspot;
 	
 	$.ajax({
 		url : url,

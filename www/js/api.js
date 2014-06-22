@@ -1,5 +1,13 @@
 var BEETER_API_HOME="http://localhost:8181/spot-api";
 var spotID;
+
+$('#CerrarSpot').click(function(e){
+	 e.preventDefault();
+	 console.log("entro e funcion click no me gusta");
+	 $('#spot-detail').fadeOut('slow');
+	return false;
+});
+
 //FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
 $('#NOmegusta').click(function(e){
 	 e.preventDefault();
@@ -207,6 +215,7 @@ function deleteActualizacion(idspot, idcomentario) {
 function getSpotId(id) {
 	var url = API_BASE_URL + '/spots/'+id;
 	$("#spot_result").text("");	
+	$("#spot-detail").fadeIn('slow');
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -216,34 +225,31 @@ function getSpotId(id) {
 		
 				var spot =data;
 				spotID=spot.idspot;
-				$('<img id="uploadedImage" class="img-responsive"><br>').appendTo($('#spot_result'));
 				$('#uploadedImage').attr('src', spot.imageURL);
+				$('#titulo-spot').text(spot.title);
 				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spot_result'));
-				$('<strong> Megustas: </strong> ' + spot.megusta + '<br><hr>').appendTo($('#spot_result'));
-				$('<strong> Comentarios: </strong><br>').appendTo($('#spot_result'));				
+				$('<strong> Megustas: </strong> ' + spot.megusta + '<br>').appendTo($('#spot_result'));
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;
-						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
-						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
-						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
+						$('<section id='+comentario.idcomentario+'><h4>'+comentario.usuario+'     '+comentario.fechacreacion+'</h4><p>' + comentario.comentario + '</p></section>').appendTo($('#spot-scroll-able'));
+//						$('<strong> User: </strong>' + comentario.usuario + '<br>').appendTo($('#spot_result'));				
+//						$('<strong> Texto: </strong> ' + comentario.comentario + '<br>').appendTo($('#spot_result'));
+//						$('<strong> Fecha creacion: </strong> ' + comentario.fechacreacion + '<br><br>').appendTo($('#spot_result'));
 						if (comentario.usuario === $.cookie('username'))
 							{
-						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot_result'));												
+						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot-scroll-able'));												
 						$('#delete-coms'+comentario.idcomentario).click(function(e){
 							e.preventDefault();
 							deleteComment(spot.idspot,comentario.idcomentario);
 							return false;
 						});
 							}
+						$('<hr>').appendTo($('#spot-scroll-able'));
 
 					});
 				$('<hr>').appendTo($('#spot_result'));
-				$('<label>Texto</label><br>').appendTo($('#spot_result'));
-				$('<textarea rows="4" id="edit-comment" class="form-control" form="comment-form"></textarea><br>').appendTo($('#spot_result'));
-				$('<button id="comment-ok" class="btn btn-default">'+"OK"+'</button><br><br>').appendTo($('#spot_result'));
-				$('<button id="comment-cancel" class="btn btn-default">'+"Cancel"+'</button><br><br>').appendTo($('#spot_result'));
 				$('#comment-ok').click(function(e) {
 					if ($('#edit-comment').val() === '') {
 						$('#exam-error').show();

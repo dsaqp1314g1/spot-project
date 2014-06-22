@@ -18,7 +18,10 @@ else
 	getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
 }
 });
-
+$('#perfil').click(function(e) {
+	e.preventDefault();	
+	$('#spots-perfil').show();
+});
 $('#buscar-amigo').click(function(e) {
 	e.preventDefault();	
 	 $("#error-perfil-div").hide();
@@ -28,7 +31,8 @@ $('#buscar-amigo').click(function(e) {
 }
 	else{
 	$('#comment-form').hide();
-	window.location.replace("/perfil.html");
+	$('#spots-perfil').show();
+	//window.location.replace("/perfil.html");
 	getUserParam($("#buscar_campo").val());}
 });
 

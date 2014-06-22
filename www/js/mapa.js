@@ -5,6 +5,8 @@ var mapOptions = {
   minZoom: 2, 
   maxZoom: 12,
   zoom: 4,
+  panControl: false,
+  zoomControl: false,
   center: centermap
 };
 

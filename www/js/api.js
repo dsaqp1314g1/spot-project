@@ -8,6 +8,20 @@ $('#CerrarSpot').click(function(e){
 	return false;
 });
 
+$('#buscar-amigo').click(function(e) {
+	e.preventDefault();	
+	console.log("Click");
+	 $("#error-perfil-div").hide();
+	 $('#buscar-error').hide();
+	if($('#buscar_campo').val()===''){
+		$('#buscar-error').show();
+}
+	else{
+	$('#comment-form').hide();
+	getUserParam($("#buscar_campo").val());
+	}
+});
+
 //FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
 $('#NOmegusta').click(function(e){
 	 e.preventDefault();
@@ -348,7 +362,7 @@ function createComentario(id,coment){
 function getUserParam(user) {
 	var url = API_BASE_URL + '/user/'+user;
 	$('progress').toggle();
-
+	console.log("Get User by param");
 	$("#perfil_result").text("");
 	$("#spot_result").text("");
 	$("#spots-perfil-container").text("");

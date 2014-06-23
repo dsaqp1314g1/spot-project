@@ -7,17 +7,6 @@ $('#CerrarPerfil').click(function(e){
 	 $('#spots-perfil').fadeOut('slow');
 	return false;
 });
-$('#buscar-amigo').click(function(e) {
-	e.preventDefault();	
-	 $("#error-perfil-div").hide();
-	 $('#buscar-error').hide();
-	if($('#buscar_campo').val()===''){
-		$('#buscar-error').show();
-}
-	else{
-	$('#comment-form').hide();
-	getUserParam($("#buscar_campo").val());}
-});
 
 $("#closing").click(function() {
 	$("#buscar-error").hide();

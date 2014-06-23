@@ -23,20 +23,6 @@ $('#perfil').click(function(e) {
 	getUser();
 	$('#spots-perfil').show();
 });
-$('#buscar-amigo').click(function(e) {
-	e.preventDefault();	
-	 $("#error-perfil-div").hide();
-	 $('#buscar-error').hide();
-	if($('#buscar_campo').val()===''){
-		$('#buscar-error').show();
-}
-	else{
-	$('#comment-form').hide();
-	$('#spots-perfil').show();
-	//window.location.replace("/perfil.html");
-	getUserParam($("#buscar_campo").val());}
-});
-
 $("#button-list-one").click(function(e) {
 	e.preventDefault();
 	if ($('#buscar_id').val() === '')

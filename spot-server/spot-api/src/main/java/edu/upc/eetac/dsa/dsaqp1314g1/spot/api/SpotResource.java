@@ -40,6 +40,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.MediaType;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.BotonMegusta;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Comentario;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
@@ -334,6 +335,21 @@ public class SpotResource {
 					System.out.println("Comentario añadido");
 
 				}
+				PreparedStatement stmtr2 = null;
+				stmtr2 = conn.prepareStatement(buildGetMegustasSpotByIdQuery());
+				stmtr2.setInt(1, spot.getIdspot());
+
+				ResultSet rsr2 = stmtr2.executeQuery();
+				while (rsr2.next()) {
+					System.out.println("Botonmegustaa");
+					BotonMegusta btnMG = new BotonMegusta();
+					btnMG.setIdmegusta(rsr2.getInt("idmegustas"));
+					btnMG.setIdspot(rsr2.getInt("idspot"));
+					btnMG.setUsermegusta(rsr2.getString("usuario"));
+					spot.addBotonMegusta(btnMG);
+					System.out.println("Botonmegusta añadido");
+
+				}
 			}
 
 		} catch (SQLException e) {
@@ -356,7 +372,11 @@ public class SpotResource {
 		return "select * from spots where idspot=?";
 }
 	//COmentario sin mas
-
+	private String buildGetMegustasSpotByIdQuery(){
+		return "SELECT * FROM megustas WHERE idspot=?";
+	}
+	
+	
     @GET
 	@Path("/{idspot}")
 	@Produces(MediaType.API_SPOT)

@@ -237,7 +237,6 @@ function getSpotId(id) {
 		crossDomain : true,
 		dataType : 'json',
 	}).done(function(data, status, jqxhr) {
-		
 				var spot =data;
 				spotID=spot.idspot;
 				$('#uploadedImage').attr('src', spot.imageURL);
@@ -272,6 +271,24 @@ function getSpotId(id) {
 						comment.comentario = $('#edit-comment').val();
 						createComentario(spot.idspot, JSON.stringify(comment));										
 					}
+				});
+				$.each(spot.botonmegusta, function(i, v) {
+					var botonmegusta = v;
+					console.log("entro en spot.botonmegusta");
+					if (botonmegusta.usermegusta === $.cookie('username'))
+						{
+							console.log("ya le he hecho megusta");
+							$('#NOmegusta').show();
+							$('#megusta').hide();
+							
+						}
+					else {
+							console.log("no  le he hecho megusta");
+							$('#megusta').show();
+							$('#NOmegusta').hide();
+
+						}
+					
 				});
 	}).fail(function() {
 		$("#spot_result").text("NO RESULT");

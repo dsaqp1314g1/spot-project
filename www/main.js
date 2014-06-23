@@ -1,6 +1,6 @@
 var API_BASE_URL="http://localhost:8181/spot-api";
 var stingsURL;
-
+var idmarker;
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();
 	$('#exam-error').hide();
@@ -85,7 +85,7 @@ function getSpots() {
 	}).done(function(data, status, jqxhr) {
 				var repos = data;
 				$('progress').toggle();
-
+				
 				$.each(repos.spots, function(i, v) {
 					var spot = new Spot(v);
 					var idmarker = spot.idspot;
@@ -95,7 +95,7 @@ function getSpots() {
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';
 					var myLatlng = new google.maps.LatLng(spot.latitud, spot.longitud);
 					initialize(myLatlng, contentString, idmarker, icnMarker(spot.deporte));
-				});												
+				});	
 
 	}).fail(function() {
 		$('progress').toggle();

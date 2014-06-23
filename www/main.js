@@ -30,20 +30,6 @@ $('#home').click(function(e) {
 	$('#spot-detail').hide();
 	
 });
-$('#buscar-amigo').click(function(e) {
-	e.preventDefault();	
-	 $("#error-perfil-div").hide();
-	 $('#buscar-error').hide();
-	if($('#buscar_campo').val()===''){
-		$('#buscar-error').show();
-}
-	else{
-	$('#comment-form').hide();
-	$('#spots-perfil').show();
-	//window.location.replace("/perfil.html");
-	getUserParam($("#buscar_campo").val());}
-});
-
 $("#button-list-one").click(function(e) {
 	e.preventDefault();
 	if ($('#buscar_id').val() === '')
@@ -57,10 +43,6 @@ else
 }
 });
 
-$('#button-delete-comment').click(function(e) {
-	e.preventDefault();					
-	deleteComment($("#buscar_ciud").val());
-});
 $('#comment-cancel').click(function(e) {
 	e.preventDefault();					
 	$("#edit-comment").val('');

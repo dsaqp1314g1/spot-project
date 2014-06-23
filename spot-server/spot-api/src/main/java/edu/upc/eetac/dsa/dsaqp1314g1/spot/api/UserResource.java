@@ -178,7 +178,7 @@ public class UserResource {
 		User usuario = new User();
 		System.out.println("Preparando la conexion a la base de datos");
 		Connection conn = null;
-		System.out.println(".............");
+		System.out.println(".......................<*******>..........................");
 		
 		try {
 			conn = ds.getConnection();

@@ -23,6 +23,13 @@ $('#perfil').click(function(e) {
 	getUser();
 	$('#spots-perfil').show();
 });
+$('#home').click(function(e) {
+	e.preventDefault();	
+	getSpots();
+	$('#spots-perfil').hide();
+	$('#spot-detail').hide();
+	
+});
 $("#button-list-one").click(function(e) {
 	e.preventDefault();
 	if ($('#buscar_id').val() === '')
@@ -54,7 +61,7 @@ function getSpots() {
 	$('progress').toggle();
 
 	$("#repos_result").text("");
-	
+	deleteMarkers();
 	
 	$.ajax({
 		url : url,

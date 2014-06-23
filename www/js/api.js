@@ -3,7 +3,6 @@ var spotID;
 
 $('#CerrarSpot').click(function(e){
 	 e.preventDefault();
-	 console.log("entro e funcion click no me gusta");
 	 $('#spot-detail').fadeOut('slow');
 	return false;
 });
@@ -25,7 +24,6 @@ $('#buscar-amigo').click(function(e) {
 //FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
 $('#NOmegusta').click(function(e){
 	 e.preventDefault();
-	 console.log("entro e funcion click no me gusta");
 	 $('#NOmegusta').hide();
 	 $('#megusta').show();
 	 NOMegustaSpot(spotID);
@@ -33,7 +31,6 @@ $('#NOmegusta').click(function(e){
 });
 $('#megusta').click(function(e){
 	 e.preventDefault();
-	 console.log("entro en funcion click me gusta");
 	 $('#megusta').hide();
 	 $('#NOmegusta').show();
 	 MegustaSpot(spotID);

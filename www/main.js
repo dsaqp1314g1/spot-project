@@ -43,10 +43,6 @@ else
 }
 });
 
-$('#button-delete-comment').click(function(e) {
-	e.preventDefault();					
-	deleteComment($("#buscar_ciud").val());
-});
 $('#comment-cancel').click(function(e) {
 	e.preventDefault();					
 	$("#edit-comment").val('');

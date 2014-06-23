@@ -30,7 +30,8 @@ $(document).ready(function(){
 function getUser() {
 	var url = API_BASE_URL + '/user/' + $.cookie('username');	
 	$('progress').toggle();
-	$("#perfil_result").text("");	
+	$("#perfil_result").text("");
+	$("#perfil-scroll-able").text("");
 	$("#perfil-titulo-spot").text($.cookie('username'));
 
 	$.ajax({
@@ -65,8 +66,9 @@ function getUser() {
 						var actualizacion = v;
 						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#pperfil-scroll-able'));
 						$('<strong> Dio a ' + actualizacion.estado + ' sobre el espot spot </strong> ' + actualizacion.nombrespot + '<br>').appendTo($('#perfil-scroll-able'));
-						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil_result'));
-						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil-scroll-able'));												
+						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able'));
+						$('<button id="ver-actu'+ actualizacion.idspot+'">'+"Ver Spot"+'</button><br><br>').appendTo($('#perfil-scroll-able'));
+						$('<style type="text/css">  #ver-actu'+ actualizacion.idspot+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#spot-scroll-able'));
 						$('#ver-actu'+actualizacion.idspot).click(function(e){
 							e.preventDefault();
 							deleteActuMegusta(actualizacion.idspot, actualizacion.userspot);

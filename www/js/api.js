@@ -18,9 +18,9 @@ $('#buscar-amigo').click(function(e) {
 	else{
 	$('#comment-form').hide();
 	getUserParam($("#buscar_campo").val());
+	//$("#buscar_campo").val('');
 	}
 });
-
 //FALTA SI YA HAS DADO HA MEGUSTA QUE YA NO PUEDAS HACERLO ************************************
 $('#NOmegusta').click(function(e){
 	 e.preventDefault();
@@ -244,6 +244,7 @@ function deleteActuMegusta(idspot, userspot) {
 function getSpotId(id) {
 	var url = API_BASE_URL + '/spots/'+id;
 	$("#spot_result").text("");	
+	$("#spot-scroll-able").text("");
 	$("#spot-detail").fadeIn('slow');
 	$.ajax({
 		url : url,
@@ -265,7 +266,8 @@ function getSpotId(id) {
 						$('<section id='+comentario.idcomentario+'><h4>'+comentario.usuario+'     '+comentario.fechacreacion+'</h4><p>' + comentario.comentario + '</p></section>').appendTo($('#spot-scroll-able'));
 						if (comentario.usuario === $.cookie('username'))
 							{
-						$('<button id="delete-coms'+comentario.idcomentario+'" class="btn btn-default">'+"Delete"+'</button><br><br>').appendTo($('#spot-scroll-able'));												
+						$('<button id="delete-coms'+ comentario.idcomentario+'">'+"Delete"+'</button><br><br>').appendTo($('#spot-scroll-able'));
+						$('<style type="text/css">  #delete-coms'+ comentario.idcomentario+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#spot-scroll-able'));
 						$('#delete-coms'+comentario.idcomentario).click(function(e){
 							e.preventDefault();
 							deleteComment(spot.idspot,comentario.idcomentario);
@@ -276,21 +278,24 @@ function getSpotId(id) {
 
 					});
 				$('<hr>').appendTo($('#spot_result'));
-				$('#comment-ok').click(function(e) {
-					if ($('#edit-comment').val() === '') {
-						$('#exam-error').show();
-					} else {
-						e.preventDefault();
-						var comment = new Object();	
-						comment.usuario = $.cookie('username');
-						comment.comentario = $('#edit-comment').val();
-						createComentario(spot.idspot, JSON.stringify(comment));										
-					}
-				});
 	}).fail(function() {
 		$("#spot_result").text("NO RESULT");
 	});
 }
+
+$('#comment-ok').click(function(e) {
+	if ($('#edit-comment').val() === '') {
+		$('#exam-error').show();
+	} else {
+		e.preventDefault();
+		var comment = new Object();	
+		comment.usuario = $.cookie('username');
+		comment.comentario = $('#edit-comment').val();
+		$("#edit-comment").val('');
+		console.log($('#edit-comment').val());
+		createComentario(spotID, JSON.stringify(comment));
+	}
+});
 
 function NOMegustaSpot(id) {
 	var url = API_BASE_URL + '/spots/'+id+ '/NOmegustas/'+$.cookie('username');

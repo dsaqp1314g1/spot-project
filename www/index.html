@@ -129,6 +129,51 @@ font-size: 20px;
 	font-weight: bold;	
 }
 
+#button-list-spots{
+background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+border: 2px solid #FFBF00;
+color: white;
+border-radius: 5px;
+padding: 5px 15px;
+}
+
+#comment-cancel{
+background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+border: 2px solid #FFBF00;
+color: white;
+border-radius: 5px;
+padding: 5px 15px;
+}
+
+#comment-ok{
+background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+border: 2px solid #FFBF00;
+color: white;
+border-radius: 5px;
+padding: 5px 15px;
+}
+
+#buscar-amigo{
+background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+border: 2px solid #FFBF00;
+color: white;
+border-radius: 5px;
+padding: 5px 15px;
+}
+
+#salir{
+background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+border: 2px solid #FFBF00;
+color: white;
+border-radius: 5px;
+padding: 5px 15px;
+}
+
 #panel-heading {
 	text-align:center;
 	border-bottom: 3px solid #FFBF00;
@@ -190,7 +235,7 @@ z-index: 1;
 <!-- Optional theme -->
 <link rel="stylesheet"
 	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-<title>Spotgram</title>
+<title></title>
 
 </head>
 <body>
@@ -217,7 +262,9 @@ z-index: 1;
 							class="form-control" placeholder="Enter user name.."
 							required="required">
 					</div>
-					<button class="btn btn-default" id="buscar-amigo" type="submit">Buscar</button>
+					<button type="submit" id="buscar-amigo">
+							<strong >Buscar Usuario</strong>
+						</button>
 				</form>
 				<form class="navbar-form navbar-left">
 					<form class="form-horizontal col-md-4" role="form">
@@ -231,19 +278,19 @@ z-index: 1;
 								class="form-control" placeholder="Enter user name.."
 								required="required">
 						</div>
-						<button type="submit" class="btn btn-default"
-							style="background: #0B243B;" id="button-list-spots">
-							<strong style="color: #FFFFFF">Buscar</strong>
+						<button type="submit" id="button-list-spots">
+							<strong >Buscar Spot</strong>
 						</button>
 					</form>
 
 				</form>
 				<form class="navbar-form navbar-left">
 					<form class="form-horizontal col-md-4" role="form">
-						<button class="btn btn-default" id="salir" type="submit">Salir</button>
+						<button type="submit" id="salir">
+							<strong >Salir</strong>
+						</button>
 					</form>
 				</form>
-				<p class="navbar-text navbar-right">SPOTGRAM</p>
 		</div>
 	</nav>
 	<h1></h1>
@@ -340,8 +387,8 @@ z-index: 1;
 					<textarea rows="4" id="edit-comment" class="form-control"
 						form="comment-form"></textarea>
 					<br>
-					<button id="comment-ok" class="btn btn-default">OK</button>
-					<button id="comment-cancel" class="btn btn-default">Cancel</button>
+					<button id="comment-ok" >OK</button>
+					<button id="comment-cancel">Cancel</button>
 				</div>
 				<div class="col-sm-6">
 					<strong> Comentarios: </strong><br>

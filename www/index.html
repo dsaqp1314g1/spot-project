@@ -50,7 +50,27 @@ background:#F2F5A9;
 	width: 32px;
 	height: 32px;
 }
-
+#CerrarPerfil {
+	float: right;
+	margin-top: -10px;
+	margin-right: -10px;
+	cursor: pointer;
+	color: #FFBF00;
+	border: 1px solid transparent;
+	border-radius: 7px;
+	background: transparent;
+	font-size: 20px;
+	font-weight: bold;
+	display: inline-block;
+	line-height: 0px;
+	border-radius: 7px;
+	background: transparent;
+	font-size: 20px;
+	font-weight: bold;
+	display: inline-block;
+	line-height: 0px;
+	padding: 11px 1px;
+}
 #CerrarSpot {
 	float: right;
 	margin-top: -10px;
@@ -94,6 +114,7 @@ background:#F2F5A9;
 	color: white;
 	height: 450px;
 	overflow: auto;
+	overflow-color: #1e1e1e;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 }
@@ -241,6 +262,7 @@ font-size: 20px;
 		<div id="panel-heading" class="panel-heading">
 			<h3 class="panel-title">
 				<strong id="perfil-titulo-spot"></strong>
+				<button id="CerrarPerfil">X</button>
 			</h3>
 		</div>
 
@@ -297,8 +319,7 @@ font-size: 20px;
 		</form>
 	</div>
 	<h1></h1>
-	<div id="spot-detail" class="panel panel-default"
-		style="display: none;">
+	<div id="spot-detail" class="panel panel-default" style="display: none;">
 		<div id="panel-heading" class="panel-heading">
 
 			<h3 class="panel-title">

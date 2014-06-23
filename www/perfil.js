@@ -1,7 +1,12 @@
 var API_BASE_URL = "http://localhost:8181/spot-api";
 var stingsURL;
 
-
+$('#CerrarPerfil').click(function(e){
+	 e.preventDefault();
+	 console.log("entro e funcion click no me gusta");
+	 $('#spots-perfil').fadeOut('slow');
+	return false;
+});
 $('#buscar-amigo').click(function(e) {
 	e.preventDefault();	
 	 $("#error-perfil-div").hide();

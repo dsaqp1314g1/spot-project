@@ -25,6 +25,7 @@ $('#perfil').click(function(e) {
 });
 $('#home').click(function(e) {
 	e.preventDefault();	
+	$('<style type="text/css">  #home { color: #F7D358; font-size: 15px; font-weight: bold;} </style>');
 	getSpots();
 	$('#spots-perfil').hide();
 	$('#spot-detail').hide();

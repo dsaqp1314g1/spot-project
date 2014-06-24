@@ -747,6 +747,9 @@ public class SpotResource {
 			throw new ServerErrorException(e.getMessage(),
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
+		System.out.println("Pasando a eliminar la actualizacion de la tabla actumegusta");
+		deleteActuMegusta(idspot, username);
+		System.out.println();
 		return spot;
 	}
 	
@@ -758,6 +761,46 @@ public class SpotResource {
 	private String buildDeleteMegusta() {
 		return "delete from megustas where idspot=? and usuario=?";
 	}
+	
+	private void deleteActuMegusta(int idspot, String userspot){
+
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+		System.out.println("Conexion a mysql hecha");
+		PreparedStatement stmt = null;
+		try {
+			String sql = buildDeleteActuMegusta();
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			System.out.println("Creando la query");
+			stmt.setInt(1, idspot);
+			stmt.setString(2, userspot);
+			System.out.println("Ejecutando la Query");
+			stmt.executeUpdate();
+			System.out.println("Query ejecutada");
+			System.out.println("...............");
+		} 
+		catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e) {
+			}
+		}
+
+    }
 	
 	@DELETE
 	@Path("/{idspot}/comentario/{idcomentario}")
@@ -807,12 +850,55 @@ public class SpotResource {
 		}
 		
 		System.out.println("Comentario eliminado");
+		System.out.println("Pasando a eliminar la actualizacion");
+		deleteActualizacionComentario(Integer.valueOf(idspot), Integer.valueOf(idcomentario));
+		System.out.println("Actualizacion de comentario eliminada");
 		return getSpotFromDatabase(idspot);
 	}
 
 	private String buildDeleteReview() {
 		return "delete from comentarios where idcomentario=? and idspot=?";
 	}
+	
+	private void deleteActualizacionComentario(int idspot, int idcoment){
+
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+		System.out.println("Conexion a mysql hecha");
+		PreparedStatement stmt = null;
+		try {
+			String sql = buildDeleteActualizacion();
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			System.out.println("Creando la query");
+			stmt.setInt(1, idcoment);
+			stmt.setInt(2, idspot);
+			System.out.println("Ejecutando la Query");
+			stmt.executeUpdate();
+			System.out.println("Query ejecutada");
+			System.out.println("...............");
+		} 
+		catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e) {
+			}
+		}
+
+    }
 	
 	private void actumegusta(Spot spot, String estado, String usermegusta){
 

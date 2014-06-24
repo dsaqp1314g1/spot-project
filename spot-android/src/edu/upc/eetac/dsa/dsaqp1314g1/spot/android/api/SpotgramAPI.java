@@ -1,6 +1,7 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -14,8 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
  
+
+
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.util.Log;
  
 public class SpotgramAPI {
@@ -244,7 +248,7 @@ public class SpotgramAPI {
 	 
 		return Spot;
 	}
-	public Spot createSpot(String usuario, String ciudad, String deporte, String title, String urlSpot)
+	public Spot createSpot(String usuario, String lat, String lon, String ciudad, String deporte, String title, String urlSpot, Bitmap bitmap)
 			throws SpotgramAndroidException {
 		URL urls = null;
 		try {
@@ -256,13 +260,15 @@ public class SpotgramAPI {
 		Log.d(TAG, "createSpot()");
 		Spot spot = new Spot();
 		spot.setDeporte(deporte);
+		spot.setLatitud(Double.parseDouble(lat));
+		spot.setLongitud(Double.parseDouble(lon));
 		spot.setTitle(title);
 		spot.setCiudad(ciudad);
 		spot.setUsuario(usuario);
 		Log.d(TAG, usuario);
 		Log.d(TAG, ciudad);
 		HttpURLConnection urlConnection = null;
-		try {
+		try {			
 			JSONObject jsonSpot = createJsonSpot(spot);
 			URL urlPostSpots = urls;
 			urlConnection = (HttpURLConnection) urlPostSpots.openConnection();
@@ -276,6 +282,9 @@ public class SpotgramAPI {
 			urlConnection.connect();
 			PrintWriter writer = new PrintWriter(
 					urlConnection.getOutputStream());
+			 ByteArrayOutputStream bao = new ByteArrayOutputStream();
+			    bitmap.compress(Bitmap.CompressFormat.PNG, 30, bao);
+			    byte[] data = bao.toByteArray();
 			writer.println(jsonSpot.toString());
 			writer.close();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -288,6 +297,8 @@ public class SpotgramAPI {
 			jsonSpot = new JSONObject(sb.toString());
 
 			spot.setUsuario(jsonSpot.getString("usuario"));
+			spot.setLatitud(jsonSpot.getDouble("latitud"));
+			spot.setLongitud(jsonSpot.getDouble("longitud"));
 			spot.setDeporte(jsonSpot.getString("deporte"));
 			spot.setCiudad(jsonSpot.getString("ciudad"));
 			spot.setTitle(jsonSpot.getString("title"));
@@ -314,6 +325,8 @@ public class SpotgramAPI {
 		JSONObject jsonSpot = new JSONObject();
 		jsonSpot.put("title", Spot.getTitle());
 		jsonSpot.put("deporte", Spot.getDeporte());
+		jsonSpot.put("latitud", Spot.getLatitud());
+		jsonSpot.put("longitud", Spot.getLongitud());
 		jsonSpot.put("usuario", Spot.getUsuario());
 		jsonSpot.put("ciudad", Spot.getCiudad());
 	 

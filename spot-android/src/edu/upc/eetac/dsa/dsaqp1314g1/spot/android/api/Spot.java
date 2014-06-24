@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.graphics.Bitmap;
+
 public class Spot {
 	private Map<String, Link> links = new HashMap<>();
 	private String idspot;
@@ -18,7 +20,7 @@ public class Spot {
 	private String fechasubida;
 	private String imageURL;
 	private List<Comentario> comentario;
-	
+	private Bitmap bitmap;
 	
 	public String getTitle() {
 		return title;
@@ -26,6 +28,14 @@ public class Spot {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 
 	public String getImageURL() {

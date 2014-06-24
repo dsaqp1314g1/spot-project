@@ -13,8 +13,9 @@
 
     <ImageView
         android:id="@+id/spotimagen"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.16"
         android:src="@drawable/ic_launcher" />
  
     <TextView
@@ -22,8 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_margin="10dip"
-        android:layout_weight="1"
+        android:layout_weight="0.13"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@+id/listComment"
+        android:layout_width="match_parent"
+        android:layout_height="191dp" >
+    </ListView>
  
     <LinearLayout
         android:layout_width="match_parent"

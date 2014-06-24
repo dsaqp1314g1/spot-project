@@ -108,7 +108,7 @@ public class SpotResource {
 
 				spot.setIdspot(rs.getInt("idspot"));
 				System.out.println("Comprovando id: " + rs.getInt("idspot"));
-				System.out.println("Comprovando ciudad: " + rs.getString("title"));
+				System.out.println("Comprovando titulo: " + rs.getString("title"));
 				spot.setTitle(rs.getString("title"));
 				System.out.println("Comprovando ciudad: " + rs.getString("ciudad"));
 				spot.setCiudad(rs.getString("ciudad"));
@@ -398,10 +398,10 @@ public class SpotResource {
     @POST
 	@Consumes(MediaType.API_SPOT)
 	@Produces(MediaType.API_SPOT)
-	public Spot createSpot(Spot spot) {
-//    	public Spot createSpot(Spot spot,
-//    			@FormDataParam("image") InputStream image,
-//    			@FormDataParam("image") FormDataContentDisposition fileDisposition) {
+//	public Spot createSpot(Spot spot) {
+    	public Spot createSpot(Spot spot,
+    			@FormDataParam("image") InputStream image,
+    			@FormDataParam("image") FormDataContentDisposition fileDisposition) {
 		System.out.println("Subiendo un spot");
 
 		System.out.println("Subiendo titulo: "+ spot.getTitle());
@@ -424,9 +424,11 @@ public class SpotResource {
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			System.out.println("Insertando valores en la tabla");
 			stmt.setString(1, spot.getTitle());
-			stmt.setString(2, spot.getUsuario());
-			stmt.setString(3, spot.getDeporte());
-			stmt.setString(4, spot.getCiudad());
+			stmt.setDouble(2, spot.getLatitud());
+			stmt.setDouble(3, spot.getLongitud());
+			stmt.setString(4, spot.getUsuario());
+			stmt.setString(5, spot.getDeporte());
+			stmt.setString(6, spot.getCiudad());
 
 			stmt.executeUpdate();
 			System.out.println("Query ejecutada");
@@ -437,7 +439,7 @@ public class SpotResource {
 				System.out.println("Praparando para guardar la imagen");
 				
 				// DESCOMENTAR PER PUJAR LA IMATGE!!!
-				//UUID uuid = writeAndConvertImage(image, rs.getInt(1) );
+				UUID uuid = writeAndConvertImage(image, rs.getInt(1) );
 				System.out.println("Pasando a recoger el spot creado");
 				spot = getSpotFromDatabase(Integer.toString(idspot));
 			} else {
@@ -468,10 +470,10 @@ public class SpotResource {
 		if (spot.getDeporte() == null)
 			throw new BadRequestException("Deporte can't be null.");
 		if (spot.getCiudad() == null)
-			throw new BadRequestException("User can't be null.");
+			throw new BadRequestException("City can't be null.");
 	}
 	private String buildInsertSpot() {
-		return "insert into spots (title, latitud, longitud, megustas, usuario, deporte, ciudad) value (?,'-12', '41', '0', ?, ?, ?)";
+		return "insert into spots (title, latitud, longitud, megustas, usuario, deporte, ciudad) value (?,?,?, '0', ?, ?, ?)";
 	}
     
 	

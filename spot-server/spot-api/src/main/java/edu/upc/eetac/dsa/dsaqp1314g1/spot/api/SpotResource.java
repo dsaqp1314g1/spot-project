@@ -93,7 +93,7 @@ public class SpotResource {
 			} else {
 
 				if (length == 0)
-					stmt.setInt(1, 10);
+					stmt.setInt(1, 100);
 				else
 					stmt.setInt(1, length);
 			}

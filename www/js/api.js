@@ -227,8 +227,8 @@ function deleteActualizacion(idspot, idcomentario) {
 	});
 }
 
-function deleteActuMegusta(idspot, userspot) {
-	var url = API_BASE_URL +"/spots/"+idspot+"/actumegusta/"+userspot;
+function deleteActuMegusta(idspot, usermegusta) {
+	var url = API_BASE_URL +"/spots/"+idspot+"/actumegusta/"+usermegusta;
 	
 	$.ajax({
 		url : url,
@@ -244,9 +244,9 @@ function deleteActuMegusta(idspot, userspot) {
 
 function getSpotId(id) {
 	var url = API_BASE_URL + '/spots/'+id;
+	$("#spot-detail").fadeIn('slow');
 	$("#spot_result").text("");	
 	$("#spot-scroll-able").text("");
-	$("#spot-detail").fadeIn('slow');
 	$('#estado-Megustas').text("Me gusta");
 	$('#megusta').show();
 	$('#NOmegusta').hide();
@@ -315,7 +315,6 @@ $('#comment-ok').click(function(e) {
 		comment.usuario = $.cookie('username');
 		comment.comentario = $('#edit-comment').val();
 		$("#edit-comment").val('');
-		console.log($('#edit-comment').val());
 		createComentario(spotID, JSON.stringify(comment));
 	}
 });

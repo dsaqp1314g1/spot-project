@@ -3,7 +3,6 @@ var stingsURL;
 
 $('#CerrarPerfil').click(function(e){
 	 e.preventDefault();
-	 console.log("entro e funcion click no me gusta");
 	 $('#spots-perfil').fadeOut('slow');
 	return false;
 });
@@ -51,9 +50,9 @@ function getUser() {
 						$('<strong> El usuario : </strong>' + actualizacion.usercomentario + '<br>').appendTo($('#perfil-scroll-able'));
 						$('<strong> A hecho un comentario en el spot : </strong> ' + actualizacion.nombrecomentario + '<br>').appendTo($('#perfil-scroll-able'));
 						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able'));
-						
-						$('<button id="ver-actu'+ actualizacion.idspot+'" class="btn btn-default">'+"¡Ver Spot!"+'</button><br><br>').appendTo($('#perfil-scroll-able'));												
-						$('#ver-actu'+actualizacion.idspot).click(function(e){
+						$('<button id="ver-actu'+ actualizacion.idspot+actualizacion.idcomentario+'">'+"Ver Spot"+'</button><br><br>').appendTo($('#perfil-scroll-able'));												
+						$('<style type="text/css">  #ver-actu'+ actualizacion.idspot+actualizacion.idcomentario+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able'));
+						$('#ver-actu'+actualizacion.idspot+actualizacion.idcomentario).click(function(e){
 							e.preventDefault();
 							deleteActualizacion(actualizacion.idspot, actualizacion.idcomentario);
 							getSpotId(actualizacion.idspot);
@@ -64,14 +63,15 @@ function getUser() {
 					});
 					$.each(user.actumegustacollection.actualizacion, function(i, v) {
 						var actualizacion = v;
-						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#pperfil-scroll-able'));
+						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#perfil-scroll-able'));
 						$('<strong> Dio a ' + actualizacion.estado + ' sobre el espot spot </strong> ' + actualizacion.nombrespot + '<br>').appendTo($('#perfil-scroll-able'));
 						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able'));
-						$('<button id="ver-actu'+ actualizacion.idspot+'">'+"Ver Spot"+'</button><br><br>').appendTo($('#perfil-scroll-able'));
-						$('<style type="text/css">  #ver-actu'+ actualizacion.idspot+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#spot-scroll-able'));
-						$('#ver-actu'+actualizacion.idspot).click(function(e){
+						$('<button id="ver-actus'+ actualizacion.idspot+actualizacion.usermegusta+'">'+"Ver Spot"+'</button><br><br>').appendTo($('#perfil-scroll-able'));
+						$('<style type="text/css">  #ver-actus'+ actualizacion.idspot+actualizacion.usermegusta+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able'));
+						$('#ver-actus'+actualizacion.idspot+actualizacion.usermegusta).click(function(e){
 							e.preventDefault();
-							deleteActuMegusta(actualizacion.idspot, actualizacion.userspot);
+							console.log("Click y preparado para eliminar actu: " + actualizacion.idspot + "  "+actualizacion.usermegusta);
+							deleteActuMegusta(actualizacion.idspot, actualizacion.usermegusta);
 							getSpotId(actualizacion.idspot);
 							return false;
 						});

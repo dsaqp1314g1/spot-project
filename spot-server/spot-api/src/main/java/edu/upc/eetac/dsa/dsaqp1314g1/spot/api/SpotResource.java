@@ -675,6 +675,7 @@ public class SpotResource {
 	public Spot updateNOMegustas(@PathParam("idspot") String idspot, @PathParam("username") String username,
 			Spot spot)	{
 		//String username = security.getUserPrincipal().getName();
+		System.out.println("***************************");
 		spot = getSpotFromDatabase(idspot);
 		//user = getUserFromDatabase(username);
 		System.out.println(username);
@@ -748,7 +749,7 @@ public class SpotResource {
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 		System.out.println("Pasando a eliminar la actualizacion de la tabla actumegusta");
-		deleteActuMegusta(idspot, username);
+		deleteActuMegustaElNO(Integer.valueOf(idspot), username);
 		System.out.println();
 		return spot;
 	}
@@ -762,7 +763,7 @@ public class SpotResource {
 		return "delete from megustas where idspot=? and usuario=?";
 	}
 	
-	private void deleteActuMegusta(int idspot, String userspot){
+	private void deleteActuMegustaElNO(int idspot, String usermegusta){
 
 		Connection conn = null;
 		try {
@@ -779,7 +780,7 @@ public class SpotResource {
 
 			System.out.println("Creando la query");
 			stmt.setInt(1, idspot);
-			stmt.setString(2, userspot);
+			stmt.setString(2, usermegusta);
 			System.out.println("Ejecutando la Query");
 			stmt.executeUpdate();
 			System.out.println("Query ejecutada");
@@ -799,6 +800,7 @@ public class SpotResource {
 			catch (SQLException e) {
 			}
 		}
+		System.out.println("Fin de eliminacion actumegusta");
 
     }
 	
@@ -850,7 +852,7 @@ public class SpotResource {
 		}
 		
 		System.out.println("Comentario eliminado");
-		System.out.println("Pasando a eliminar la actualizacion");
+		System.out.println("Pasando a eliminar la actualizacion : " +idspot + " / "+ idcomentario);
 		deleteActualizacionComentario(Integer.valueOf(idspot), Integer.valueOf(idcomentario));
 		System.out.println("Actualizacion de comentario eliminada");
 		return getSpotFromDatabase(idspot);
@@ -1045,9 +1047,9 @@ public class SpotResource {
 	}
 	
 	@DELETE
-	@Path("/{idspot}/actumegusta/{userspot}")
+	@Path("/{idspot}/actumegusta/{usermegusta}")
 	public void deleteActuMegusta(@PathParam("idspot") String idspot,
-			@PathParam("userspot") String userspot) {
+			@PathParam("usermegusta") String usermegusta) {
 
 		System.out.println("Comenzando eliminacion de una actualizacion de megusta");
 
@@ -1064,11 +1066,11 @@ public class SpotResource {
 
 			System.out.println("Preparando la Query");
 			System.out.println("Id del spot : " + idspot
-					+ " Id de la acualizacion a eliminar: " + userspot);
+					+ " Id de la acualizacion a eliminar: " + usermegusta);
 			String sql = buildDeleteActuMegusta();
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, Integer.valueOf(idspot));
-			stmt.setString(2, userspot);
+			stmt.setString(2, usermegusta);
 
 			int rows = stmt.executeUpdate();
 			if (rows == 0)
@@ -1087,8 +1089,8 @@ public class SpotResource {
 		}
 		System.out.println("Comentario eliminado");
 	}
-
+	
 	private String buildDeleteActuMegusta() {
-		return "delete from actumegusta where idspot=? and userspot=?";
+		return "delete from actumegusta where idspot=? and usermegusta=?";
 	}
 }

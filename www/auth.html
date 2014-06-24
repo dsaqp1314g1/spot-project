@@ -1,46 +1,237 @@
 <html lang="es">
-  <head>
-   <meta charset="utf-8">
-		<title>Spotgram</title>
-  </head>
-  <BODY BACKGROUND="img/imag.jpg" background-position="center" BGPROPERTIES="fixed">
-  <div class="container">
-      <h1> </h1>
-		<br>
-   <ul class="nav nav-tabs">
-					<li class="tab-title active"><a href="auth.html">Login</a></li>
-					<li class="tab-title"><a href="register.html">Create Account</a></li>
-                  </ul>
-      <h1> </h1>
-		<br>
-		<div class="col-md-12">
-		<div class="alert alert-info" style='display:none;' id="alerta-auth-div">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong>¡Campo sin rellenar maik!</strong>
-</div>
-		<div class="alert alert-danger" style='display:none;' id="error-auth-div">
-  <button type="button" class="close" data-dismiss="alert" id="error-auth" >&times;</button>
-  <strong>¡Contraseña o usuario incorrectos!</strong> 
-</div>
-    <form class="form-horizontal col-md-4" role="form" >			
-					<div class="form-group">
-                        <label for="nombre-auth">Username: </label>
-                          <input name="name" type="text" id="nombre-auth" class="form-control"  placeholder="Enter username.." required="required" >
-						  </div>
-  					<div class="form-group">
-                        <label for="password-auth">Password: </label>
-						  <input name="password" type="password" id="password-auth" class="form-control"  placeholder="Enter userpass.." required="required">
-						  </div>
-							<button class="btn btn-lg btn-primary btn-block" style="background: #0B243B;" id="button-auth" type="submit">Sign in</button>					 		
-			</form>
-                </div>
-				</div>
+<head>
+<meta charset="utf-8">
+<title>Spotgram</title>
 
-    <!-- Bootstrap core JavaScript
+<style type="text/css">
+body {
+	background-image: url("img/fondoLogin.jpg");
+	  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  }
+  #panel-heading {
+	text-align: center;
+	border-bottom: 3px solid #FFBF00;
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 0.75) 0%,
+		rgba(0, 0, 0, 0.75) 100%);
+	color: white;
+}
+
+#panel-body {
+	padding: 5px;
+	background: rgba(30, 30, 30, 0.7);
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+	box-shadow: 10px 10px 5px rgba(0, 0, 0, .6);
+}
+#titulo-login-register {
+color: #FFBF00;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#alerta-auth-div{
+color: red;
+font-weight: normal;
+
+}
+#alerta-nomusu-div{
+color: red;
+font-weight: normal;
+}
+
+#alerta-auth-div-login{
+color: red;
+font-weight: normal;
+}
+#error-auth-div{
+color: red;
+font-weight: normal;
+
+}
+#button-register {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 10px;
+}
+
+#button-auth {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+}
+
+#button-cancelRegis {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+}
+
+#button-regist {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+}
+
+#login-detail {
+	position: absolute;
+	left: 550px;
+	top: 250px;
+	z-index: 1; /* The z-index should be higher than Google Maps */
+	width: 300px;
+	margin: 2px auto 0;
+	height: 80px;
+	color: white;
+	border-radius: 7px;
+	background: transparent;
+}
+ 
+ #register-detail {
+	position: absolute;
+	left: 400px;
+	top: 250px;
+	z-index: 1; /* The z-index should be higher than Google Maps */
+	width: 700px;
+	margin: 2px auto 0;
+	height: 80px;
+	color: white;
+	border-radius: 7px;
+	background: transparent;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+	
+		<div id="register-detail" class="panel" style="display: none;">
+			<div id="panel-heading" class="panel-heading">
+
+				<h3 id="panel-title" class="panel-title">
+					<strong id="titulo-login-register">Spotgram</strong>
+
+				</h3>
+			</div>
+
+			<div id="panel-body" class="panel-body">
+				<div class="panel-body">
+
+					<form class="form-horizontal col-md-12">
+						
+						<div class="form-group">
+						<div class="col-md-3"></div>
+							<div id="alerta-auth-div" style='display: none;'>
+								<strong>No has introducido todos los datos</strong>
+							</div>
+							<div id="alerta-nomusu-div" style='display: none;'>
+								<strong>Este nombre de usuario ya existe</strong>
+							</div>
+							<div class="col-md-3"></div>
+						</div>
+						
+						<div class="col-md-6">
+
+							<label for="user-regist">Username: </label> <input name="name"
+								type="text" id="user-regist" class="form-control"
+								placeholder="Enter username.." required="required">
+							<h1></h1>
+
+							<label for="password-regist">Password: </label> <input
+								name="password" type="password" id="password-regist"
+								class="form-control" placeholder="Enter userpass.."
+								required="required">
+						</div>
+
+						<div class="col-md-6">
+
+							<label for="name-regist">First Name: </label> <input name="text"
+								type="text" id="name-regist" class="form-control"
+								placeholder="Enter userpass.." required="required">
+							<h1></h1>
+
+							<label for="mail-regist">Email: </label> <input name="name"
+								type="text" id="mail-regist" class="form-control"
+								placeholder="Enter username.." required="required"><br>
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-lg btn-primary btn-block"
+								id="button-regist" type="submit">Sign in</button>
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-lg btn-primary btn-block"
+								id="button-cancelRegis" type="submit">Cancel</button>
+
+						</div>
+
+					</form>
+
+				</div>
+			</div>
+		</div>
+
+		<div id="login-detail" class="panel">
+			<div id="panel-heading" class="panel-heading">
+
+				<h3 id="panel-title" class="panel-title">
+					<strong id="titulo-login-register">Spotgram</strong>
+
+				</h3>
+			</div>
+
+			<div id="panel-body" class="panel-body">
+				<div class="panel-body col-md-12">
+					<form class="form-horizontal col-md-12">
+						<div class="form-group">
+							<div id="alerta-auth-div-login" style='display: none;'>
+								<strong>No has introducido todos los datos</strong>
+							</div>
+							<div style='display: none;' id="error-auth-div">
+								<strong>¡Contraseña o usuario incorrectos!</strong>
+							</div>
+							<input name="name" type="text" id="nombre-auth"
+								class="form-control" placeholder="Enter username.."
+								required="required">
+						</div>
+						<div class="form-group">
+							<input name="password" type="password" id="password-auth"
+								class="form-control" placeholder="Enter userpass.."
+								required="required">
+						</div>
+						<div class="col-sm-6">
+							<button class="btn btn-lg btn-primary btn-block" id="button-auth"
+								type="submit">Login</button>
+						</div>
+						<div class="col-sm-6">
+							<button class="btn btn-lg btn-primary btn-block"
+								id="button-register" type="submit">Register</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     
-  </body>
+
   <!-- Scripts -->
 			<!-- jQuery 1.11.0 development -->
 		<script src="http://code.jquery.com/jquery-1.11.0.js"></script>
@@ -60,4 +251,5 @@
 
       <!-- Optional theme -->
       <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+  </body>
 </html>

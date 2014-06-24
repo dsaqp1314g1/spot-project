@@ -37,6 +37,16 @@ body {
 	height: 32px;
 }
 
+#logotipo {
+	float: left;
+	margin-top: 2px;
+	padding: 7px;
+
+color: #FFBF00;
+	font-size: 20px;
+	font-weight: bold;
+
+}
 #edit-comment {
 	background: #F2F5A9;
 	border: 3px solid #FFBF00;
@@ -226,6 +236,7 @@ body {
 	height: 80px;
 	color: white;
 	border-radius: 7px;
+	background: transparent;
 }
 
 #spots-perfil {
@@ -238,6 +249,7 @@ body {
 	height: 80px;
 	color: white;
 	border-radius: 7px;
+	background: transparent;
 }
 
 #exam-error {
@@ -246,6 +258,24 @@ body {
 
 #nav {
 	z-index: 1; /* The z-index should be higher than Google Maps */
+}
+#nav li {
+    display: inline;
+}
+
+#nav a {
+    display: inline-block;
+    padding: 15px;
+    border: 1px #000000;
+    border-radius: 2px;
+    color: #FFFFFF;
+    background-color: transparent;
+}
+#nav a.active {
+	font-size: 18px;
+
+    color: #FFBF00;
+    background-color: trasparent;
 }
 </style>
 <script type="text/javascript"
@@ -268,9 +298,7 @@ body {
 		<!-- El logotipo y el icono que despliega el menú se agrupan
        para mostrarlos mejor en los dispositivos móviles -->
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target=".navbar-ex1-collapse"></button>
-			<a class="navbar-brand" href="#">Logotipo</a>
+		<strong id="logotipo">Spotgram</strong>
 		</div>
 
 		<!-- Agrupar los enlaces de navegación, los formularios y cualquier
@@ -285,7 +313,7 @@ body {
 					<div class="form-group">
 						<input name="amigow" type="text" id="buscar_campo"
 							class="form-control" placeholder="Enter user name.."
-							required="required">
+							required="required" >
 					</div>
 					<button type="submit" id="buscar-amigo">
 							<strong >Buscar Usuario</strong>

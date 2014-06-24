@@ -21,15 +21,23 @@ else
 $('#perfil').click(function(e) {
 	e.preventDefault();	
 	getUser();
-	$('#spots-perfil').show();
+	 $(this).toggleClass('active');
+	 $(this).children('a').toggleClass('active');
+	 $(this).siblings('li').children('a').removeClass('active');
+	 $('#home').removeClass('active');
+	$('#spots-perfil').fadeIn('slow');
+	$("#spot-detail").fadeOut('slow');
+
 });
 $('#home').click(function(e) {
 	e.preventDefault();	
-	$('<style type="text/css">  #home { color: #F7D358; font-size: 15px; font-weight: bold;} </style>');
 	getSpots();
+	 $(this).toggleClass('active');
+	 $(this).children('a').toggleClass('active');
+	 $(this).siblings('li').children('a').removeClass('active');
+	 $('#perfil').removeClass('active');
 	$('#spots-perfil').hide();
 	$('#spot-detail').hide();
-	
 });
 $("#button-list-one").click(function(e) {
 	e.preventDefault();
@@ -155,16 +163,11 @@ function hideEditForm() {
 }
 
 var stingsURL;
-$(document).ready(function(){	
-// loadRootAPI(function(rootAPI){
-// // stingsURL = rootAPI.getLink('spots').href;
-// // loadStings(rootAPI.getLink('spots').href);
-// getTasks();
-// }); var mapOptions = {
-	// this works! (lat, lng are global variables read from localStorage
+$(document).ready(function(){
 	
-	//getSpots();
-	
+	 $('#home').toggleClass('active');
+	 $('#home').children('a').toggleClass('active');
+	 $('#home').siblings('li').children('a').removeClass('active');
 	//comprovacion de la cookie
 		  if($.cookie('username')) {
 			  console.log("Usuario autentificado : " + $.cookie('username'));

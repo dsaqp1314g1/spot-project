@@ -18,6 +18,7 @@ $('#buscar-amigo').click(function(e) {
 	else{
 	$('#comment-form').hide();
 	getUserParam($("#buscar_campo").val());
+	$('#spots-perfil').show();
 	//$("#buscar_campo").val('');
 	}
 });
@@ -246,6 +247,9 @@ function getSpotId(id) {
 	$("#spot_result").text("");	
 	$("#spot-scroll-able").text("");
 	$("#spot-detail").fadeIn('slow');
+	$('#estado-Megustas').text("Me gusta");
+	$('#megusta').show();
+	$('#NOmegusta').hide();
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -256,10 +260,10 @@ function getSpotId(id) {
 				spotID=spot.idspot;
 				$('#uploadedImage').attr('src', spot.imageURL);
 				$('#titulo-spot').text(spot.title);
+				$('#contador-Megustas').text(spot.megusta);				
 				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spot_result'));
-				$('<strong> Megustas: </strong> ' + spot.megusta + '<br>').appendTo($('#spot_result'));
 					$.each(spot.comentario, function(i, v) {
 						var comentario = v;
 						$('<section id='+comentario.idcomentario+'><h4>'+comentario.usuario+'     '+comentario.fechacreacion+'</h4><p>' + comentario.comentario + '</p></section>').appendTo($('#spot-scroll-able'));
@@ -282,13 +286,15 @@ function getSpotId(id) {
 					console.log("entro en spot.botonmegusta");
 					if (botonmegusta.usermegusta === $.cookie('username'))
 						{
-							console.log("ya le he hecho megusta");
+							console.log("ya le he hecho megusta ha "+spotID);
+							$('#estado-Megustas').text("Ya no me gusta");
 							$('#NOmegusta').show();
 							$('#megusta').hide();
 							
 						}
 					else {
-							console.log("no  le he hecho megusta");
+							console.log("no le he hecho megusta ha "+spotID);
+							$('#estado-Megustas').text("Me gusta");
 							$('#megusta').show();
 							$('#NOmegusta').hide();
 

@@ -25,6 +25,7 @@ $('#perfil').click(function(e) {
 });
 $('#home').click(function(e) {
 	e.preventDefault();	
+	$('<style type="text/css">  #home { color: #F7D358; font-size: 15px; font-weight: bold;} </style>');
 	getSpots();
 	$('#spots-perfil').hide();
 	$('#spot-detail').hide();
@@ -72,6 +73,7 @@ function getSpots() {
 					var spot = new Spot(v);
 					var idmarker = spot.idspot;
 					var contentString ='<h4> Titulo: ' + spot.title + '</h4>'+ 
+					'<strong> ID: </strong> ' + spot.idspot + '<br>'+
 					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
 					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';

@@ -44,6 +44,12 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+					$('<button id="ver-usersonline'+ user.username+'">'+"Online Users"+'</button><br><br>').appendTo($('#perfil_result'));											
+					$('<style type="text/css">  #ver-usersonline'+user.username+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil_result'));
+					
+					$('<button id="ver-actus'+ user.username+'">'+"Actualizaciones"+'</button><br><br>').appendTo($('#perfil_result'));											
+					$('<style type="text/css">  #ver-actus'+user.username+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil_result'));
+					
 					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
 					$.each(user.actualizacionescollection.actualizacion, function(i, v) {
 						var actualizacion = v;

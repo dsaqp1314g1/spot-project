@@ -29,7 +29,16 @@ public class Spot {
 	private String fechasubida;
 	private String imageURL;
 	private List<Comentario> comentario;
+	private List<BotonMegusta> botonmegusta;
 	
+	public List<BotonMegusta> getBotonmegusta() {
+		return botonmegusta;
+	}
+
+	public void setBotonmegusta(List<BotonMegusta> botonmegusta) {
+		this.botonmegusta = botonmegusta;
+	}
+
 	public List<Link> getLinks() {
 		return links;
 	}
@@ -65,12 +74,15 @@ public class Spot {
 	public Spot () {
 		super();
 		comentario = new ArrayList<Comentario>();
+		botonmegusta = new ArrayList<BotonMegusta>();
 	}
 	
 	public void addComentario(Comentario review) {
 		comentario.add(review);
 	}
-	
+	public void addBotonMegusta(BotonMegusta bmegus) {
+		botonmegusta.add(bmegus);
+	}
 	public int getIdspot() {
 		return idspot;
 	}

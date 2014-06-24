@@ -23,10 +23,19 @@ public class User {
 	private String email;
 	private SpotCollection spotcollection;
 	private ActualizacionesCollection actualizacionescollection;
+	private ActuMegustaCollection actumegustacollection;
 	
 	public User () {
 		super();
 	}
+	public ActuMegustaCollection getActumegustacollection() {
+		return actumegustacollection;
+	}
+
+	public void setActumegustacollection(ActuMegustaCollection actumegustacollection) {
+		this.actumegustacollection = actumegustacollection;
+	}
+
 	public ActualizacionesCollection getActualizacionescollection() {
 		return actualizacionescollection;
 	}

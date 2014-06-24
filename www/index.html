@@ -1,142 +1,456 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      body { background-color:#CCC }
-      #map_canvas { height: 400px;}
-      </style>
-    <script type="text/javascript"
-		src="https://maps.google.com/maps/api/js?sensor=true">
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0
+}
+
+body {
+	background-color: #CCC
+}
+
+#map_canvas {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 0;
+}
+
+#NOmegusta {
+	float: left;
+	margin-top: -5px;
+	margin-left: 2px;
+	border: 1px solid transparent;
+	background: transparent;
+	background-image: url(icn_btn/NoMeGusta.png);
+	width: 32px;
+	height: 32px;
+}
+
+#edit-comment {
+	background: #F2F5A9;
+	border: 3px solid #FFBF00;
+	resize: none;
+	font-size: 10;
+	font-weight: bold;
+}
+
+#megusta {
+	float: left;
+	margin-top: -5px;
+	margin-left: 2px;
+	border: 1px solid transparent;
+	background: transparent;
+	background-image: url(icn_btn/MeGusta.png);
+	width: 32px;
+	height: 32px;
+}
+
+#CerrarPerfil {
+	float: right;
+	margin-top: -7px;
+	margin-right: -7px;
+	cursor: pointer;
+	color: #FFBF00;
+	border: 1px solid transparent;
+	border-radius: 7px;
+	background: transparent;
+	font-size: 20px;
+	font-weight: bold;
+	display: inline-block;
+	line-height: 0px;
+	border-radius: 7px;
+	background: transparent;
+	font-size: 20px;
+	font-weight: bold;
+	display: inline-block;
+	line-height: 0px;
+	padding: 11px 1px;
+}
+
+#CerrarSpot {
+	float: right;
+	margin-top: -7px;
+	margin-right: -7px;
+	cursor: pointer;
+	color: #FFBF00;
+	border: 1px solid transparent;
+	border-radius: 7px;
+	background: transparent;
+	font-size: 20px;
+	font-weight: bold;
+	display: inline-block;
+	line-height: 0px;
+	border-radius: 7px;
+	background: transparent;
+	font-size: 20px;
+	font-weight: bold;
+	display: inline-block;
+	line-height: 0px;
+	padding: 11px 1px;
+}
+
+#perfil-scroll-able {
+	padding: 10px;
+	border: 2px double #FFBF00;
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+	background: #1e1e1e;
+	color: white;
+	height: 450px;
+	overflow: auto;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+#spot-scroll-able {
+	padding: 10px;
+	border: 2px double #FFBF00;
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+	background: #1e1e1e;
+	color: white;
+	height: 450px;
+	overflow: auto;
+	overflow-color: #1e1e1e;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+#estado-Megustas {
+	float: left;
+	margin-left: 2px;
+	margin-top: 7px;
+	color: #F7D358;
+	font-size: 15px;
+	font-weight: normal;
+}
+
+#titulo-spot {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#contador-Megustas {
+	float: left;
+	margin-left: -3px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#perfil-titulo-spot {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#button-list-spots {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 7px 15px;
+}
+
+#comment-cancel {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+}
+
+#comment-ok {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+}
+
+#buscar-amigo {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 7px 15px;
+}
+
+#salir {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 7px 15px;
+}
+
+#panel-heading {
+	text-align: center;
+	border-bottom: 3px solid #FFBF00;
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	color: white;
+}
+
+#panel-body {
+	padding: 5px;
+	background: #1e1e1e;
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+	box-shadow: 10px 10px 5px rgba(0, 0, 0, .6);
+}
+
+#spot-detail {
+	position: absolute;
+	left: 830px;
+	top: 80px;
+	z-index: 1; /* The z-index should be higher than Google Maps */
+	width: 650px;
+	margin: 2px auto 0;
+	height: 80px;
+	color: white;
+	border-radius: 7px;
+}
+
+#spots-perfil {
+	position: absolute;
+	left: 20px;
+	top: 80px;
+	z-index: 1; /* The z-index should be higher than Google Maps */
+	width: 350px;
+	margin: 2px auto 0;
+	height: 80px;
+	color: white;
+	border-radius: 7px;
+}
+
+#exam-error {
+	z-index: 1;
+}
+
+#nav {
+	z-index: 1; /* The z-index should be higher than Google Maps */
+}
+</style>
+<script type="text/javascript"
+	src="https://maps.google.com/maps/api/js?sensor=true">
     
     </script>
-		<meta charset="utf-8">
-		<title>Spotgram</title>
-	</head>
-	<body>
-	<BODY BACKGROUND="img/imag.jpg" background-position="center" BGPROPERTIES="fixed">
-		<div class="container theme-showcase" role="main">
-        
-		<nav class="navbar navbar-default" role="navigation">
-  <!-- El logotipo y el icono que despliega el menú se agrupan
+<meta charset="utf-8">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<title></title>
+
+</head>
+<body>
+	<nav id="nav" class="navbar navbar-inverse" role="navigation">
+		<!-- El logotipo y el icono que despliega el menú se agrupan
        para mostrarlos mejor en los dispositivos móviles -->
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse"
-            data-target=".navbar-ex1-collapse">
-    </button>
-    <a class="navbar-brand" href="#">Logotipo</a>
-  </div>
- 
-  <!-- Agrupar los enlaces de navegación, los formularios y cualquier
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-ex1-collapse"></button>
+			<a class="navbar-brand" href="#">Logotipo</a>
+		</div>
+
+		<!-- Agrupar los enlaces de navegación, los formularios y cualquier
        otro elemento que se pueda ocultar al minimizar la barra -->
-  <div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav">
-      <li class="active" id="home"><a href="http://localhost/index.html">Home</a></li>
-      <li id="perfil" ><a href="http://localhost/perfil.html">Perfil</a></li>      
-    </ul>
- <form class="navbar-form navbar-left"> 
-		<form class="form-horizontal col-md-4" role="form" >	
-			<button class="btn btn-default"  id="salir" type="submit">Salir</button>
-	</form>
-	</form>
-   <p class="navbar-text navbar-right">SPOTGRAM</p> 
-  </div>
-</nav>
-<h1> </h1>
-		
-<h1> </h1>
-<div class="container">
-<div id="exam-error" class="bs-example col-sm-10" hidden >
-<div class="alert alert-danger alert-error">
-    <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
-	<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
-    <strong>Error!</strong>  Escribe algo en el campo de la ciudad!
-</div>
-</div>
-<form  id="imageForm"  class="form-group" role="form" >
-		<div class="form-group">
-		<div class="col-sm-4" >			
-			<label> Ciudad:</label><br>
-			<input type="text" class="form-control"  placeholder="Enter city name here" id="buscar_ciud"  required="required"><br>			
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav">
+				<li id="home"><a href="">Home</a></li>
+				<li id="perfil"><a href="">Mi Perfil</a></li>
+			</ul>
+			<form class="navbar-form navbar-left">
+				<form class="form-horizontal col-md-4" role="form">
+					<div class="form-group">
+						<input name="amigow" type="text" id="buscar_campo"
+							class="form-control" placeholder="Enter user name.."
+							required="required">
+					</div>
+					<button type="submit" id="buscar-amigo">
+							<strong >Buscar Usuario</strong>
+						</button>
+				</form>
+				<form class="navbar-form navbar-left">
+					<form class="form-horizontal col-md-4" role="form">
+						<div class="form-group">
+							<input name="amigow" type="text" id="buscar_ciud"
+								class="form-control" placeholder="Enter City.."
+								required="required">
+						</div>
+						<div class="form-group">
+							<input name="amigow" type="text" id="buscar_mod"
+								class="form-control" placeholder="Enter user name.."
+								required="required">
+						</div>
+						<button type="submit" id="button-list-spots">
+							<strong >Buscar Spot</strong>
+						</button>
+					</form>
+
+				</form>
+				<form class="navbar-form navbar-left">
+					<form class="form-horizontal col-md-4" role="form">
+						<button type="submit" id="salir">
+							<strong >Salir</strong>
+						</button>
+					</form>
+				</form>
 		</div>
+	</nav>
+	<h1></h1>
+
+
+	<div id="buscar-error" class="bs-example" hidden>
+		<div class="alert alert-danger alert-error">
+			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+			<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
+			<strong>Error!</strong> Escribe algo en el campo de username!
 		</div>
-		<div class="form-group">
-		<div class="col-sm-4" >			
-			<label> Modalidad:</label><br>
-			<select class="form-control" id="buscar_mod">
-  <option>Todas</option>
-  <option>Skate</option>
-  <option>BMX</option>
-  <option>Parkour</option>
-</select>			
-		</div>			
+	</div>
+	<h1></h1>
+
+	<div id="spots-perfil" class="panel panel-default"
+		style="display: none;">
+		<div id="panel-heading" class="panel-heading">
+			<h3 class="panel-title">
+				<strong id="perfil-titulo-spot"></strong>
+				<button id="CerrarPerfil">X</button>
+			</h3>
 		</div>
-		<br>
-		<div class="col-sm-2" >
-			<button type="submit" class="btn btn-default" style="background: #0B243B;" id="button-list-spots"><strong style="color: #FFFFFF" >Buscar</strong></button>	
+
+		<div id="panel-body" class="panel-body">
+			<div class="col-sm-12">
+				<div class="alert alert-danger" style='display: none;'
+					id="error-perfil-div">
+					<button type="button" class="close" data-dismiss="alert"
+						id="error-auth">&times;</button>
+					<strong>El usuario no existe maik</strong>
+				</div>
+				<div id="perfil_result"></div>
+				<div id="perfil-scroll-able"></div>
+
+			</div>
 		</div>
+	</div>
+	<h1></h1>
+	<div class="container">
+		<div id="exam-error" class="bs-example col-sm-10" hidden>
+			<div class="alert alert-danger alert-error">
+				<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+				<button type="button" id="closing" class="close"
+					data-dismiss="alert">&times;</button>
+				<strong>Error!</strong> Escribe algo en el campo de la ciudad!
+			</div>
+		</div>
+		<form id="imageForm" class="form-group" role="form">
+			<div class="form-group">
+				<div class="col-sm-4">
+					<label> Ciudad:</label><br> <input type="text"
+						class="form-control" placeholder="Enter city name here"
+						id="buscar_ciud" required="required"><br>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-4">
+					<label> Modalidad:</label><br> <select class="form-control"
+						id="buscar_mod">
+						<option>Todas</option>
+						<option>Skate</option>
+						<option>BMX</option>
+						<option>Parkour</option>
+					</select>
+				</div>
+			</div>
+			<br>
+			<div class="col-sm-2">
+				<button type="submit" class="btn btn-default"
+					style="background: #0B243B;" id="button-list-spots">
+					<strong style="color: #FFFFFF">Buscar</strong>
+				</button>
+			</div>
 		</form>
-</div>
- <h1> </h1>
+	</div>
+	<h1></h1>
+	<div id="spot-detail" class="panel panel-default" style="display: none;">
+		<div id="panel-heading" class="panel-heading">
 
-		<div id="spots-container">
-		<div class="col-sm-8" 	>
-		<div class="panel panel-default" style="background: rgba(255, 255, 255, 0.5);">
-              <div class="panel-heading" style="background: #0B243B;">
-                <h3 class="panel-title" style="color: #FFFFFF"><strong>Spot Collection</strong></h3>
-              </div>
-			  <div class="panel-body" style="background: rgba(255, 255, 255, 0.1);">
-			<div id="map_canvas" class="col-sm-12"></div>		  
-			  <progress style="display: none;"></progress>
-			<div id="repos_result">
-			</div>
-			</div>
+			<h3 id="panel-title" class="panel-title">
+				<strong id="titulo-spot"></strong>
+				<strong id="contador-Megustas"></strong>
+				<button id="NOmegusta" style="display: none;"></button>
+				<button id="megusta" style="display: none;"></button>
+				<strong id="estado-Megustas"></strong>
+				<button id="CerrarSpot">X</button>
+			</h3>
 		</div>
-		</div>
-		</div>
-		
-	<div id ="spot-detail" class="col-sm-4" >
-		<div class="panel panel-default" style="background: rgba(255, 255, 255, 0.5);">
-              <div class="panel-heading" style="background: #0B243B;">
-                <h3 class="panel-title" style="color: #FFFFFF"><strong>Spot Detail</strong></h3>
-              </div>
-		 <div class="panel-body">
+
+		<div id="panel-body" class="panel-body">
 			<div class="panel-body">
-				<button id="NOmegusta" class="btn btn-default" style="display: none;">Ya no Megustas</button>
-				<button id="megusta" class="btn btn-success">Me Gusta</button>
-			<div id="spot_result">
+				<div class="col-sm-6">
+					<img id="uploadedImage" class="img-responsive"><br>
+					<div id="spot_result"></div>
+					<label>Texto</label><br>
+					<textarea rows="4" id="edit-comment" class="form-control"
+						form="comment-form"></textarea>
+					<br>
+					<button id="comment-ok" >OK</button>
+					<button id="comment-cancel">Cancel</button>
+				</div>
+				<div class="col-sm-6">
+					<strong> Comentarios: </strong><br>
+
+					<div id="spot-scroll-able"></div>
+				</div>
+
 			</div>
 		</div>
-		</div>
-		</div>
-</div>
-		
-		</div>			
-		<!-- Scripts -->
-			<!-- jQuery 1.11.0 development -->
-		<script src="http://code.jquery.com/jquery-1.11.0.js"></script>
-		<!--<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>-->
-		<!-- link-headers -->
-		<script type="text/javascript" src="main.js"></script>
-		<!-- link-headers -->
-		<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>		
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-		<script type="text/javascript" src="./js/ui/jquery.ui.map.js"></script>
-		<script src="./js/api.js"></script>
-		<script src="./js/mapa.js"></script>	
-		<script src="./js/uritemplate.js"></script>
-		<script src="./js/linkheaders.js"></script>
-		<!-- jQuery Base64 plugin -->
-		<script src="./js/jquery.base64.js"></script>
-		<script src="./js/jquery.cookie.js"></script>		
-		<!-- Latest compiled and minified CSS -->
-      <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	</div>
 
-      <!-- Optional theme -->
-      <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
-	
-	
+
+
+	<div id="map_canvas"></div>
+	<!-- Scripts -->
+	<!-- jQuery 1.11.0 development -->
+	<script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+	<!--<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>-->
+	<!-- link-headers -->
+	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="perfil.js"></script>
+	<!-- link-headers -->
+	<script type="text/javascript"
+		src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<script type="text/javascript" src="./js/ui/jquery.ui.map.js"></script>
+	<script src="./js/api.js"></script>
+	<script src="./js/mapa.js"></script>
+	<script src="./js/uritemplate.js"></script>
+	<script src="./js/linkheaders.js"></script>
+	<!-- jQuery Base64 plugin -->
+	<script src="./js/jquery.base64.js"></script>
+	<script src="./js/jquery.cookie.js"></script>
+</body>
+
 </html>

@@ -40,6 +40,7 @@ public class SpotDetailActivity extends Activity {
 		tvDetailContent.setText(Spot.getCiudad());
 		tvDetailUsername.setText(Spot.getUsuario());
 		tvDetailDate.setText(Spot.getDeporte());
+		String url = Spot.getImageURL();
 		//imagespot.setBackground(Spot.getImageURL());
 	}
 	

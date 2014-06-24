@@ -399,8 +399,11 @@ function getUserParam(user) {
 	}).done(function(data, status, jqxhr) {
 				var user = new User(data);
 				$('progress').toggle();
-				
-				if (user.name==null)
+														
+				if (user.username == $.cookie('username')){
+					$("#perfil-scroll-able").show();
+
+					if (user.name==null)
 					{
 					 $("#error-perfil-div").show();
 					}
@@ -408,10 +411,21 @@ function getUserParam(user) {
 					$("#perfil-titulo-spot").text(user.username);
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
 					getSpotByUser(user.username);
 				}
-														
-
+				}
+				else{if (user.name==null)
+					{
+					 $("#error-perfil-div").show();
+					}
+				else{
+					$("#perfil-titulo-spot").text(user.username);
+					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
+					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
+					getSpotByUser(user.username);
+				}}
 	}).fail(function() {
 		$('progress').toggle();
 

@@ -72,6 +72,7 @@ function getSpots() {
 					var spot = new Spot(v);
 					var idmarker = spot.idspot;
 					var contentString ='<h4> Titulo: ' + spot.title + '</h4>'+ 
+					'<strong> ID: </strong> ' + spot.idspot + '<br>'+
 					'<strong> Usuario: </strong> ' + spot.usuario + '<br>'+
 					'<strong> Ciudad: </strong> ' + spot.ciudad + '<br>'+
 					'<strong> Deporte: </strong> ' + spot.deporte + '<br>';

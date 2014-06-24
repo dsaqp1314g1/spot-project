@@ -27,6 +27,9 @@ body {
 }
 
 #NOmegusta {
+	float: left;
+	margin-top: -5px;
+	margin-left: 2px;
 	border: 1px solid transparent;
 	background: transparent;
 	background-image: url(icn_btn/NoMeGusta.png);
@@ -35,25 +38,28 @@ body {
 }
 
 #edit-comment {
-background:#F2F5A9;
+	background: #F2F5A9;
 	border: 3px solid #FFBF00;
 	resize: none;
-	font-size:10;
-		font-weight: bold;	
-	
+	font-size: 10;
+	font-weight: bold;
 }
 
 #megusta {
+	float: left;
+	margin-top: -5px;
+	margin-left: 2px;
 	border: 1px solid transparent;
 	background: transparent;
 	background-image: url(icn_btn/MeGusta.png);
 	width: 32px;
 	height: 32px;
 }
+
 #CerrarPerfil {
 	float: right;
-	margin-top: -10px;
-	margin-right: -10px;
+	margin-top: -7px;
+	margin-right: -7px;
 	cursor: pointer;
 	color: #FFBF00;
 	border: 1px solid transparent;
@@ -71,10 +77,11 @@ background:#F2F5A9;
 	line-height: 0px;
 	padding: 11px 1px;
 }
+
 #CerrarSpot {
 	float: right;
-	margin-top: -10px;
-	margin-right: -10px;
+	margin-top: -7px;
+	margin-right: -7px;
 	cursor: pointer;
 	color: #FFBF00;
 	border: 1px solid transparent;
@@ -92,6 +99,7 @@ background:#F2F5A9;
 	line-height: 0px;
 	padding: 11px 1px;
 }
+
 #perfil-scroll-able {
 	padding: 10px;
 	border: 2px double #FFBF00;
@@ -119,63 +127,79 @@ background:#F2F5A9;
 	-webkit-overflow-scrolling: touch;
 }
 
-#titulo-spot{
-font-size: 20px;
-	font-weight: bold;	
+#estado-Megustas {
+	float: left;
+	margin-left: 2px;
+	margin-top: 7px;
+	color: #F7D358;
+	font-size: 15px;
+	font-weight: normal;
 }
 
-#perfil-titulo-spot{
-font-size: 20px;
-	font-weight: bold;	
+#titulo-spot {
+	font-size: 20px;
+	font-weight: bold;
 }
 
-#button-list-spots{
-background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+#contador-Megustas {
+	float: left;
+	margin-left: -3px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#perfil-titulo-spot {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#button-list-spots {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
-border: 2px solid #FFBF00;
-color: white;
-border-radius: 5px;
-padding: 5px 15px;
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 7px 15px;
 }
 
-#comment-cancel{
-background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+#comment-cancel {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
-border: 2px solid #FFBF00;
-color: white;
-border-radius: 5px;
-padding: 5px 15px;
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
 }
 
-#comment-ok{
-background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+#comment-ok {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
-border: 2px solid #FFBF00;
-color: white;
-border-radius: 5px;
-padding: 5px 15px;
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
 }
 
-#buscar-amigo{
-background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+#buscar-amigo {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
-border: 2px solid #FFBF00;
-color: white;
-border-radius: 5px;
-padding: 5px 15px;
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 7px 15px;
 }
 
-#salir{
-background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+#salir {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
-border: 2px solid #FFBF00;
-color: white;
-border-radius: 5px;
-padding: 5px 15px;
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 7px 15px;
 }
 
 #panel-heading {
-	text-align:center;
+	text-align: center;
 	border-bottom: 3px solid #FFBF00;
 	border-top-left-radius: 7px;
 	border-top-right-radius: 7px;
@@ -190,7 +214,6 @@ padding: 5px 15px;
 	border-bottom-left-radius: 7px;
 	border-bottom-right-radius: 7px;
 	box-shadow: 10px 10px 5px rgba(0, 0, 0, .6);
-          
 }
 
 #spot-detail {
@@ -216,9 +239,11 @@ padding: 5px 15px;
 	color: white;
 	border-radius: 7px;
 }
-#exam-error{
-z-index: 1;
+
+#exam-error {
+	z-index: 1;
 }
+
 #nav {
 	z-index: 1; /* The z-index should be higher than Google Maps */
 }
@@ -372,8 +397,10 @@ z-index: 1;
 
 			<h3 id="panel-title" class="panel-title">
 				<strong id="titulo-spot"></strong>
+				<strong id="contador-Megustas"></strong>
 				<button id="NOmegusta" style="display: none;"></button>
 				<button id="megusta" style="display: none;"></button>
+				<strong id="estado-Megustas"></strong>
 				<button id="CerrarSpot">X</button>
 			</h3>
 		</div>

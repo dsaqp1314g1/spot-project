@@ -29,7 +29,7 @@ public class LoginActivity extends Activity {
 		// username = "alicia";
 		// password = "alicia";
 		if ((username != null) && (password != null)) {
-			Intent intent = new Intent(this, SpotMainActivity.class);
+			Intent intent = new Intent(this, SpotSearchActivity.class);
 			startActivity(intent);
 			finish();
 		}
@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
 	}
  
 	private void startSpotActivity() {
-		Intent intent = new Intent(this, SpotMainActivity.class);
+		Intent intent = new Intent(this, SpotSearchActivity.class);
 		startActivity(intent);
 		finish();
 	}

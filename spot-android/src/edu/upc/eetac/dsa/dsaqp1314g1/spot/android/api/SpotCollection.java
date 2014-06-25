@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SpotCollection {
 	
-	private Map<String, Link> links = new HashMap<>();
+	private Map<String, Link> links = new HashMap<String, Link>();
 	private List<Spot> spots;
 	public SpotCollection () {
 		super();

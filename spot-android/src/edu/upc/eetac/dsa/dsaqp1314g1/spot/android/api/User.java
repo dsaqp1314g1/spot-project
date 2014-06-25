@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-	private Map<String, Link> links = new HashMap<>();
+	private Map<String, Link> links = new HashMap<String, Link>();
 	private String username;
 	private String userpass;
 	private String name;

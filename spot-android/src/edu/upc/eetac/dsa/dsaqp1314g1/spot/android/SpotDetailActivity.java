@@ -58,7 +58,7 @@ public class SpotDetailActivity extends ListActivity {
     	}
     	urlimatge = "http://" + serverAddress+ "/imgenes/";	
     	
-		CommentList = new ArrayList<>();
+		CommentList = new ArrayList<Comentario>();
 		adapter = new CommentAdapter(this, CommentList);
 		setListAdapter(adapter);
 		(new FetchSpotTask()).execute(url);

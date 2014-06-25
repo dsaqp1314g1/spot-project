@@ -34,6 +34,7 @@ public class SpotSearchActivity extends ListActivity {
 	String serverPort;
 	EditText nombrecity;
 	EditText nombresport;
+	
 	private class FetchSpotsTask extends
 			AsyncTask<Void, Void, SpotCollection> {
 		private ProgressDialog pd;
@@ -109,7 +110,7 @@ public class SpotSearchActivity extends ListActivity {
     		Log.e(TAG, e.getMessage(), e);
     		finish();
     	}
-		SpotList = new ArrayList<>();
+		SpotList = new ArrayList<Spot>();
 		adapter = new SpotAdapter(this, SpotList);
 		setListAdapter(adapter);
 		(new FetchSpotsTask()).execute();

@@ -306,6 +306,21 @@ function getSpotId(id) {
 	});
 }
 
+$('#enviar-mensaje').click(function(e) {
+	if ($('#mensaje-comment').val() === '') {
+		$('#exam-error').show();
+	} else {
+		e.preventDefault();
+		var mensaje = new Object();	
+		mensaje.userTx = $.cookie('username');
+		mensaje.userRx = $('#perfil-titulo-spot').val();
+		mensaje.mensaje = $('#mensaje-comment').val();
+
+		$("#mensaje-comment").val('');
+		createMensaje(JSON.stringify(mensaje));
+	}
+});
+
 $('#comment-ok').click(function(e) {
 	if ($('#edit-comment').val() === '') {
 		$('#exam-error').show();
@@ -408,6 +423,13 @@ function getUserParam(user) {
 	$("#spot_result").text("");
 	$("#spots-perfil-container").text("");
 	$("#perfil-scroll-able").hide();
+	$("#perfil-scroll-able-mensajes").hide();
+	$("#navperfil").hide();
+	$("#titulo-mensaje").show();
+
+
+
+	$("#scroll").text("");
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -419,6 +441,11 @@ function getUserParam(user) {
 														
 				if (user.username == $.cookie('username')){
 					$("#perfil-scroll-able").show();
+					$("#navperfil").show();
+					$("#mensaje-comment").hide();
+					$("#enviar-mensaje").hide();
+					$("#mensaje-cancel").hide();
+					$("#titulo-mensaje").hide();
 
 					if (user.name==null)
 					{
@@ -428,7 +455,7 @@ function getUserParam(user) {
 					$("#perfil-titulo-spot").text(user.username);
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
+					$("#scroll").text("Actualizaciones");
 					getSpotByUser(user.username);
 				}
 				}
@@ -437,10 +464,13 @@ function getUserParam(user) {
 					 $("#error-perfil-div").show();
 					}
 				else{
+					$("#mensaje-comment").show();
+					$("#enviar-mensaje").show();
+					$("#mensaje-cancel").show();
 					$("#perfil-titulo-spot").text(user.username);
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
+					$("#scroll").text("");
 					getSpotByUser(user.username);
 				}}
 	}).fail(function() {

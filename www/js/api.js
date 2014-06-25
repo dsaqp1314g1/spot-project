@@ -82,6 +82,7 @@ function User(user){
 	this.email = user.email;
 	this.actualizacionescollection = user.actualizacionescollection;
 	this.actumegustacollection = user.actumegustacollection;
+	this.mensajesCollection = user.mensajesCollection;
 	this.links = buildLinks(user.links);
 	this.getLinks = function(rel){
 		return this.links[rel];
@@ -99,6 +100,22 @@ function Actualizaciones(actualizaciones){
 	this.nombrecomentario = actualizaciones.nombrecomentario;
 	this.usercomentario = actualizaciones.usercomentario;
 	this.links = buildLinks(actualizaciones.links);
+	this.getLinks = function(rel){
+		return this.links[rel];
+	}
+}
+
+function MensajesCollection(mensajesCollection){
+	this.mensajes = mensajesCollection.mensajes;
+}
+
+function Mensajes(mensajes){
+	this.fechacreacion = mensajes.fechacreacion;
+	this.idmensaje = mensajes.idmensaje;
+	this.userTx = mensajes.userTx;
+	this.userRx = mensajes.userRx;
+	this.mensaje = mensajes.mensaje;
+	this.links = buildLinks(mensajes.links);
 	this.getLinks = function(rel){
 		return this.links[rel];
 	}
@@ -313,7 +330,7 @@ $('#enviar-mensaje').click(function(e) {
 		e.preventDefault();
 		var mensaje = new Object();	
 		mensaje.userTx = $.cookie('username');
-		mensaje.userRx = $('#perfil-titulo-spot').val();
+		mensaje.userRx = $('#perfil-titulo-spot').text();
 		mensaje.mensaje = $('#mensaje-comment').val();
 
 		$("#mensaje-comment").val('');

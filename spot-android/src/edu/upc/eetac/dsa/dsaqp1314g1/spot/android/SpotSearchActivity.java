@@ -131,6 +131,11 @@ public class SpotSearchActivity extends ListActivity {
 			Intent intent2 = new Intent(this, AboutActivity.class);
 			startActivity(intent2);
 			return true;
+		case R.id.miOut:
+			Intent intent3 = new Intent(this, DesLogin.class);
+			startActivity(intent3);
+			finish();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -5,42 +5,28 @@
     android:orientation="vertical" >
  
     <TextView
-        android:id="@+id/tvDetailSubject"
+        android:id="@+id/tvSubject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ImageView
-        android:id="@+id/spotimagen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.16"
-        android:src="@drawable/ic_launcher" />
-
-    <ListView
-       android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="191dp" >
-    </ListView>
+        android:textAppearance="?android:attr/textAppearanceMedium" />
  
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="10dip"
         android:paddingLeft="5dip"
         android:paddingRight="5dip" >
  
         <TextView
-            android:id="@+id/tvDetailUsername"
+            android:id="@+id/tvUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:textAppearance="?android:attr/textAppearanceSmall" />
  
         <TextView
-            android:id="@+id/tvDetailDate"
+            android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"

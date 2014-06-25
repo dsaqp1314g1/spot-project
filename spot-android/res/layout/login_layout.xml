@@ -66,18 +66,6 @@
                 android:layout_marginTop="25dip"
                 android:onClick="signIn"
                 android:text="@string/login_l_signin" />
- 
-            <TextView
-                android:id="@+id/lLinkRegister"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dip"
-                android:layout_marginTop="40dip"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="@string/login_l_register"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#0b84aa" />
         </LinearLayout>
     </RelativeLayout>
  

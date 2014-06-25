@@ -82,6 +82,7 @@ function User(user){
 	this.email = user.email;
 	this.actualizacionescollection = user.actualizacionescollection;
 	this.actumegustacollection = user.actumegustacollection;
+	this.mensajesCollection = user.mensajesCollection;
 	this.links = buildLinks(user.links);
 	this.getLinks = function(rel){
 		return this.links[rel];
@@ -99,6 +100,22 @@ function Actualizaciones(actualizaciones){
 	this.nombrecomentario = actualizaciones.nombrecomentario;
 	this.usercomentario = actualizaciones.usercomentario;
 	this.links = buildLinks(actualizaciones.links);
+	this.getLinks = function(rel){
+		return this.links[rel];
+	}
+}
+
+function MensajesCollection(mensajesCollection){
+	this.mensajes = mensajesCollection.mensajes;
+}
+
+function Mensajes(mensajes){
+	this.fechacreacion = mensajes.fechacreacion;
+	this.idmensaje = mensajes.idmensaje;
+	this.userTx = mensajes.userTx;
+	this.userRx = mensajes.userRx;
+	this.mensaje = mensajes.mensaje;
+	this.links = buildLinks(mensajes.links);
 	this.getLinks = function(rel){
 		return this.links[rel];
 	}
@@ -306,6 +323,21 @@ function getSpotId(id) {
 	});
 }
 
+$('#enviar-mensaje').click(function(e) {
+	if ($('#mensaje-comment').val() === '') {
+		$('#exam-error').show();
+	} else {
+		e.preventDefault();
+		var mensaje = new Object();	
+		mensaje.userTx = $.cookie('username');
+		mensaje.userRx = $('#perfil-titulo-spot').text();
+		mensaje.mensaje = $('#mensaje-comment').val();
+
+		$("#mensaje-comment").val('');
+		createMensaje(JSON.stringify(mensaje));
+	}
+});
+
 $('#comment-ok').click(function(e) {
 	if ($('#edit-comment').val() === '') {
 		$('#exam-error').show();
@@ -383,6 +415,23 @@ function createComentario(id,coment){
 	});
 }
 
+function createMensaje(mensaje){
+	
+	var url = API_BASE_URL + "/user/"+ mensaje.userRx+"/mensaje";	
+	$.ajax({
+		url : url,
+		type : 'POST', 
+		crossDomain : true,
+		contentType: 'application/vnd.spot.api.user.mensajes+json',
+		data: mensaje
+	})
+	.done(function (data, status, jqxhr) {
+	})
+    .fail(function (jqXHR, textStatus) {
+		console.log(textStatus);
+	});
+}
+
 function getUserParam(user) {
 	var url = API_BASE_URL + '/user/'+user;
 	$('progress').toggle();
@@ -391,6 +440,13 @@ function getUserParam(user) {
 	$("#spot_result").text("");
 	$("#spots-perfil-container").text("");
 	$("#perfil-scroll-able").hide();
+	$("#perfil-scroll-able-mensajes").hide();
+	$("#navperfil").hide();
+	$("#titulo-mensaje").show();
+
+
+
+	$("#scroll").text("");
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -399,8 +455,16 @@ function getUserParam(user) {
 	}).done(function(data, status, jqxhr) {
 				var user = new User(data);
 				$('progress').toggle();
-				
-				if (user.name==null)
+														
+				if (user.username == $.cookie('username')){
+					$("#perfil-scroll-able").show();
+					$("#navperfil").show();
+					$("#mensaje-comment").hide();
+					$("#enviar-mensaje").hide();
+					$("#mensaje-cancel").hide();
+					$("#titulo-mensaje").hide();
+
+					if (user.name==null)
 					{
 					 $("#error-perfil-div").show();
 					}
@@ -408,10 +472,24 @@ function getUserParam(user) {
 					$("#perfil-titulo-spot").text(user.username);
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+					$("#scroll").text("Actualizaciones");
 					getSpotByUser(user.username);
 				}
-														
-
+				}
+				else{if (user.name==null)
+					{
+					 $("#error-perfil-div").show();
+					}
+				else{
+					$("#mensaje-comment").show();
+					$("#enviar-mensaje").show();
+					$("#mensaje-cancel").show();
+					$("#perfil-titulo-spot").text(user.username);
+					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
+					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+					$("#scroll").text("");
+					getSpotByUser(user.username);
+				}}
 	}).fail(function() {
 		$('progress').toggle();
 

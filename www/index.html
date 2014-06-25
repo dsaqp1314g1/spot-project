@@ -37,7 +37,25 @@ body {
 	height: 32px;
 }
 
+#logotipo {
+	float: left;
+	margin-top: 2px;
+	padding: 7px;
+
+color: #FFBF00;
+	font-size: 20px;
+	font-weight: bold;
+
+}
 #edit-comment {
+	background: #F2F5A9;
+	border: 3px solid #FFBF00;
+	resize: none;
+	font-size: 10;
+	font-weight: bold;
+}
+
+#mensaje-comment{
 	background: #F2F5A9;
 	border: 3px solid #FFBF00;
 	resize: none;
@@ -112,7 +130,18 @@ body {
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 }
-
+#perfil-scroll-able-mensajes {
+	padding: 10px;
+	border: 2px double #FFBF00;
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+	background: #1e1e1e;
+	color: white;
+	height: 450px;
+	overflow: auto;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
 #spot-scroll-able {
 	padding: 10px;
 	border: 2px double #FFBF00;
@@ -171,6 +200,14 @@ body {
 	padding: 5px 15px;
 }
 
+#mensaje-cancel {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+}
 #comment-ok {
 	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
@@ -179,7 +216,14 @@ body {
 	border-radius: 5px;
 	padding: 5px 15px;
 }
-
+#enviar-mensaje {
+	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
+		rgba(0, 0, 0, 1) 100%);
+	border: 2px solid #FFBF00;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+}
 #buscar-amigo {
 	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
@@ -226,6 +270,7 @@ body {
 	height: 80px;
 	color: white;
 	border-radius: 7px;
+	background: transparent;
 }
 
 #spots-perfil {
@@ -238,6 +283,7 @@ body {
 	height: 80px;
 	color: white;
 	border-radius: 7px;
+	background: transparent;
 }
 
 #exam-error {
@@ -246,6 +292,46 @@ body {
 
 #nav {
 	z-index: 1; /* The z-index should be higher than Google Maps */
+}
+#nav li {
+    display: inline;
+}
+
+#nav a {
+    display: inline-block;
+    padding: 15px;
+    border: #1e1e1e;
+    border-radius: 2px;
+    color: #FFFFFF;
+    background-color: trasparent;
+}
+#nav a.active {
+	font-size: 18px;
+
+    color: #FFBF00;
+    background-color: trasparent;
+}
+
+#navperfil {
+    background-color: #1e1e1e;
+	z-index: 1; /* The z-index should be higher than Google Maps */
+}
+#navperfil li {
+    display: inline;
+}
+
+#navperfil a {
+    display: inline-block;
+    padding: 15px;
+    border: 1px #000000;
+    border-radius: 2px;
+    color: #FFFFFF;
+    background-color: transparent;
+}
+#navperfil a.active {
+	font-size: 18px;
+    color: #FFBF00;
+    background-color: trasparent;
 }
 </style>
 <script type="text/javascript"
@@ -268,9 +354,7 @@ body {
 		<!-- El logotipo y el icono que despliega el menú se agrupan
        para mostrarlos mejor en los dispositivos móviles -->
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target=".navbar-ex1-collapse"></button>
-			<a class="navbar-brand" href="#">Logotipo</a>
+		<strong id="logotipo">Spotgram</strong>
 		</div>
 
 		<!-- Agrupar los enlaces de navegación, los formularios y cualquier
@@ -285,7 +369,7 @@ body {
 					<div class="form-group">
 						<input name="amigow" type="text" id="buscar_campo"
 							class="form-control" placeholder="Enter user name.."
-							required="required">
+							required="required" >
 					</div>
 					<button type="submit" id="buscar-amigo">
 							<strong >Buscar Usuario</strong>
@@ -348,10 +432,32 @@ body {
 					<strong>El usuario no existe maik</strong>
 				</div>
 				<div id="perfil_result"></div>
-				<div id="perfil-scroll-able"></div>
+				<nav id="navperfil" class="navbar">
+		<!-- El logotipo y el icono que despliega el menú se agrupan
+       para mostrarlos mejor en los dispositivos móviles -->
 
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav">
+				<li id="actualizaciones"><a href="">Actualizaciones</a></li>
+				<li id="mensajes"><a href="">Mensajes</a></li>
+			</ul>
+							</div>
+			</nav>
+				<div id="perfil-scroll-able"></div>
+				<div id="perfil-scroll-able-mensajes"></div>
+					<h1></h1>
+				
+									<strong style="color: #FFFFFF" id="titulo-mensaje">Mensaje</strong>
+				
+					<textarea rows="4" id="mensaje-comment" class="form-control"
+						form="comment-form" style="display: none;"></textarea>
+					<br>
+					<button id="enviar-mensaje" style="display: none;">Enviar</button>
+					<button id="mensaje-cancel" style="display: none;">Cancel</button>
+				</div>
 			</div>
 		</div>
+
 	</div>
 	<h1></h1>
 	<div class="container">

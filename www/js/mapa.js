@@ -144,13 +144,20 @@ function icnMarker(deporte){
 		image  = 'icn_marker/bmx.png';
 		return 	image;
 	}
-	
 	else if (deporte == 'skate'){
 		image  = 'icn_marker/rollerskate.png';
 		return 	image;
 	}
 	else if (deporte == 'parkour'){
 		image  = 'icn_marker/parkour.png';
+		return 	image;	
+	}
+	else if (deporte == 'ski'){
+		image  = 'icn_marker/skiing.png';
+		return 	image;	
+	}
+	else if (deporte == 'snow'){
+		image  = 'icn_marker/snowboarding.png';
 		return 	image;	
 	}
 

@@ -1,6 +1,26 @@
 var API_BASE_URL = "http://localhost:8181/spot-api";
 var stingsURL;
 
+$('#mensajes').click(function(e) {
+	e.preventDefault();	
+	 $(this).toggleClass('active');
+	 $(this).children('a').toggleClass('active');
+	 $(this).siblings('li').children('a').removeClass('active');
+	 $('#actualizaciones').removeClass('active');
+	 $('#perfil-scroll-able-mensajes').show();
+	 $('#perfil-scroll-able').hide();
+
+});
+$('#actualizaciones').click(function(e) {
+	e.preventDefault();	
+	 $(this).toggleClass('active');
+	 $(this).children('a').toggleClass('active');
+	 $(this).siblings('li').children('a').removeClass('active');
+	 $('#mensajes').removeClass('active');
+	 $('#perfil-scroll-able').show();
+	 $('#perfil-scroll-able-mensajes').hide();
+});
+
 $('#CerrarPerfil').click(function(e){
 	 e.preventDefault();
 	 $('#spots-perfil').fadeOut('slow');
@@ -31,7 +51,16 @@ function getUser() {
 	$('progress').toggle();
 	$("#perfil_result").text("");
 	$("#perfil-scroll-able").text("");
+	$("#perfil-scroll-able-mensajes").text("");
 	$("#perfil-titulo-spot").text($.cookie('username'));
+	$("#perfil-scroll-able").show();
+	$("#perfil-scroll-able-mensajes").hide();
+	$("#mensaje-comment").hide();
+	$("#enviar-mensaje").hide();
+	$("#mensaje-cancel").hide();
+	$("#navperfil").show();
+
+	$("#titulo-mensaje").hide();
 
 	$.ajax({
 		url : url,
@@ -44,7 +73,20 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					$('<strong> Actualizaciones: </strong><br>').appendTo($('#perfil_result'));
+					$.each(user.mensajesCollection.mensajes, function(i, v) {
+						var mensajes = v;
+						$('<strong> El usuario : </strong>' + mensajes.userTx + '<br>').appendTo($('#perfil-scroll-able-mensajes'));
+						$('<strong> te ha enviado este mensaje: </strong> ' +  mensajes.mensaje + '<br>').appendTo($('#perfil-scroll-able-mensajes'));
+						$('<strong> El dia : </strong> ' + mensajes.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able-mensajes'));
+						$('<button id="responder'+mensajes.idmensaje+'">'+"Responder"+'</button><br><br>').appendTo($('#perfil-scroll-able-mensajes'));												
+						$('<style type="text/css">  #responder'+mensajes.idmensaje+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able-mensajes'));
+						$('#responder'+mensajes.idmensaje).click(function(e){
+							e.preventDefault();
+							$("#responder"+mensajes.idmensaje).hide();
+							getUserParam(mensajes.userTx);
+							return false;
+						});
+					});
 					$.each(user.actualizacionescollection.actualizacion, function(i, v) {
 						var actualizacion = v;
 						$('<strong> El usuario : </strong>' + actualizacion.usercomentario + '<br>').appendTo($('#perfil-scroll-able'));

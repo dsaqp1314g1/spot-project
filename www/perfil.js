@@ -1,4 +1,4 @@
-var API_BASE_URL = "http://localhost:8181/spot-api";
+var API_BASE_URL = "http://147.83.7.155//spot-api";
 var stingsURL;
 
 $('#mensajes').click(function(e) {
@@ -59,6 +59,8 @@ function getUser() {
 	$("#enviar-mensaje").hide();
 	$("#mensaje-cancel").hide();
 	$("#navperfil").show();
+	$("#online").hide();
+	$('#offline').hide();
 
 	$("#titulo-mensaje").hide();
 

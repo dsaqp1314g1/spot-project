@@ -125,17 +125,6 @@ function getUser() {
 
 					});
 					getSpotByUser(user.username);
-//					var link = $('<a id="user-link" href="'+ user.getLinks("abrir-spots-user").href+'">'+ "Spots of: "+ user.name +'</a>');
-//					link.click(function(e){
-//						e.preventDefault();
-//						loadSpots($(e.target).attr('href'));
-//						return false;
-//					});
-//					var div = $('<div></div>')
-//					div.append(link);
-//					$('#perfil_result').append(div);
-														
-
 	}).fail(function() {
 		$('progress').toggle();
 
@@ -176,7 +165,11 @@ function getSpotByUser(username) {
 		$("#spots-perfil-container").text("NO RESULT");
 	});
 }
-
+function loadUser(url){
+	getUser(url, function(user){
+		getUserParam(user.username);
+	});
+}
 function loadSpott(url){
 	getSpot(url, function(spot){
 		getSpotId(spot.idspot);

@@ -12,11 +12,13 @@ import org.glassfish.jersey.linking.InjectLink.Style;
 
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.MediaType;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.SpotResource;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.UserResource;
 
 public class Spot {
 
 	@InjectLinks({
-		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "abrir-spot", title = "abrir-spot", method = "getSpot", bindings = @Binding(name = "idspot", value = "${instance.idspot}"), type = MediaType.API_SPOT)})
+		@InjectLink(resource = SpotResource.class, style = Style.ABSOLUTE, rel = "abrir-spot", title = "abrir-spot", method = "getSpot", bindings = @Binding(name = "idspot", value = "${instance.idspot}"), type = MediaType.API_SPOT),
+		@InjectLink(resource = UserResource.class, style = Style.ABSOLUTE, rel = "abrir-user", title = "abrir-user", method = "getUser", bindings = @Binding(name = "username", value = "${instance.usuario}"), type = MediaType.API_USER)})
 	private List<Link> links;
 	private int idspot;
 	private String title;

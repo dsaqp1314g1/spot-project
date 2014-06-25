@@ -59,7 +59,24 @@ function buildLinks(linkheaders){
 	return links;
 }
 
+function Comentario(comentario){
+	this.idcomentario = comentario.idcomentario;
+	this.idspot = comentario.idspot;
+	this.usuario = comentario.usuario;
+	this.comentario = comentario.comentario;
+	this.fechacreacion = comentario.fechacreacion;
+	this.links = buildLinks(comentario.links);
+	var instance = this;
+	this.getLinks = function(rel){
+		return this.links[rel];
+	}
+}
+
 function Spot(spot){
+	this.botonmegusta = spot.botonmegusta;
+	this.comentario = spot.comentario;
+	this.fechasubida = spot.fechasubida;
+	this.imageURL = spot.imageURL;
 	this.usuario = spot.usuario;
 	this.idspot = spot.idspot;
 	this.title = spot.title;
@@ -182,6 +199,20 @@ function getStings(url, success){
 	});
 }
 
+function getUser(url, success){
+	$.ajax({
+		url : url,
+		type : 'GET',
+		crossDomain : true,
+		dataType: 'json'
+	}).done(function (data, status, jqxhr) {
+		var user = $.parseJSON(jqxhr.responseText);
+		success(user);
+	})
+    .fail(function (jqXHR, textStatus) {
+		console.log(textStatus);
+	});
+}
 function getSpot(url, success){
 	$.ajax({
 		url : url,
@@ -273,17 +304,33 @@ function getSpotId(id) {
 		crossDomain : true,
 		dataType : 'json',
 	}).done(function(data, status, jqxhr) {
-				var spot =data;
+				var spot = new Spot(data);
 				spotID=spot.idspot;
 				$('#uploadedImage').attr('src', spot.imageURL);
 				$('#titulo-spot').text(spot.title);
-				$('#contador-Megustas').text(spot.megusta);				
-				$('<strong> Usuario: </strong> ' + spot.usuario + '<br>').appendTo($('#spot_result'));
+				$('#contador-Megustas').text(spot.megusta);	
+				$('<strong> Usuario: </strong>').appendTo($('#spot_result'));
+				$('<a id="spot-link-user'+spot.usuario+spot.idspot+'" href="'+spot.getLinks("abrir-user").href+'">'+spot.usuario+'</a><br>').appendTo($('#spot_result'));;
+				$("#spot-link-user"+spot.usuario+spot.idspot).click(function(e){
+					e.preventDefault();
+					loadUser($(e.target).attr('href'));
+					$("#spot-detail").fadeOut('slow');
+					$("#spots-perfil").fadeIn('slow');
+					return false;
+				});
 				$('<strong> Ciudad: </strong> ' + spot.ciudad + '<br>').appendTo($('#spot_result'));
 				$('<strong> Deporte: </strong> ' + spot.deporte + '<br>').appendTo($('#spot_result'));
 					$.each(spot.comentario, function(i, v) {
-						var comentario = v;
-						$('<section id='+comentario.idcomentario+'><h4>'+comentario.usuario+'     '+comentario.fechacreacion+'</h4><p>' + comentario.comentario + '</p></section>').appendTo($('#spot-scroll-able'));
+						var comentario = new Comentario(v);
+						$('<a id="spot-link-user'+comentario.idcomentario+'" href="'+comentario.getLinks("abrir-user").href+'">'+comentario.usuario+'</a><br>').appendTo($('#spot-scroll-able'));
+						$('<section id='+comentario.idcomentario+'><h4>'+'     '+comentario.fechacreacion+'</h4><p>' + comentario.comentario + '</p></section>').appendTo($('#spot-scroll-able'));
+						$("#spot-link-user"+comentario.idcomentario).click(function(e){
+							e.preventDefault();
+							loadUser($(e.target).attr('href'));
+							$("#spot-detail").fadeOut('slow');
+							$("#spots-perfil").fadeIn('slow');
+							return false;
+						});
 						if (comentario.usuario === $.cookie('username'))
 							{
 						$('<button id="delete-coms'+ comentario.idcomentario+'">'+"Delete"+'</button><br><br>').appendTo($('#spot-scroll-able'));

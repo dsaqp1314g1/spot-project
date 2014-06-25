@@ -37,6 +37,26 @@ body {
 	height: 32px;
 }
 
+#online{
+    margin-top: 0px;
+	margin-left: 20px;
+	border: 1px solid transparent;
+	background: transparent;
+	background-image: url(icn_btn/online-icon.png);
+	width: 32px;
+	height: 32px;
+}
+
+#offline{
+    margin-top: 0px;
+	margin-left: 20px;
+	border: 1px solid transparent;
+	background: transparent;
+	background-image: url(icn_btn/offline-red-icon.png);
+	width: 32px;
+	height: 32px;
+}
+
 #logotipo {
 	float: left;
 	margin-top: 2px;
@@ -419,6 +439,8 @@ color: #FFBF00;
 		<div id="panel-heading" class="panel-heading">
 			<h3 class="panel-title">
 				<strong id="perfil-titulo-spot"></strong>
+				<button id="online" style="display: none;"></button>
+				<button id="offline" style="display: none;"></button>
 				<button id="CerrarPerfil">X</button>
 			</h3>
 		</div>

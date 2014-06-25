@@ -9,8 +9,11 @@ import java.text.SimpleDateFormat;
 
 import javax.sql.DataSource;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -99,7 +102,7 @@ public class UserResource {
 	private String bulidCreateUserQuery()
 	{
 		System.out.println("Ejecutando bulidGetUserQuery");
-		return "insert into users (username, userpass, name, email) value (?, MD5(?), ?, ?)";
+		return "insert into users (username, userpass, conectado, name, email) value (?, MD5(?), 'no', ?, ?)";
 	}
 	
 	@POST
@@ -141,6 +144,14 @@ public class UserResource {
 				System.out.println("Email: " + userlog.getEmail());
 				userlog.setUserpass(rs.getString("userpass"));
 				System.out.println("Password: " + userlog.getUserpass());
+				
+				
+				PreparedStatement stmt2 = null;
+				String sql2 = buildUpdateConectado();
+				stmt2 = conn.prepareStatement(sql2);
+				stmt2.setString(1, user.getUsername());
+				stmt2.executeUpdate();
+				
 				}
 		} 
 		catch (SQLException e)
@@ -160,6 +171,7 @@ public class UserResource {
 				
 			}
 		}
+        
 		System.out.println("Fin del loging, devolviendo datos del usuario");
 		return userlog;
 	}
@@ -168,6 +180,9 @@ public class UserResource {
 	{
 		System.out.println("Ejecutando bulidGetUserQuery");
 		return "select * from users where username=? and userpass= MD5(?)";
+	}
+	private String buildUpdateConectado() {
+		return "update users set conectado='si' where username=?";
 	}
 	
 	
@@ -210,6 +225,8 @@ public class UserResource {
 				System.out.println("Nombre: " + usuario.getName());
 				usuario.setEmail(rs.getString("email"));
 				System.out.println("Email: " + usuario.getEmail());
+				usuario.setConectado(rs.getString("conectado"));
+				System.out.println("Conectado : " + usuario.getConectado());
 				
 				usuario.setActualizacionescollection(actualizacionesByUser(usuario.getUsername()));
 				usuario.setActumegustacollection(actuMegustaByUser(usuario.getUsername()));
@@ -710,6 +727,57 @@ public class UserResource {
 	private String bulidGetMensajes()
 	{
 		return "select * from mensajes where userRx=?";
+	}
+	
+	@DELETE
+	@Path("/{username}")
+	public void deleteConectado(@PathParam("username") String username) {
+
+//		if (!security.isUserInRole("registered"))
+//			throw new ForbiddenException(
+//					"You are not allowed to create reviews for a book");
+		
+		System.out.println("XXXXXXXXXXXXX   $$$   XXXXXXXXXXXXXXX");
+		System.out.println("Desconectando al usuario: " + username);
+
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+		System.out.println("Conexion a mysql hecha");
+		PreparedStatement stmt = null;
+		try {
+
+			PreparedStatement stmt2 = null;
+			String sql2 = buildUpdateDesconectado();
+			stmt2 = conn.prepareStatement(sql2);
+			stmt2.setString(1, username);
+			stmt2.executeUpdate();
+
+			int rows = stmt2.executeUpdate();
+			if (rows == 0)
+				throw new NotFoundException("There's no user with username="
+						+ username);
+		} catch (SQLException e) {
+			throw new ServerErrorException(e.getMessage(),
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+			}
+		}
+		
+		System.out.println("Usuario desconectado");
+	}
+
+	private String buildUpdateDesconectado() {
+		return "update users set conectado='no' where username=?";
 	}
 
 }

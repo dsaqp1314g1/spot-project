@@ -1,16 +1,16 @@
-insert into users values('albert', MD5('albert'), 'Albert Anguela', 'albert@spotgram.com');
+insert into users values('albert', MD5('albert'), 'Albert Anguela', 'no', 'albert@spotgram.com');
 insert into user_roles values ('albert', 'administrador');
  
-insert into users values('juan', MD5('juan'), 'Juan Gordo', 'juan@spotgram.com');
+insert into users values('juan', MD5('juan'), 'Juan Gordo', 'no','juan@spotgram.com');
 insert into user_roles values ('juan', 'administrador');
 
-insert into users values('einar', MD5('einar'), 'Einar Mellerson', 'einar@spotgram.com');
+insert into users values('einar', MD5('einar'), 'Einar Mellerson', 'no','einar@spotgram.com');
 insert into user_roles values ('einar', 'administrador');
 
-insert into users values('flouri', MD5('flouri'), 'Flouri de Koojonalio', 'flourinn@spotgram.com');
+insert into users values('flouri', MD5('flouri'), 'Flouri de Koojonalio', 'no','flourinn@spotgram.com');
 insert into user_roles values ('flouri', 'registrado');
 
-insert into users values('manifest', MD5('manifest'), 'Hijo de Manifest', 'manifest@spotgram.com');
+insert into users values('manifest', MD5('manifest'), 'Hijo de Manifest', 'no','manifest@spotgram.com');
 insert into user_roles values ('manifest', 'registrado');
 
 insert into spots (title, latitud, longitud, megustas, usuario, deporte, ciudad, fechaSubida) values ('Olie', 41.385063900000000000, 2.173403499999949400, 0, 'albert', 'skate', 'Barcelona', '04-05-22');

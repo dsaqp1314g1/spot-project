@@ -72,7 +72,7 @@ function getUser() {
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
-					$.each(user.mensajescollection.mensajes, function(i, v) {
+					$.each(user.mensajesCollection.mensajes, function(i, v) {
 						var mensajes = v;
 						$('<strong> El usuario : </strong>' + mensajes.userTx + '<br>').appendTo($('#perfil-scroll-able-mensajes'));
 						$('<strong> te ha enviado este mensaje: </strong> ' +  mensajes.mensaje + '<br>').appendTo($('#perfil-scroll-able-mensajes'));
@@ -82,11 +82,11 @@ function getUser() {
 						$('#responder'+user.name+mensajes.idmensaje).click(function(e){
 							e.preventDefault();
 							//deleteActualizacion(actualizacion.idspot, actualizacion.idcomentario);
-							$("#perfil-scroll-able-mensajes"+ user.name+mensajes.idmensaje).hide();
+							$("#responder"+ user.name+mensajes.idmensaje).hide();
 							getUserParam(mensajes.userTx);
 							return false;
 						});
-						$('<hr>').appendTo($('#perfil-scroll-able'));
+						$('<hr>').appendTo($('#perfil-scroll-able-mensajes'));
 
 					});
 					$.each(user.actualizacionescollection.actualizacion, function(i, v) {

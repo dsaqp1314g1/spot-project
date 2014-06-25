@@ -67,6 +67,18 @@ color: #FFBF00;
 	font-weight: bold;
 
 }
+#FiltrarSpots {
+	float: left;
+	margin-top: 2px;
+		margin-right: 2px;
+	
+	padding: 4px;
+
+color: #FFBF00;
+	font-size: 20px;
+	font-weight: normal;
+
+}
 #edit-comment {
 	background: #F2F5A9;
 	border: 3px solid #FFBF00;
@@ -149,6 +161,22 @@ color: #FFBF00;
 	overflow: auto;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
+}
+#alerta-nohaymensaje{
+color: red;
+font-weight: normal;
+}
+#alerta-nohaycoment{
+color: red;
+font-weight: normal;
+}
+#alerta-mensajeenviado{
+color: red;
+font-weight: normal;
+}
+#alerta-comentenviado{
+color: red;
+font-weight: normal;
 }
 #perfil-scroll-able-mensajes {
 	padding: 10px;
@@ -254,6 +282,8 @@ color: #FFBF00;
 }
 
 #salir {
+position: absolute;
+	right: 10px;
 	background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%,
 		rgba(0, 0, 0, 1) 100%);
 	border: 2px solid #FFBF00;
@@ -305,7 +335,9 @@ color: #FFBF00;
 	border-radius: 7px;
 	background: transparent;
 }
-
+#buscar-error{
+	z-index: 1;
+}
 #exam-error {
 	z-index: 1;
 }
@@ -397,14 +429,17 @@ color: #FFBF00;
 				</form>
 				<form class="navbar-form navbar-left">
 					<form class="form-horizontal col-md-4" role="form">
+													<strong id="FiltrarSpots">Filtrar Spots:</strong>
+					
 						<div class="form-group">
+						
 							<input name="amigow" type="text" id="buscar_ciud"
 								class="form-control" placeholder="Enter City.."
 								required="required">
 						</div>
 						<div class="form-group">
 							<input name="amigow" type="text" id="buscar_mod"
-								class="form-control" placeholder="Enter user name.."
+								class="form-control" placeholder="Enter sport.."
 								required="required">
 						</div>
 						<button type="submit" id="button-list-spots">
@@ -422,16 +457,6 @@ color: #FFBF00;
 				</form>
 		</div>
 	</nav>
-	<h1></h1>
-
-
-	<div id="buscar-error" class="bs-example" hidden>
-		<div class="alert alert-danger alert-error">
-			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
-			<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
-			<strong>Error!</strong> Escribe algo en el campo de username!
-		</div>
-	</div>
 	<h1></h1>
 
 	<div id="spots-perfil" class="panel panel-default"
@@ -469,57 +494,43 @@ color: #FFBF00;
 				<div id="perfil-scroll-able-mensajes"></div>
 					<h1></h1>
 				
-									<strong style="color: #FFFFFF" id="titulo-mensaje">Mensaje:</strong>
+					<strong style="color: #FFFFFF" id="titulo-mensaje">Mensaje:</strong>
 				
 					<textarea rows="4" id="mensaje-comment" class="form-control"
 						form="comment-form" style="display: none;"></textarea>
+						<div id="alerta-nohaymensaje" style='display: none;'>
+								<strong>No has introducido ningun mensaje</strong>
+							</div>
+							<div id="alerta-mensajeenviado" style='display: none;'>
+								<strong>Mensaje Enviado</strong>
+							</div>
 					<br>
 					<button id="enviar-mensaje" style="display: none;">Enviar</button>
 					<button id="mensaje-cancel" style="display: none;">Cancel</button>
 				</div>
 			</div>
 		</div>
-
+						<div class="col-sm-4">		</div>
+						
+		
+	<div id="buscar-error" class="bs-example col-sm-4" style="display: none;">
+		<div class="alert alert-danger alert-error">
+			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+			<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
+			<strong>Error!</strong> Escribe algo en el campo de username!
+		</div>
 	</div>
-	<h1></h1>
-	<div class="container">
-		<div id="exam-error" class="bs-example col-sm-10" hidden>
+		<div id="exam-error" class="bs-example col-sm-4" style="display: none;">
 			<div class="alert alert-danger alert-error">
 				<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
 				<button type="button" id="closing" class="close"
 					data-dismiss="alert">&times;</button>
-				<strong>Error!</strong> Escribe algo en el campo de la ciudad!
+				<strong>Error!</strong> No has rellenado todos los campos!
 			</div>
 		</div>
-		<form id="imageForm" class="form-group" role="form">
-			<div class="form-group">
-				<div class="col-sm-4">
-					<label> Ciudad:</label><br> <input type="text"
-						class="form-control" placeholder="Enter city name here"
-						id="buscar_ciud" required="required"><br>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-4">
-					<label> Modalidad:</label><br> <select class="form-control"
-						id="buscar_mod">
-						<option>Todas</option>
-						<option>Skate</option>
-						<option>BMX</option>
-						<option>Parkour</option>
-					</select>
-				</div>
-			</div>
-			<br>
-			<div class="col-sm-2">
-				<button type="submit" class="btn btn-default"
-					style="background: #0B243B;" id="button-list-spots">
-					<strong style="color: #FFFFFF">Buscar</strong>
-				</button>
-			</div>
-		</form>
-	</div>
-	<h1></h1>
+								<div class="col-sm-4">		</div>
+								
+		
 	<div id="spot-detail" class="panel panel-default" style="display: none;">
 		<div id="panel-heading" class="panel-heading">
 
@@ -541,7 +552,14 @@ color: #FFBF00;
 					<label>Texto</label><br>
 					<textarea rows="4" id="edit-comment" class="form-control"
 						form="comment-form"></textarea>
-					<br>
+					
+					<div id="alerta-nohaycoment" style='display: none;'>
+								<strong>No has introducido ningun comentario</strong>
+							</div>
+							<div id="alerta-comentenviado" style='display: none;'>
+								<strong>Comentario Realizado</strong>
+							</div>
+							<br>
 					<button id="comment-ok" >OK</button>
 					<button id="comment-cancel">Cancel</button>
 				</div>

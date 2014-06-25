@@ -4,56 +4,51 @@ var idmarker;
 $("#button-list-spots").click(function(e) {
 	e.preventDefault();
 	$('#exam-error').hide();
-	if ($('#buscar_ciud').val() === '')
-	{
-	$('#exam-error').show();	
-	//getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
+	if ($('#buscar_ciud').val() === '' || $('#buscar_mod').val() === '') {
+		$("#exam-error").show();
+		$("#exam-error").fadeOut(4000);
+		// getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
+	} else {
+		// eliminar los markers paramostrar los nuevos
+		deleteMarkers();
+		// centra el mapa en la ciudad buscada como parametro
+		codeAddress();
+		getSpotsParam($("#buscar_ciud").val(), $("#buscar_mod").val());
 	}
-else
-{
-	//eliminar los markers paramostrar los nuevos
-	deleteMarkers();
-	//centra el mapa en la ciudad buscada como parametro
-	codeAddress();
-	getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
-}
 });
 $('#perfil').click(function(e) {
-	e.preventDefault();	
-	getUserParam($.cookie('username'));
-	 $(this).toggleClass('active');
-	 $(this).children('a').toggleClass('active');
-	 $(this).siblings('li').children('a').removeClass('active');
-	 $('#home').removeClass('active');
+	e.preventDefault();
+	getUser();
+	$(this).toggleClass('active');
+	$(this).children('a').toggleClass('active');
+	$(this).siblings('li').children('a').removeClass('active');
+	$('#home').removeClass('active');
 	$('#spots-perfil').fadeIn('slow');
 	$("#spot-detail").fadeOut('slow');
 
 });
 $('#home').click(function(e) {
-	e.preventDefault();	
+	e.preventDefault();
 	getSpots();
-	 $(this).toggleClass('active');
-	 $(this).children('a').toggleClass('active');
-	 $(this).siblings('li').children('a').removeClass('active');
-	 $('#perfil').removeClass('active');
+	$(this).toggleClass('active');
+	$(this).children('a').toggleClass('active');
+	$(this).siblings('li').children('a').removeClass('active');
+	$('#perfil').removeClass('active');
 	$('#spots-perfil').hide();
 	$('#spot-detail').hide();
 });
 $("#button-list-one").click(function(e) {
 	e.preventDefault();
-	if ($('#buscar_id').val() === '')
-	{
-	$('#exam-error').show();	
-	//getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
+	if ($('#buscar_id').val() === '') {
+		$('#exam-error').show();
+		// getSpotsParam($("#buscar_ciud").val(),$("#buscar_mod").val());
+	} else {
+		getSpotId($("#buscar_id").val());
 	}
-else
-{
-	getSpotId($("#buscar_id").val());
-}
 });
 
 $('#comment-cancel').click(function(e) {
-	e.preventDefault();					
+	e.preventDefault();
 	$("#edit-comment").val('');
 });
 
@@ -160,7 +155,7 @@ function loadSpot(url){
 
 function loadUser(url){
 	  console.log("entro en loadUser");
-	getSpot(url, function(spot){
+	getUsuario(url, function(spot){
 		getUserParam(spot.usuario);
 	});
 }

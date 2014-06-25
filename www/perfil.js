@@ -47,8 +47,9 @@ $(document).ready(function(){
 	});
 
 function getUser() {
+	  console.log("entro en getuser");
+
 	var url = API_BASE_URL + '/user/' + $.cookie('username');	
-	$('progress').toggle();
 	$("#perfil_result").text("");
 	$("#perfil-scroll-able").text("");
 	$("#perfil-scroll-able-mensajes").text("");
@@ -61,7 +62,6 @@ function getUser() {
 	$("#navperfil").show();
 	$("#online").hide();
 	$('#offline').hide();
-
 	$("#titulo-mensaje").hide();
 
 	$.ajax({
@@ -71,7 +71,6 @@ function getUser() {
 		dataType : 'json',
 	}).done(function(data, status, jqxhr) {
 				var user = new User(data);
-				$('progress').toggle();
 				
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
@@ -103,23 +102,6 @@ function getUser() {
 						$('#ver-actu'+actualizacion.idspot+actualizacion.idcomentario).click(function(e){
 							e.preventDefault();
 							deleteActualizacion(actualizacion.idspot, actualizacion.idcomentario);
-							getSpotId(actualizacion.idspot);
-							return false;
-						});
-						$('<hr>').appendTo($('#perfil-scroll-able'));
-
-					});
-					$.each(user.actumegustacollection.actualizacion, function(i, v) {
-						var actualizacion = v;
-						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#perfil-scroll-able'));
-						$('<strong> Dio a ' + actualizacion.estado + ' sobre el espot spot </strong> ' + actualizacion.nombrespot + '<br>').appendTo($('#perfil-scroll-able'));
-						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able'));
-						$('<button id="ver-actus'+ actualizacion.idspot+actualizacion.usermegusta+'">'+"Ver Spot"+'</button><br><br>').appendTo($('#perfil-scroll-able'));
-						$('<style type="text/css">  #ver-actus'+ actualizacion.idspot+actualizacion.usermegusta+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able'));
-						$('#ver-actus'+actualizacion.idspot+actualizacion.usermegusta).click(function(e){
-							e.preventDefault();
-							console.log("Click y preparado para eliminar actu: " + actualizacion.idspot + "  "+actualizacion.usermegusta);
-							deleteActuMegusta(actualizacion.idspot, actualizacion.usermegusta);
 							getSpotId(actualizacion.idspot);
 							return false;
 						});

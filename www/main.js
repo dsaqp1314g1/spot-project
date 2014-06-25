@@ -1,4 +1,4 @@
-var API_BASE_URL="http://localhost:8181/spot-api";
+var API_BASE_URL="http://147.83.7.155/spot-api";
 var stingsURL;
 var idmarker;
 $("#button-list-spots").click(function(e) {
@@ -20,7 +20,7 @@ else
 });
 $('#perfil').click(function(e) {
 	e.preventDefault();	
-	getUserParam($.cookie('username'));
+	getUser();
 	 $(this).toggleClass('active');
 	 $(this).children('a').toggleClass('active');
 	 $(this).siblings('li').children('a').removeClass('active');

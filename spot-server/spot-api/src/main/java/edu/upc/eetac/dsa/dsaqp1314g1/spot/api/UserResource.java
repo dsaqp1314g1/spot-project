@@ -24,6 +24,8 @@ import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.ActuMegustaCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Actualizaciones;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.ActualizacionesCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Megusta;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Mensajes;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.MensajesCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.User;
@@ -211,6 +213,7 @@ public class UserResource {
 				
 				usuario.setActualizacionescollection(actualizacionesByUser(usuario.getUsername()));
 				usuario.setActumegustacollection(actuMegustaByUser(usuario.getUsername()));
+				usuario.setMensajesCollection(GetMensajes(usuario.getUsername()));
 				}
 		} 
 		catch (SQLException e)
@@ -290,7 +293,7 @@ public class UserResource {
 		return dbuser;
 	}
 	
-private ActuMegustaCollection actuMegustaByUser(String username){
+    private ActuMegustaCollection actuMegustaByUser(String username){
 		
 	    ActuMegustaCollection actualizaciones = new ActuMegustaCollection();
 		Connection conn = null;
@@ -591,6 +594,122 @@ private ActuMegustaCollection actuMegustaByUser(String username){
 			return "select * from users where name like ?";
 		else
 			return "select * from users where name like ?";
+	}
+	
+	
+	@POST
+	@Path("/{username}/mensaje")
+	@Consumes(MediaType.API_MENSAJE)
+	public void CreateMensaje (Mensajes mensaje) {
+		
+		System.out.println("El usuario : " + mensaje.getUserTx());
+		System.out.println("Envia un mensaje a : " + mensaje.getUserRx());
+		System.out.println("Preparando la conexion a la base de datos");
+		Connection conn = null;
+		System.out.println(".............");
+		
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new ServerErrorException("Could not connect to the database",
+					Response.Status.SERVICE_UNAVAILABLE);
+		}
+
+		System.out.println("Preparando Statement");
+		PreparedStatement stmt = null;
+        try {
+			
+			System.out.println("Creando la Query");
+			String sql = bulidCreateMensaje();
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			stmt.setString(1, mensaje.getUserTx());
+			stmt.setString(2, mensaje.getUserRx());
+			stmt.setString(3, mensaje.getMensaje());
+			
+			stmt.executeUpdate();
+			
+		} 
+		catch (SQLException e)
+		{
+			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try
+			{
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e)
+			{
+				
+			}
+		}
+		System.out.println("Fin del POST de un mensaje");
+	}
+	
+	private String bulidCreateMensaje()
+	{
+		System.out.println("Ejecutando bulidCreateMensaje");
+		return "insert into mensajes (userTx, userRx, mensaje) value (?, ?, ?)";
+	}
+	
+    private MensajesCollection GetMensajes(String username){
+		
+    	MensajesCollection colleciondemensajes = new MensajesCollection();
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+		} 
+		catch (SQLException e)
+		{
+			throw new ServerErrorException("Could not connect to the database",Response.Status.SERVICE_UNAVAILABLE);
+		}
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(bulidGetMensajes());
+			System.out.println("Usuario es: " + username);
+			stmt.setString(1,username);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				
+				Mensajes mensaje = new Mensajes();
+				mensaje.setIdmensaje(rs.getInt("idmensaje"));
+				mensaje.setUserTx(rs.getString("userTx"));
+				mensaje.setUserRx(rs.getString("userRx"));
+				mensaje.setMensaje(rs.getString("mensaje"));
+				mensaje.setFechacreacion(rs.getString("fechacreacion"));
+				
+				colleciondemensajes.addMensajes(mensaje);
+				System.out.println("Mensaje añadido añadida a la colecion");
+				
+				}
+		} 
+		catch (SQLException e)
+		{
+			throw new ServerErrorException(e.getMessage(),Response.Status.INTERNAL_SERVER_ERROR);
+		} 
+		finally 
+		{
+			try
+			{
+				if (stmt != null)
+					stmt.close();
+				conn.close();
+			} 
+			catch (SQLException e)
+			{
+				
+			}
+		}
+	 System.out.println("Fin de getUserFromDatabase");
+		return colleciondemensajes;
+	}
+	private String bulidGetMensajes()
+	{
+		return "select * from mensajes where userRx=?";
 	}
 
 }

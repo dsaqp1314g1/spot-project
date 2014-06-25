@@ -627,7 +627,11 @@ public class SpotResource {
 					System.out.println("Reciviendo el id de el me gusta recien creado");
 				if (rows == 1){
 					
-				       actumegusta(spot, "megusta", username);
+					if (!username.equals(spot.getUsuario()))
+					{
+			             System.out.println("Informando al creador del spot " + spot.getUsuario() + " que el usuario " +username + " le ha dado a me gusta en el spot de ID:  " + spot.getIdspot() );
+			             actumegusta(spot, "megusta", username);
+					}
 					   spot = getSpotFromDatabase(idspot);
 					}
 					

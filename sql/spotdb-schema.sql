@@ -42,6 +42,17 @@ create table comentarios(
 
 );
 
+create table mensajes(
+
+	idmensaje 		int not null auto_increment primary key,
+	userTx				varchar(20) not null,
+	userRx             varchar(20) not null,
+	mensaje			   varchar(140) not null,
+	fechacreacion       timestamp not null,
+	foreign key(userTx) references users(username),
+	foreign key(userRx) references users(username)
+);
+
 create table megustas (	
 	idmegustas			int not null auto_increment primary key,
 	idspot				int not null ,		

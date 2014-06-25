@@ -383,6 +383,23 @@ function createComentario(id,coment){
 	});
 }
 
+function createMensaje(mensaje){
+	
+	var url = API_BASE_URL + "/user/"+ mensaje.userRx+"/mensaje";	
+	$.ajax({
+		url : url,
+		type : 'POST', 
+		crossDomain : true,
+		contentType: 'application/vnd.spot.api.user.mensajes+json',
+		data: mensaje
+	})
+	.done(function (data, status, jqxhr) {
+	})
+    .fail(function (jqXHR, textStatus) {
+		console.log(textStatus);
+	});
+}
+
 function getUserParam(user) {
 	var url = API_BASE_URL + '/user/'+user;
 	$('progress').toggle();

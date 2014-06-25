@@ -24,7 +24,14 @@ public class User {
 	private SpotCollection spotcollection;
 	private ActualizacionesCollection actualizacionescollection;
 	private ActuMegustaCollection actumegustacollection;
+	private MensajesCollection MensajesCollection;
 	
+	public MensajesCollection getMensajesCollection() {
+		return MensajesCollection;
+	}
+	public void setMensajesCollection(MensajesCollection mensajesCollection) {
+		MensajesCollection = mensajesCollection;
+	}
 	public User () {
 		super();
 	}

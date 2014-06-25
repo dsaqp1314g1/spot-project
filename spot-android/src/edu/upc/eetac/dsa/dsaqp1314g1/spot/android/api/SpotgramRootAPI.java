@@ -8,7 +8,7 @@ public class SpotgramRootAPI {
 	private Map<String, Link> links;
  
 	public SpotgramRootAPI() {
-		links = new HashMap<>();
+		links = new HashMap<String, Link>();
 	}
  
 	public Map<String, Link> getLinks() {

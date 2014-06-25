@@ -8,7 +8,7 @@ import java.util.Map;
 import android.graphics.Bitmap;
 
 public class Spot {
-	private Map<String, Link> links = new HashMap<>();
+	private Map<String, Link> links = new HashMap<String, Link>();
 	private String idspot;
 	private String title;
 	private double latitud;

@@ -20,7 +20,7 @@ else
 });
 $('#perfil').click(function(e) {
 	e.preventDefault();	
-	getUser();
+	getUserParam($.cookie('username'));
 	 $(this).toggleClass('active');
 	 $(this).children('a').toggleClass('active');
 	 $(this).siblings('li').children('a').removeClass('active');
@@ -95,12 +95,12 @@ function getSpots() {
 		$("#repos_result").text("NO RESULT");
 	});
 }
-
-function loadSpot(url){
-	getSpot(url, function(spot){
-		showSting(spot);
-	});
-}
+//
+//function loadSpot(url){
+//	getSpot(url, function(spot){
+//		showSting(spot);
+//	});
+//}
 
 function getSpotsParam(ciudad, modal) {
 	var url = API_BASE_URL + '/spots/search?ciudad='+ciudad+'&deporte='+modal;
@@ -158,6 +158,12 @@ function loadSpot(url){
 	});
 }
 
+function loadUser(url){
+	  console.log("entro en loadUser");
+	getSpot(url, function(spot){
+		getUserParam(spot.usuario);
+	});
+}
 function hideEditForm() {
 	$('#edit-sting-form').hide();
 }

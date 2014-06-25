@@ -1,8 +1,14 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.android;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.Comentario;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.Spot;
@@ -11,14 +17,24 @@ import edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api.SpotgramAndroidException;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
- 
 public class SpotDetailActivity extends ListActivity {
 	private final static String TAG = SpotDetailActivity.class.getName();
 	private CommentAdapter adapter;
+	 String urlimatge = null;
+	 ImageView imagespot;
+	 Bitmap bimage;
+	 String urlIM;
+		String serverAddress;
+		String serverPort;
 	private ArrayList<Comentario> CommentList;
 	@Override//getextras qe se los pasa el mainactivity
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +45,19 @@ public class SpotDetailActivity extends ListActivity {
 			url = new URL((String) getIntent().getExtras().get("url"));
 		} catch (MalformedURLException e) {
 		}
-
+		AssetManager assetManager = getAssets();
+    	Properties config = new Properties();
+    	
+    	try {
+    		config.load(assetManager.open("config.properties"));
+    		serverAddress = config.getProperty("server.address");
+    		serverPort = config.getProperty("server.port");
+    	}catch (IOException e) {
+    		Log.e(TAG, e.getMessage(), e);
+    		finish();
+    	}
+    	urlimatge = "http://" + serverAddress+ "/imgenes/";	
+    	
 		CommentList = new ArrayList<>();
 		adapter = new CommentAdapter(this, CommentList);
 		setListAdapter(adapter);
@@ -42,18 +70,18 @@ public class SpotDetailActivity extends ListActivity {
 		TextView tvDetailSubject = (TextView) findViewById(R.id.tvDetailSubject);
 		TextView tvDetailUsername = (TextView) findViewById(R.id.tvDetailUsername);
 		TextView tvDetailDate = (TextView) findViewById(R.id.tvDetailDate);
-		ImageView imagespot = (ImageView) findViewById(R.id.spotimagen);
+		imagespot = (ImageView) findViewById(R.id.spotimagen);
 		tvDetailSubject.setText(Spot.getTitle());
 		tvDetailUsername.setText(Spot.getUsuario());
 		tvDetailDate.setText(Spot.getDeporte());
-		String url = Spot.getImageURL();
-		CommentList.clear();
+		
 		CommentList.addAll(Spot.getComentario());
 		adapter.notifyDataSetChanged();
+		Log.e(TAG,urlIM);
+		
 		//imagespot.setBackground(Spot.getImageURL());
 	}
-	
-	
+	 
 	private class FetchSpotTask extends AsyncTask<URL, Void, Spot> {
 		private ProgressDialog pd;
 	 
@@ -63,6 +91,8 @@ public class SpotDetailActivity extends ListActivity {
 			try {
 				Spot = SpotgramAPI.getInstance(SpotDetailActivity.this)
 						.getSpot(params[0]);
+				urlIM = urlimatge+Spot.getIdspot()+".png";
+				bimage=  getBitmapFromURL(urlIM);
 			} catch (SpotgramAndroidException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,6 +103,9 @@ public class SpotDetailActivity extends ListActivity {
 		@Override
 		protected void onPostExecute(Spot result) {
 			loadSpot(result);
+			
+			imagespot.setImageBitmap(bimage);
+			
 			if (pd != null) {
 				pd.dismiss();
 			}
@@ -88,4 +121,19 @@ public class SpotDetailActivity extends ListActivity {
 		}
 	 
 	}
+	public Bitmap getBitmapFromURL(String src) {
+        try {           
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            Log.e("Bitmap","returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

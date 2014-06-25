@@ -2,7 +2,12 @@ package edu.upc.eetac.dsa.dsaqp1314g1.spot.android.api;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
@@ -17,9 +22,16 @@ import org.json.JSONObject;
  
 
 
+
+
+
+
+
+
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.util.Base64;
 import android.util.Log;
  
 public class SpotgramAPI {
@@ -248,7 +260,7 @@ public class SpotgramAPI {
 	 
 		return Spot;
 	}
-	public Spot createSpot(String usuario, String lat, String lon, String ciudad, String deporte, String title, String urlSpot, Bitmap bitmap)
+	public Spot createSpot(String usuario, String lat, String lon, String ciudad, String deporte, String title, String urlSpot)
 			throws SpotgramAndroidException {
 		URL urls = null;
 		try {
@@ -282,9 +294,7 @@ public class SpotgramAPI {
 			urlConnection.connect();
 			PrintWriter writer = new PrintWriter(
 					urlConnection.getOutputStream());
-			 ByteArrayOutputStream bao = new ByteArrayOutputStream();
-			    bitmap.compress(Bitmap.CompressFormat.PNG, 30, bao);
-			    byte[] data = bao.toByteArray();
+			    
 			writer.println(jsonSpot.toString());
 			writer.close();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -314,6 +324,69 @@ public class SpotgramAPI {
 		}
 		return spot;
 	}
+
+	
+	public void subirImag(String urlImag, String urlServ, String idspot)
+	{
+		try {
+		InputStream inputStream = new FileInputStream(urlImag);//You can get an inputStream using any IO API
+		byte[] bytes;
+		byte[] buffer = new byte[8192];
+		int bytesRead;
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		
+		    while ((bytesRead = inputStream.read(buffer)) != -1) {
+		    output.write(buffer, 0, bytesRead);
+		}
+
+			bytes = output.toByteArray();
+			String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+		//Subir IMAGEN
+		
+		URL urls = null;
+		try {
+			urls = new URL(urlServ);
+			Log.d(TAG, urlServ);
+			Log.d(TAG, urlImag);
+		} catch (MalformedURLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		Log.d(TAG, "Imagen convertida a BASE64");
+        Foto foto = new Foto();
+		Log.d(TAG, "createImagen()");
+		HttpURLConnection urlConnection = null;
+		try {			
+			JSONObject jsonFoto = createJsonFoto(foto);
+			URL urlPostSpots = urls;
+			urlConnection = (HttpURLConnection) urlPostSpots.openConnection();
+			urlConnection.setRequestProperty("Accept",
+					MediaType.IMAGEN_JSON);
+			urlConnection.setRequestProperty("Content-Type",
+					MediaType.IMAGEN_JSON);
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setDoInput(true);
+			urlConnection.setDoOutput(true);
+			urlConnection.connect();
+			PrintWriter writer = new PrintWriter(
+					urlConnection.getOutputStream());
+			    
+			writer.println(jsonFoto.toString());
+			writer.close();
+			
+		} catch (JSONException e) {
+			Log.e(TAG, e.getMessage(), e);
+		} catch (IOException e) {
+			Log.e(TAG, e.getMessage(), e);
+		} finally {
+			if (urlConnection != null)
+				urlConnection.disconnect();
+		}
+		    
+	}
 	//writeSpot activity progrso void i Spot tipo de retorno Spots..params (aqi esta tanto el subject como el content) 
 	//onpostexecute recarga lista con todos los Spots inclusive el nuevo k hemos creado
 	//oncreate carga layout
@@ -331,5 +404,11 @@ public class SpotgramAPI {
 		jsonSpot.put("ciudad", Spot.getCiudad());
 	 
 		return jsonSpot;
+	}
+	private JSONObject createJsonFoto(Foto foto) throws JSONException {
+		JSONObject jsonFoto = new JSONObject();
+		jsonFoto.put("encod", foto.getEncod());
+		jsonFoto.put("idspot", foto.getIdspot());
+		return jsonFoto;
 	}
 }

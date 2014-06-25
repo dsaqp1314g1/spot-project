@@ -82,10 +82,14 @@ function getUser() {
 						$('<style type="text/css">  #responder'+mensajes.idmensaje+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able-mensajes'));
 						$('#responder'+mensajes.idmensaje).click(function(e){
 							e.preventDefault();
+							//deleteActualizacion(actualizacion.idspot, actualizacion.idcomentario);
+							$("#responder"+ user.name+mensajes.idmensaje).hide();
 							$("#responder"+mensajes.idmensaje).hide();
 							getUserParam(mensajes.userTx);
 							return false;
 						});
+						$('<hr>').appendTo($('#perfil-scroll-able-mensajes'));
+
 					});
 					$.each(user.actualizacionescollection.actualizacion, function(i, v) {
 						var actualizacion = v;

@@ -20,12 +20,20 @@ public class User {
 	private String username;
 	private String userpass;
 	private String name;
+	private String conectado;
 	private String email;
 	private SpotCollection spotcollection;
 	private ActualizacionesCollection actualizacionescollection;
 	private ActuMegustaCollection actumegustacollection;
 	private MensajesCollection MensajesCollection;
 	
+	
+	public String getConectado() {
+		return conectado;
+	}
+	public void setConectado(String conectado) {
+		this.conectado = conectado;
+	}
 	public MensajesCollection getMensajesCollection() {
 		return MensajesCollection;
 	}

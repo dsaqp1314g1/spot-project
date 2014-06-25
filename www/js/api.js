@@ -1,4 +1,4 @@
-var BEETER_API_HOME="http://localhost:8181/spot-api";
+var BEETER_API_HOME="http://147.83.7.155/spot-api";
 var spotID;
 
 $('#CerrarSpot').click(function(e){

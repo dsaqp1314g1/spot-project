@@ -1,6 +1,9 @@
 package edu.upc.eetac.dsa.dsaqp1314g1.spot.api;
 
+import sun.misc.BASE64Decoder;
+
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +45,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.MediaType;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.BotonMegusta;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Comentario;
+import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Foto;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.Spot;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.SpotCollection;
 import edu.upc.eetac.dsa.dsaqp1314g1.spot.api.model.User;
@@ -308,6 +312,8 @@ public class SpotResource {
 				System.out.println("Comprovando longitud: "+Integer.toString(spot.getIdspot()) +".png");
 				
 				spot.setImageURL(app.getProperties().get("imgBaseURL")+Integer.toString(spot.getIdspot())+".png");
+				System.out.println(spot.getImageURL());
+
 				System.out.println("Pasando a recivir los comentarios");
 
 				PreparedStatement stmtr = null;
@@ -414,14 +420,43 @@ public class SpotResource {
 		return uuid;
 	}
     
+	@SuppressWarnings("restriction")
+	@POST
+    @Consumes(MediaType.IMAGEN_JSON)
+	@Path("/imagen")
+	//public Spot createSpot(Spot spot) {
+    	public void createImag(Foto foto) {
+		System.out.println("Praparando para guardar la imagen");
+		// DESCOMENTAR PER PUJAR LA IMATGE!!!
+				
+		    BufferedImage image = null;
+		    InputStream is = null;
+		    byte[] imageByte;
+		    try
+		    {
+				BASE64Decoder decoder = new BASE64Decoder();
+		        imageByte = decoder.decodeBuffer(foto.getEncod());
+		        ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+		        image = ImageIO.read(bis);
+		        is = new ByteArrayInputStream(imageByte);
+		        bis.close();
+		    }
+		    catch (Exception e)
+		    {
+		        e.printStackTrace();
+		    }
+		UUID uuid = writeAndConvertImage(is, foto.getIdspot());
+		return;
+	}
+	
     
     @POST
 	@Consumes(MediaType.API_SPOT)
 	@Produces(MediaType.API_SPOT)
-//	public Spot createSpot(Spot spot) {
-    	public Spot createSpot(Spot spot,
-    			@FormDataParam("image") InputStream image,
-    			@FormDataParam("image") FormDataContentDisposition fileDisposition) {
+	public Spot createSpot(Spot spot) {
+//    	public Spot createSpot(Spot spot,
+//    			@FormDataParam("image") InputStream image,
+//    			@FormDataParam("image") FormDataContentDisposition fileDisposition) {
 		System.out.println("Subiendo un spot");
 
 		System.out.println("Subiendo titulo: "+ spot.getTitle());
@@ -456,10 +491,8 @@ public class SpotResource {
 			if (rs.next()) {
 				
 				int idspot= rs.getInt(1);
-				System.out.println("Praparando para guardar la imagen");
 				
-				// DESCOMENTAR PER PUJAR LA IMATGE!!!
-				UUID uuid = writeAndConvertImage(image, rs.getInt(1) );
+				
 				System.out.println("Pasando a recoger el spot creado");
 				spot = getSpotFromDatabase(Integer.toString(idspot));
 			} else {
@@ -496,7 +529,6 @@ public class SpotResource {
 		return "insert into spots (title, latitud, longitud, megustas, usuario, deporte, ciudad) value (?,?,?, '0', ?, ?, ?)";
 	}
     
-	
 	@POST
 	@Path("/{idspot}/comentario")
 	@Consumes(MediaType.API_COMENTARIO)

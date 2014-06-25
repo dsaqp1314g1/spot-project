@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -37,6 +38,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -61,7 +63,7 @@ public class SpotCreateActivity extends Activity{
 	String city;
 	String sport;
 	String title;
-	Deportes[] dep = new Deportes[6];
+	Deportes[] dep = new Deportes[5];
 	String usuario="juan";
 	EditText titulo;
 	String serverAddress;
@@ -79,13 +81,48 @@ public class SpotCreateActivity extends Activity{
 	private class PullSpotsTask extends
 	AsyncTask<String, Void, Spot> {
 		private ProgressDialog pd;
+		Spot Spot = null;
+
+		@Override
+		protected Spot doInBackground(String... params) {
+			try {
+				Spot = SpotgramAPI.getInstance(SpotCreateActivity.this)
+						.createSpot(params[0], params[1], params[2], params[3], params[4], params[5],params[6]);
+			} catch (SpotgramAndroidException e) {
+				e.printStackTrace();
+			}
+			return Spot;
+		}
+
+		@Override
+		protected void onPostExecute(Spot result) {
+			(new PullImageTask()).execute(imagePath, url+"imagen", Spot.getIdspot());
+			if (pd != null) {
+				pd.dismiss();
+			}
+		}
+
+		@Override
+		protected void onPreExecute() {
+			pd = new ProgressDialog(SpotCreateActivity.this);
+			pd.setTitle("Creating Spot...");
+			pd.setCancelable(false);
+			pd.setIndeterminate(true);
+			pd.show();
+		}
+
+}
+
+	private class PullImageTask extends
+	AsyncTask<String, Void, Spot> {
+		private ProgressDialog pd;
 
 		@Override
 		protected Spot doInBackground(String... params) {
 			Spot Spot = null;
 			try {
-				Spot = SpotgramAPI.getInstance(SpotCreateActivity.this)
-						.createSpot(params[0], params[1], params[2], params[3], params[4], params[5],params[6], imageBitmap);
+				SpotgramAPI.getInstance(SpotCreateActivity.this)
+						.subirImag(params[0], params[1],params[2]);
 			} catch (SpotgramAndroidException e) {
 				e.printStackTrace();
 			}
@@ -103,7 +140,7 @@ public class SpotCreateActivity extends Activity{
 		@Override
 		protected void onPreExecute() {
 			pd = new ProgressDialog(SpotCreateActivity.this);
-			pd.setTitle("Creating Spot...");
+			pd.setTitle("Creating Image...");
 			pd.setCancelable(false);
 			pd.setIndeterminate(true);
 			pd.show();
@@ -182,7 +219,8 @@ public class SpotCreateActivity extends Activity{
 			title = titulo.getText().toString();			
 			lon = String.valueOf(longit);
 			lat = String.valueOf(latit);
-		(new PullSpotsTask()).execute(usuario,lat,lon, city, sport,title,url);
+		(new PullSpotsTask()).execute(usuario,lat,lon, city, sport,title, url);
+		
 	}
 	@Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		 if(nlocManager != null){
@@ -193,13 +231,31 @@ public class SpotCreateActivity extends Activity{
 		        Bundle extras = data.getExtras();
 		        imageBitmap = (Bitmap) extras.get("data");
 		        iv.setImageBitmap(imageBitmap);
+		        Uri selectedImage = data.getData();
+
+                String filePath = getPath(selectedImage);
+                String file_extn = filePath.substring(filePath.lastIndexOf(".")+1);
+        		Log.d(TAG, filePath);
+
 		    }
 		city = getCity();
         ciudad.setText(city);
 	}
+	
+	
 	/** Called when the user recieves the location*/
-	String mCurrentPhotoPath;
+	String imagePath;
+	int column_index;
+	public String getPath(Uri uri) {
+        String[] projection = { MediaColumns.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        column_index = cursor
+                .getColumnIndexOrThrow(MediaColumns.DATA);
+        cursor.moveToFirst();
+        imagePath = cursor.getString(column_index);
 
+        return cursor.getString(column_index);
+    }
 	private void showSpots() {
 		Intent intent = new Intent(this, SpotSearchActivity.class);	
 		startActivity(intent);
@@ -258,9 +314,7 @@ public class MyLocationListenerNetWork implements LocationListener
   }
 }
 private void creardeportes(){
-	dep[i] = new Deportes();
-	dep[i].setNom("All Sports..");
-	i++;
+	
 	dep[i] = new Deportes();
 	dep[i].setNom("BMX");
 	i++;

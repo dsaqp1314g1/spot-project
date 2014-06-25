@@ -96,6 +96,7 @@ function User(user){
 	this.username = user.username;
 	this.name = user.name;
 	this.userpass = user.userpass;
+	this.conectado = user.conectado;
 	this.email = user.email;
 	this.actualizacionescollection = user.actualizacionescollection;
 	this.actumegustacollection = user.actumegustacollection;
@@ -510,6 +511,8 @@ function getUserParam(user) {
 					$("#enviar-mensaje").hide();
 					$("#mensaje-cancel").hide();
 					$("#titulo-mensaje").hide();
+					$("#online").hide();
+					$('#offline').hide();
 
 					if (user.name==null)
 					{
@@ -534,6 +537,16 @@ function getUserParam(user) {
 					$("#perfil-titulo-spot").text(user.username);
 					$('<strong> Name : </strong> ' + user.name + '<br>').appendTo($('#perfil_result'));
 					$('<strong> Email : </strong> ' + user.email + '<br>').appendTo($('#perfil_result'));
+					if (user.conectado=="si")
+						{
+						  $("#online").show();
+						  $('#offline').hide();
+						}
+					else
+						{
+						  $("#offline").show();
+						  $('#online').hide();
+						}
 					$("#scroll").text("");
 					getSpotByUser(user.username);
 				}}
@@ -546,8 +559,26 @@ function getUserParam(user) {
 
 
 
+
+function desconected(){
+	var url = API_BASE_URL + "/user/"+ $.cookie('username');
+	console.log("Desconectando usuario: " +  url);
+	$.ajax({
+		url : url,
+		type : 'DELETE',
+		crossDomain : true
+	})
+	.done(function (data, status, jqxhr) {
+		$.removeCookie ('username');
+		window.location.replace("/auth.html");
+	})
+    .fail(function (jqXHR, textStatus) {
+		console.log(textStatus);
+		alert(textStatus);
+	});
+}
+
 $('#salir').click(function(e) {
-	e.preventDefault();					
-	$. removeCookie ('username');
-	window.location.replace("/auth.html");
+	e.preventDefault();
+	desconected();
 });

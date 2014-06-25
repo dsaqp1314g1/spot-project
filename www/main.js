@@ -164,7 +164,10 @@ function hideEditForm() {
 
 var stingsURL;
 $(document).ready(function(){
-	
+	$('#actualizaciones').toggleClass('active');
+	 $('#actualizaciones').children('a').toggleClass('active');
+	 $('#actualizaciones').siblings('li').children('a').removeClass('active');
+	 
 	 $('#home').toggleClass('active');
 	 $('#home').children('a').toggleClass('active');
 	 $('#home').siblings('li').children('a').removeClass('active');

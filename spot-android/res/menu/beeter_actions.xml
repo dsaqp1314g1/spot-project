@@ -7,5 +7,6 @@
         android:title="@string/l_post">
     </item>
     <item android:id="@+id/miAbout" android:title="About.."></item>
+    <item android:id="@+id/miOut" android:title="Logout"></item>
  
 </menu>

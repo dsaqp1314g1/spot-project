@@ -9,7 +9,7 @@ public class Comentario {
 	private int idspot;
 	private String usuario;
 	private String comentario;
-	private Date fechacreacion;
+	private String fechacreacion;
 	
 	public int getIdcomentario() {
 		return idcomentario;
@@ -35,10 +35,10 @@ public class Comentario {
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
-	public Date getFechacreacion() {
+	public String getFechacreacion() {
 		return fechacreacion;
 	}
-	public void setFechacreacion(Date fechacreacion) {
+	public void setFechacreacion(String fechacreacion) {
 		this.fechacreacion = fechacreacion;
 	}
 

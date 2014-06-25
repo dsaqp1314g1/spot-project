@@ -78,11 +78,11 @@ function getUser() {
 						$('<strong> El usuario : </strong>' + mensajes.userTx + '<br>').appendTo($('#perfil-scroll-able-mensajes'));
 						$('<strong> te ha enviado este mensaje: </strong> ' +  mensajes.mensaje + '<br>').appendTo($('#perfil-scroll-able-mensajes'));
 						$('<strong> El dia : </strong> ' + mensajes.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able-mensajes'));
-						$('<button id="responder'+user.name+mensajes.idmensaje+'">'+"Responder"+'</button><br><br>').appendTo($('#perfil-scroll-able-mensajes'));												
-						$('<style type="text/css">  #responder'+user.name+mensajes.idmensaje+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able-mensajes'));
-						$('#responder'+user.name+mensajes.idmensaje).click(function(e){
+						$('<button id="responder'+mensajes.idmensaje+'">'+"Responder"+'</button><br><br>').appendTo($('#perfil-scroll-able-mensajes'));												
+						$('<style type="text/css">  #responder'+mensajes.idmensaje+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able-mensajes'));
+						$('#responder'+mensajes.idmensaje).click(function(e){
 							e.preventDefault();
-							$("#responder"+ user.name+mensajes.idmensaje).hide();
+							$("#responder"+mensajes.idmensaje).hide();
 							getUserParam(mensajes.userTx);
 							return false;
 						});

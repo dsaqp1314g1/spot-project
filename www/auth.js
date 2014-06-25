@@ -1,5 +1,5 @@
-var API_BASE_URL = "http://147.83.7.155/spot-api";//cambiar spot-api por spot-auth
-var API_BASE = "http://147.83.7.155";
+var API_BASE_URL = "http://localhost:8181/spot-api";//cambiar spot-api por spot-auth
+var API_BASE = "http://localhost:8181";
 var password;
 var username;
 $("#button-cancelRegis").click(function(e) {

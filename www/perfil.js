@@ -1,4 +1,4 @@
-var API_BASE_URL = "http://localhost:8181/spot-api";
+var API_BASE_URL = "http://147.83.7.155:8080/spot-api";
 var stingsURL;
 
 $('#mensajes').click(function(e) {

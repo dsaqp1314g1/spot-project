@@ -335,7 +335,10 @@ position: absolute;
 	border-radius: 7px;
 	background: transparent;
 }´
-#error-perfil-div{
+#error-perfil{
+	z-index: 1;
+}
+#Informacion{
 	z-index: 1;
 }
 #buscar-error{
@@ -409,6 +412,7 @@ position: absolute;
 		<!-- El logotipo y el icono que despliega el menú se agrupan
        para mostrarlos mejor en los dispositivos móviles -->
 		<div class="navbar-header">
+		
 		<strong id="logotipo">Spotgram</strong>
 		</div>
 
@@ -509,8 +513,9 @@ position: absolute;
 			</div>
 		</div>
 	<div class="col-sm-4"></div>
+	<div class="col-sm-12">
 
-	<div id="error-perfil-div" class="bs-example col-sm-4">
+	<div id="error-perfil" class="bs-example col-sm-4" style="display: none;">
 		<div class="alert alert-danger alert-error">
 			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
 			<strong>Error!</strong> El usuario que buscar no existe!
@@ -527,6 +532,13 @@ position: absolute;
 		<div class="alert alert-danger alert-error">
 			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
 			<strong>Error!</strong> No has rellenado todos los campos!
+		</div>
+	</div>
+		<div id="Infomacion" class="bs-example col-sm-4" style="display: none;">
+		<div class="alert alert-danger alert-error">
+			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+			<strong>Error!</strong> Los creadores de esta aplicacion son: /n Albert Anguela /n Juan Gordo /n Einar Meyerson
+		</div>
 		</div>
 	</div>
 	<div class="col-sm-4">		</div>

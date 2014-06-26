@@ -8,6 +8,7 @@ $('#CerrarSpot').click(function(e){
 });
 
 $('#buscar-amigo').click(function(e) {
+
 	e.preventDefault();	
 	console.log("Click");
 	if($('#buscar_campo').val()===''){
@@ -16,6 +17,8 @@ $('#buscar-amigo').click(function(e) {
 
 }
 	else{
+		$('#error-perfil').show();
+
 	$('#comment-form').hide();
 	getUserParam($("#buscar_campo").val());
 	//$("#buscar_campo").val('');
@@ -514,6 +517,8 @@ function getUserParam(user) {
 		dataType : 'json',
 	}).done(function(data, status, jqxhr) {
 				var user = new User(data);
+				$('#spots-perfil').show();
+
 				$('progress').toggle();
 														
 				if (user.username == $.cookie('username')){
@@ -530,8 +535,8 @@ function getUserParam(user) {
 					{
 						$('#spots-perfil').hide();
 
-					 $("#error-perfil-div").show();
-						$("#error-perfil-div").fadeOut(4000);
+					 $('#error-perfil').show();
+						$('#error-perfil').fadeOut(4000);
 					}
 				else{
 					$("#perfil-titulo-spot").text(user.username);
@@ -545,8 +550,8 @@ function getUserParam(user) {
 					{
 					$('#spots-perfil').hide();
 
-					 $("#error-perfil-div").show();
-						$("#error-perfil-div").fadeOut(4000);
+					 $('#error-perfil').show();
+						$('#error-perfil').fadeOut(4000);
 
 					}
 				else{
@@ -570,10 +575,8 @@ function getUserParam(user) {
 					getSpotByUser(user.username);
 				}}
 	}).fail(function() {
-		$('progress').toggle();
-		 $("#error-perfil-div").show();
-		$("#perfil_result").text("NO RESULT");
-		
+		 $('#error-perfil').show();
+
 	});
 }
 

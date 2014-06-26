@@ -16,6 +16,13 @@ $("#button-list-spots").click(function(e) {
 		getSpotsParam($("#buscar_ciud").val(), $("#buscar_mod").val());
 	}
 });
+$('#logotipo').click(function(e) {
+	e.preventDefault();
+	$('#Infomacion').show();
+	$('#Infomacion').fadeOut(5000);
+
+});
+
 $('#perfil').click(function(e) {
 	e.preventDefault();
     getUser();

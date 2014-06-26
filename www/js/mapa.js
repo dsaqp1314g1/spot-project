@@ -3,7 +3,7 @@ var markers = [];
 var centermap = new google.maps.LatLng(41.3850639,2.17340349);
 var mapOptions = {
   minZoom: 2, 
-  maxZoom: 12,
+  maxZoom: 30,
   zoom: 4,
   panControl: false,
   zoomControl: false,

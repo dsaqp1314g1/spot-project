@@ -1,4 +1,4 @@
-var API_BASE_URL = "http://147.83.7.155/spot-api";
+var API_BASE_URL = "http://localhost:8181/spot-api";
 var stingsURL;
 
 $('#mensajes').click(function(e) {
@@ -108,6 +108,22 @@ function getUser() {
 						$('<hr>').appendTo($('#perfil-scroll-able'));
 
 					});
+					$.each(user.actumegustacollection.actualizacion, function(i, v) {
+						var actualizacion = v;
+						$('<strong> El usuario : </strong>' + actualizacion.usermegusta + '<br>').appendTo($('#perfil-scroll-able'));
+						$('<strong> A hecho Me gusta en el spot : </strong> ' + actualizacion.nombrespot + '<br>').appendTo($('#perfil-scroll-able'));
+						$('<strong> El dia : </strong> ' + actualizacion.fechacreacion + '<br><br>').appendTo($('#perfil-scroll-able'));
+						$('<button id="ver-actuMg'+ actualizacion.idspot+actualizacion.usermegusta+'">'+"Ver Spot"+'</button><br><br>').appendTo($('#perfil-scroll-able'));												
+						$('<style type="text/css">  #ver-actuMg'+ actualizacion.idspot+actualizacion.usermegusta+'{ background: linear-gradient(to bottom, rgba(69, 72, 77, 1) 0%, rgba(0, 0, 0, 1) 100%);border: 2px solid #FFBF00; color: white; border-radius: 5px; padding: 5px 15px;} </style>').appendTo($('#perfil-scroll-able'));
+						$('#ver-actuMg'+actualizacion.idspot+actualizacion.usermegusta).click(function(e){
+							e.preventDefault();
+							deleteActuMegusta(actualizacion.idspot, actualizacion.usermegusta);
+							getSpotId(actualizacion.idspot);
+							return false;
+						});
+						$('<hr>').appendTo($('#perfil-scroll-able'));
+
+					});
 					getSpotByUser(user.username);
 	}).fail(function() {
 		$('progress').toggle();
@@ -149,11 +165,11 @@ function getSpotByUser(username) {
 		$("#spots-perfil-container").text("NO RESULT");
 	});
 }
-function loadUser(url){
-	getUser(url, function(user){
-		getUserParam(user.username);
-	});
-}
+//function loadUser(url){
+//	getUser(url, function(user){
+//		getUserParam(user.username);
+//	});
+//}
 function loadSpott(url){
 	getSpot(url, function(spot){
 		getSpotId(spot.idspot);

@@ -1,4 +1,4 @@
-var BEETER_API_HOME="http://147.83.7.155/spot-api";
+var BEETER_API_HOME="http://localhost:8181/spot-api";
 var spotID;
 
 $('#CerrarSpot').click(function(e){
@@ -10,7 +10,6 @@ $('#CerrarSpot').click(function(e){
 $('#buscar-amigo').click(function(e) {
 	e.preventDefault();	
 	console.log("Click");
-	 $("#error-perfil-div").hide();
 	if($('#buscar_campo').val()===''){
 		$("#buscar-error").show();
 		$("#buscar-error").fadeOut(4000);
@@ -19,7 +18,6 @@ $('#buscar-amigo').click(function(e) {
 	else{
 	$('#comment-form').hide();
 	getUserParam($("#buscar_campo").val());
-	$('#spots-perfil').show();
 	//$("#buscar_campo").val('');
 	}
 });
@@ -200,7 +198,7 @@ function getStings(url, success){
 		console.log(textStatus);
 	});
 }
-
+//zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 function getUsuario(url, success){
 	  console.log(""+url);
 
@@ -530,7 +528,10 @@ function getUserParam(user) {
 
 					if (user.name==null)
 					{
+						$('#spots-perfil').hide();
+
 					 $("#error-perfil-div").show();
+						$("#error-perfil-div").fadeOut(4000);
 					}
 				else{
 					$("#perfil-titulo-spot").text(user.username);
@@ -542,7 +543,11 @@ function getUserParam(user) {
 				}
 				else{if (user.name==null)
 					{
+					$('#spots-perfil').hide();
+
 					 $("#error-perfil-div").show();
+						$("#error-perfil-div").fadeOut(4000);
+
 					}
 				else{
 					$("#mensaje-comment").show();
@@ -566,8 +571,9 @@ function getUserParam(user) {
 				}}
 	}).fail(function() {
 		$('progress').toggle();
-
+		 $("#error-perfil-div").show();
 		$("#perfil_result").text("NO RESULT");
+		
 	});
 }
 

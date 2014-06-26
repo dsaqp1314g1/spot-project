@@ -1,4 +1,4 @@
-var API_BASE_URL="http://147.83.7.155/spot-api";
+var API_BASE_URL="http://localhost:8181/spot-api";
 var stingsURL;
 var idmarker;
 $("#button-list-spots").click(function(e) {
@@ -152,11 +152,11 @@ function loadSpot(url){
 		getSpotId(spot.idspot);
 	});
 }
-
+//zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 function loadUser(url){
 	  console.log("entro en loadUser");
-	getUsuario(url, function(spot){
-		getUserParam(spot.usuario);
+	getUsuario(url, function(user){
+		getUserParam(user.username);
 	});
 }
 function hideEditForm() {

@@ -334,6 +334,9 @@ position: absolute;
 	color: white;
 	border-radius: 7px;
 	background: transparent;
+}´
+#error-perfil-div{
+	z-index: 1;
 }
 #buscar-error{
 	z-index: 1;
@@ -472,12 +475,7 @@ position: absolute;
 
 		<div id="panel-body" class="panel-body">
 			<div class="col-sm-12">
-				<div class="alert alert-danger" style='display: none;'
-					id="error-perfil-div">
-					<button type="button" class="close" data-dismiss="alert"
-						id="error-auth">&times;</button>
-					<strong>El usuario no existe maik</strong>
-				</div>
+				
 				<div id="perfil_result"></div>
 				<nav id="navperfil" class="navbar">
 		<!-- El logotipo y el icono que despliega el menú se agrupan
@@ -510,25 +508,28 @@ position: absolute;
 				</div>
 			</div>
 		</div>
-						<div class="col-sm-4">		</div>
-						
-		
-	<div id="buscar-error" class="bs-example col-sm-4" style="display: none;">
+	<div class="col-sm-4"></div>
+
+	<div id="error-perfil-div" class="bs-example col-sm-4">
 		<div class="alert alert-danger alert-error">
 			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
-			<button type="button" id="closing" class="close" data-dismiss="alert">&times;</button>
+			<strong>Error!</strong> El usuario que buscar no existe!
+		</div>
+	</div>
+	<div id="buscar-error" class="bs-example col-sm-4"
+		style="display: none;">
+		<div class="alert alert-danger alert-error">
+			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
 			<strong>Error!</strong> Escribe algo en el campo de username!
 		</div>
 	</div>
-		<div id="exam-error" class="bs-example col-sm-4" style="display: none;">
-			<div class="alert alert-danger alert-error">
-				<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
-				<button type="button" id="closing" class="close"
-					data-dismiss="alert">&times;</button>
-				<strong>Error!</strong> No has rellenado todos los campos!
-			</div>
+	<div id="exam-error" class="bs-example col-sm-4" style="display: none;">
+		<div class="alert alert-danger alert-error">
+			<!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+			<strong>Error!</strong> No has rellenado todos los campos!
 		</div>
-								<div class="col-sm-4">		</div>
+	</div>
+	<div class="col-sm-4">		</div>
 								
 		
 	<div id="spot-detail" class="panel panel-default" style="display: none;">
